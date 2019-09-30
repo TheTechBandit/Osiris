@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
@@ -42,6 +43,45 @@ namespace Osiris.Discord
                 message,
                 embed: emb)
                 .ConfigureAwait(false);
+        }
+
+        /* PRESET MESSAGES */
+        public static async Task UserIsVictor(ContextIds context, UserAccount user)
+        {
+            await MessageHandler.SendMessage(context, $"{user.Mention} wins the duel!");
+        }
+
+        public static async Task TeamVictory(ContextIds context, string users, int teamNum)
+        {
+            await MessageHandler.SendMessage(context, $"Team {teamNum} wins! Congrats to{users}");
+        }
+
+        public static async Task TeamEliminated(ContextIds context, int teamNum)
+        {
+            await MessageHandler.SendMessage(context, $"Team {teamNum} has been eliminated!");
+        }
+
+        public static async Task UserForfeitsCombat(ContextIds context, UserAccount user)
+        {
+            await MessageHandler.SendMessage(context, $"{user.Mention} has forfeited!");
+        }
+
+        public static async Task UserInCombat(ContextIds context)
+        {
+            var user = UserHandler.GetUser(context.UserId);
+            await MessageHandler.SendMessage(context, $"{user.Mention}, you are already in combat!");
+        }
+
+        public static async Task UserNotInCombat(ContextIds context)
+        {
+            var user = UserHandler.GetUser(context.UserId);
+            await MessageHandler.SendMessage(context, $"{user.Mention}, you are not in combat!");
+        }
+
+        public static async Task OtherUserInCombat(ContextIds context)
+        {
+            var user = UserHandler.GetUser(context.UserId);
+            await MessageHandler.SendMessage(context, $"{user.Mention}, that user is already in combat!");
         }
 
     }

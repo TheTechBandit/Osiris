@@ -100,5 +100,35 @@ namespace Osiris
             return _dic.ContainsKey(id);
         }
 
+        public static async Task UserInCombat(ContextIds ids)
+        {
+            var user = GetUser(ids.UserId);
+            if(user.CombatID != -1)
+            {
+                await MessageHandler.UserInCombat(ids);
+                throw new InvalidUserStateException("user in combat");
+            }
+        }
+
+        public static async Task UserNotInCombat(ContextIds ids)
+        {
+            var user = GetUser(ids.UserId);
+            if(user.CombatID == -1)
+            {
+                await MessageHandler.UserNotInCombat(ids);
+                throw new InvalidUserStateException("user not in combat");
+            }
+        }
+
+        public static async Task OtherUserInCombat(ContextIds ids, UserAccount otherUser)
+        {
+            var user = GetUser(ids.UserId);
+            if(otherUser.CombatID != -1)
+            {
+                await MessageHandler.OtherUserInCombat(ids);
+                throw new InvalidUserStateException("other user in combat");
+            }
+        }
+
     }
 }

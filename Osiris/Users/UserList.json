@@ -4,6 +4,55 @@
     "DmId": 0,
     "Mention": null,
     "Name": null,
-    "AvatarUrl": null
+    "AvatarUrl": null,
+    "Celestial": false,
+    "PromptState": -1,
+    "CombatRequest": 0,
+    "CombatID": -1,
+    "TeamNum": -1,
+    "Dead": false,
+    "ActiveCards": []
+  },
+  "175698286815084545": {
+    "UserId": 175698286815084545,
+    "DmId": 627492203026972682,
+    "Mention": "<@!175698286815084545>",
+    "Name": "Ghub",
+    "AvatarUrl": "https://cdn.discordapp.com/avatars/175698286815084545/a_7b7e751725c394743ad52f6ae1ac930b.gif?size=128",
+    "Celestial": false,
+    "PromptState": -1,
+    "CombatRequest": 0,
+    "CombatID": -1,
+    "TeamNum": -1,
+    "Dead": false,
+    "ActiveCards": []
+  },
+  "208440011039834113": {
+    "UserId": 208440011039834113,
+    "DmId": 627979272266711072,
+    "Mention": "<@!208440011039834113>",
+    "Name": "AngelOfHonor",
+    "AvatarUrl": "https://cdn.discordapp.com/avatars/208440011039834113/92990fecc184f56ab357b893f9dc3836.png?size=128",
+    "Celestial": false,
+    "PromptState": -1,
+    "CombatRequest": 0,
+    "CombatID": 1,
+    "TeamNum": 0,
+    "Dead": false,
+    "ActiveCards": []
+  },
+  "389523789504970752": {
+    "UserId": 389523789504970752,
+    "DmId": 627981174647554048,
+    "Mention": "<@!389523789504970752>",
+    "Name": "ika bog",
+    "AvatarUrl": "https://cdn.discordapp.com/avatars/389523789504970752/1459a9c679f36a015ff4ee910c5cf0cb.png?size=128",
+    "Celestial": false,
+    "PromptState": -1,
+    "CombatRequest": 0,
+    "CombatID": 0,
+    "TeamNum": 1,
+    "Dead": false,
+    "ActiveCards": []
   }
 }

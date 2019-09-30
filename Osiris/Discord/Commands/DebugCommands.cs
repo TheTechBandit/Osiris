@@ -16,5 +16,13 @@ namespace Osiris.Discord
         {
             await ReplyAsync("pong");
         }
+
+        [Command("datawipe")]
+        public async Task DataWipe()
+        {
+            ContextIds idList = new ContextIds(Context);
+            await MessageHandler.SendMessage(idList, "User data cleared. Reboot bot to take effect.");
+            UserHandler.ClearUserData();
+        }
     }
 }
