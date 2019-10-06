@@ -45,20 +45,20 @@ namespace Osiris.Discord
 
                     combat.IsDuel = true;
 
-                    var combatId = CombatStorage.NumberOfInstances();
-
-                    CombatStorage.StoreInstance(combatId, combat);
+                    var combatId = CombatHandler.NumberOfInstances();
 
                     await Context.Channel.SendMessageAsync($"The duel between {target.Mention} and {Context.User.Mention} will now begin!");
                     combat.Players.Add(fromUser);
                     fromUser.CombatRequest = 0;
                     fromUser.CombatID = combatId;
-                    fromUser.TeamNum = 0;
+                    fromUser.TeamNum = 1;
 
                     combat.Players.Add(toUser);
                     toUser.CombatRequest = 0;
                     toUser.CombatID = combatId;
-                    toUser.TeamNum = 1;
+                    toUser.TeamNum = 2;
+
+                    CombatHandler.StoreInstance(combatId, combat);
                 }
                 else
                 {
@@ -78,7 +78,6 @@ namespace Osiris.Discord
         {
             ContextIds idList = new ContextIds(Context);
             var user = UserHandler.GetUser(Context.User.Id);
-            var inst = CombatStorage.RestoreInstance(user.CombatID);
             
             //Tests each case to make sure all circumstances for the execution of this command are valid (character exists, in correct location)
             try
@@ -89,6 +88,8 @@ namespace Osiris.Discord
             {
                 return;
             }
+
+            var inst = CombatHandler.GetInstance(user.CombatID);
 
             await CombatHandler.RemovePlayerFromCombat(inst, user);
         }

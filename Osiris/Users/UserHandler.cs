@@ -29,11 +29,6 @@ namespace Osiris
                 _dic.Add(entry.Key, (UserAccount)entry.Value);
             }
 
-            foreach(KeyValuePair<ulong, UserAccount> kvp in _dic)
-            {
-                Console.WriteLine($"Key: {kvp.Key}\nValue: {kvp.Value}\n");
-            }
-
             System.Console.WriteLine($"Successfully loaded {_dic.Count} users.");
         }
 
@@ -78,7 +73,7 @@ namespace Osiris
             SaveUsers();
         }
 
-        private static void SaveUsers()
+        public static void SaveUsers()
         {
             System.Console.WriteLine("Saving users...");
             _jsonStorage.StoreObject(_dic, filepath);

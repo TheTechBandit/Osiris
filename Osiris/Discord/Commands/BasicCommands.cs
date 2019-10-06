@@ -30,5 +30,23 @@ namespace Osiris.Discord
             }
         }
 
+        [Command("register")]
+        public async Task RegisterCard([Remainder] string str)
+        {
+            ContextIds idList = new ContextIds(Context);
+            var user = UserHandler.GetUser(idList.UserId);
+
+            if(user.ActiveCards.Count == 0)
+            {
+                user.ActiveCards.Add(CardRegistration.RegisterCard(str));
+            }
+            else
+            {
+                user.ActiveCards[0] = CardRegistration.RegisterCard(str);
+            }
+
+            await MessageHandler.SendMessage(idList, $"Registered as {user.ActiveCards[0].Name}.");
+        }
+
     }
 }

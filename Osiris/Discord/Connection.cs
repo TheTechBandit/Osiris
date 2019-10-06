@@ -34,14 +34,39 @@ namespace Osiris.Discord
             
             _client.MessageReceived += MessageRecieved;
 
+            _client.GuildAvailable += HandleConnected;
+
+            _client.UserJoined += HandleUserJoin;
+
             await _commands.AddModulesAsync(Assembly.GetEntryAssembly(), null);
 
             await Task.Delay(-1);
         }
 
+        private async Task HandleConnected(SocketGuild guild)
+        {
+            //Upon connecting, update every user's info in every guild.
+            foreach(SocketUser user in guild.Users)
+            {
+                if(!user.IsBot)
+                    UserHandler.UpdateUserInfo(user.Id, user.GetOrCreateDMChannelAsync().Result.Id, user.Username, user.Mention, user.GetAvatarUrl());
+            }
+        }
+
+        private async Task HandleUserJoin(SocketGuildUser user)
+        {
+            UserHandler.UpdateUserInfo(user.Id, user.GetOrCreateDMChannelAsync().Result.Id, user.Username, user.Mention, user.GetAvatarUrl());
+        }
+
         private async Task HandleGuildJoin(SocketGuild guild)
         {
             await guild.DefaultChannel.SendMessageAsync("**It begins.**");
+
+            //Upon joining a guild, create update every user's info and create useraccounts for them
+            foreach(SocketUser user in guild.Users)
+            {
+                UserHandler.UpdateUserInfo(user.Id, user.GetOrCreateDMChannelAsync().Result.Id, user.Username, user.Mention, user.GetAvatarUrl());
+            }
         }
 
         private async Task MessageRecieved(SocketMessage messageParam)

@@ -13,6 +13,20 @@
     "Dead": false,
     "ActiveCards": []
   },
+  "208440011039834113": {
+    "UserId": 208440011039834113,
+    "DmId": 627979272266711072,
+    "Mention": "<@!208440011039834113>",
+    "Name": "AngelOfHonor",
+    "AvatarUrl": "https://cdn.discordapp.com/avatars/208440011039834113/92990fecc184f56ab357b893f9dc3836.png?size=128",
+    "Celestial": false,
+    "PromptState": -1,
+    "CombatRequest": 0,
+    "CombatID": 1,
+    "TeamNum": 2,
+    "Dead": false,
+    "ActiveCards": []
+  },
   "175698286815084545": {
     "UserId": 175698286815084545,
     "DmId": 627492203026972682,
@@ -27,17 +41,17 @@
     "Dead": false,
     "ActiveCards": []
   },
-  "208440011039834113": {
-    "UserId": 208440011039834113,
-    "DmId": 627979272266711072,
-    "Mention": "<@!208440011039834113>",
-    "Name": "AngelOfHonor",
-    "AvatarUrl": "https://cdn.discordapp.com/avatars/208440011039834113/92990fecc184f56ab357b893f9dc3836.png?size=128",
+  "125446144833748993": {
+    "UserId": 125446144833748993,
+    "DmId": 630472549792219197,
+    "Mention": "<@!125446144833748993>",
+    "Name": "Durgenburn",
+    "AvatarUrl": "https://cdn.discordapp.com/avatars/125446144833748993/c7ed5239b0f48326623d465f35f97efd.png?size=128",
     "Celestial": false,
     "PromptState": -1,
     "CombatRequest": 0,
-    "CombatID": 1,
-    "TeamNum": 0,
+    "CombatID": -1,
+    "TeamNum": -1,
     "Dead": false,
     "ActiveCards": []
   },
@@ -50,8 +64,22 @@
     "Celestial": false,
     "PromptState": -1,
     "CombatRequest": 0,
-    "CombatID": 0,
-    "TeamNum": 1,
+    "CombatID": -1,
+    "TeamNum": -1,
+    "Dead": false,
+    "ActiveCards": []
+  },
+  "525121685654077480": {
+    "UserId": 525121685654077480,
+    "DmId": 630472550295535635,
+    "Mention": "<@!525121685654077480>",
+    "Name": "Suitor Of Cards",
+    "AvatarUrl": "https://cdn.discordapp.com/avatars/525121685654077480/94ecb097acf6cbd1852fb87db0f52c70.png?size=128",
+    "Celestial": false,
+    "PromptState": -1,
+    "CombatRequest": 0,
+    "CombatID": -1,
+    "TeamNum": -1,
     "Dead": false,
     "ActiveCards": []
   }

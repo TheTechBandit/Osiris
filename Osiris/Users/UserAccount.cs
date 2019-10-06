@@ -39,7 +39,14 @@ namespace Osiris
 
         public string DebugString()
         {
-            string str = $"UserID: {UserId}\nMention: {Mention}\nName: {Name}\nAvatarUrl: {AvatarUrl}\nPromptState: {PromptState}";
+            string str = $"UserID: {UserId}\nDmId: {DmId}\nMention: {Mention}\nName: {Name}\nAvatarUrl: {AvatarUrl}\nCelestial: {Celestial}\nPromptState: {PromptState}";
+            str += $"\nCombatRequest: {CombatRequest}\nCombatID: {CombatID}\nTeamNum: {TeamNum}\nDead: {Dead}";
+            str += "\n**Cards**";
+            foreach(BasicCard card in ActiveCards)
+            {
+                str += $"\n**{card.Name}**";
+            }
+            
             return str;
         }
         
