@@ -17,7 +17,7 @@ namespace Osiris
             System.Console.WriteLine("Loading Combat Instances...");
             
             //Access JsonStorage to load user list into memory
-            filepath = "Core/CombatInstances";
+            filepath = "Core/Combat/CombatInstances";
 
             _dic = new Dictionary<int, CombatInstance>();
             _jsonStorage = new JsonStorage();

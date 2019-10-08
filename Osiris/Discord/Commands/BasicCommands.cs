@@ -48,5 +48,17 @@ namespace Osiris.Discord
             await MessageHandler.SendMessage(idList, $"Registered as {user.ActiveCards[0].Name}.");
         }
 
+        [Command("mycards")]
+        public async Task ListCards()
+        {
+            ContextIds idList = new ContextIds(Context);
+            var user = UserHandler.GetUser(idList.UserId);
+
+            foreach(BasicCard card in user.ActiveCards)
+            {
+                await MessageHandler.SendEmbedMessage(idList, "", OsirisEmbedBuilder.CardList(card));
+            }
+        }
+
     }
 }

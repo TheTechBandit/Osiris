@@ -17,10 +17,10 @@ namespace Osiris
             switch(str)
             {
                 case "vrfamily":
-                    card = new VRFamilyCard();
+                    card = new VRFamilyCard(true);
                     break;
                 default:
-                    card = new VRFamilyCard();
+                    card = new VRFamilyCard(true);
                     break;
             }
 

@@ -15,7 +15,7 @@ namespace Osiris
 
         public VRFamilyCard(bool newcard) : base(newcard)
         {
-            
+            Moves.Add(new Crash());
         }
     }
 }
