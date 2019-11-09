@@ -125,5 +125,33 @@ namespace Osiris
             }
         }
 
+        public static async Task OtherUserNotInCombat(ContextIds ids, UserAccount otherUser)
+        {
+            var user = GetUser(ids.UserId);
+            if(otherUser.CombatID == -1)
+            {
+                await MessageHandler.OtherUserNotInCombat(ids);
+                throw new InvalidUserStateException("other user not in combat");
+            }
+        }
+
+        public static async Task UserHasNoCards(ContextIds ids, UserAccount user)
+        {
+            if(user.ActiveCards.Count <= 0)
+            {
+                await MessageHandler.UserHasNoCards(ids, user);
+                throw new InvalidUserStateException("user has no card");
+            }
+        }
+
+        public static async Task OtherUserHasNoCards(ContextIds ids, UserAccount user, UserAccount otherUser)
+        {
+            if(otherUser.ActiveCards.Count <= 0)
+            {
+                await MessageHandler.UserHasNoCards(ids, user);
+                throw new InvalidUserStateException("other user has no card");
+            }
+        }
+
     }
 }

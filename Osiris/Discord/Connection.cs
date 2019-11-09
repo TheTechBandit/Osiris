@@ -5,6 +5,7 @@ using Discord.WebSocket;
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Osiris.Discord
 {
@@ -77,6 +78,70 @@ namespace Osiris.Discord
 
             // Create a number to track where the prefix ends and the command begins
             int argPos = 0;
+
+            //**MOVE CHECK LOGIC**\\
+            foreach(BasicCard card in UserHandler.GetUser(message.Author.Id).ActiveCards)
+            {
+                if(card.IsTurn)
+                {
+                    //Loop through the card's moves
+                    foreach(BasicMove move in card.Moves)
+                    {
+                        //If the message contains any of the moves' names
+                        if(message.Content.Contains($"{move.Name}"))
+                        {
+                            var author = UserHandler.GetUser(message.Author.Id);
+                            //Count the inputs, if necessary
+                            if(move.Targets >= 1)
+                            {
+                                //Setup a list of targeted cards
+                                List<BasicCard> targets = new List<BasicCard>();
+
+                                //Loop through every mentioned user
+                                foreach(SocketUser user in message.MentionedUsers)
+                                {
+                                    //Tests each case to make sure all circumstances for the execution of this command are valid (character exists, in correct location)
+                                    try
+                                    {
+                                        await UserHandler.OtherUserHasNoCards(CombatHandler.GetInstance(author.CombatID).Location, author, UserHandler.GetUser(user.Id));
+                                    }
+                                    catch(InvalidUserStateException)
+                                    {
+                                        return;
+                                    }
+
+                                    //If the player has at least 1 card, and they are in the same combat session as the author, add them to the list of targets.
+                                    var player = UserHandler.GetUser(user.Id);
+                                    if(player.CombatID == author.CombatID)
+                                        targets.Add(player.ActiveCards[0]);
+                                }
+
+                                //Split the message apart by spaces, and search for 0. followed by any number
+                                string[] split = message.Content.Split(' ');
+                                foreach(string str in split)
+                                {
+                                    int parse = 0;
+                                    //If the current string contains a 0. and ends with a
+                                    if(str.Contains("0.") && str.Length >= 3 && int.TryParse(str.Substring(2), out parse) && parse <= CombatHandler.GetInstance(author.CombatID).CardList.Count && parse >= 1)
+                                    {
+                                        targets.Add(CombatHandler.GetInstance(author.CombatID).CardList[parse-1]);
+                                    }
+                                }
+
+                                if(targets.Count <= move.Targets)
+                                    await CombatHandler.UseMove(CombatHandler.GetInstance(author.CombatID), card, move, targets);
+                                return;
+                            }
+                            else
+                            {
+                                await CombatHandler.UseMove(CombatHandler.GetInstance(author.CombatID), card, move);
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+            //**MOVE CHECK LOGIC END **\\
 
             // Determine if the message is a command based on the prefix and make sure no bots trigger commands
             if (!(message.HasStringPrefix("0.", ref argPos) || 

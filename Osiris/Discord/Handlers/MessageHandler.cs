@@ -53,7 +53,7 @@ namespace Osiris.Discord
 
         public static async Task TeamVictory(ContextIds context, string users, int teamNum)
         {
-            await MessageHandler.SendMessage(context, $"Team {teamNum} wins! Congrats to{users}");
+            await MessageHandler.SendMessage(context, $"Team {teamNum} wins! Congrats to {users}");
         }
 
         public static async Task TeamEliminated(ContextIds context, int teamNum)
@@ -69,7 +69,7 @@ namespace Osiris.Discord
         public static async Task UserInCombat(ContextIds context)
         {
             var user = UserHandler.GetUser(context.UserId);
-            await MessageHandler.SendMessage(context, $"{user.Mention}, you are already in combat!");
+            await MessageHandler.SendMessage(context, $"{user.Mention}, you are in combat!");
         }
 
         public static async Task UserNotInCombat(ContextIds context)
@@ -81,7 +81,23 @@ namespace Osiris.Discord
         public static async Task OtherUserInCombat(ContextIds context)
         {
             var user = UserHandler.GetUser(context.UserId);
-            await MessageHandler.SendMessage(context, $"{user.Mention}, that user is already in combat!");
+            await MessageHandler.SendMessage(context, $"{user.Mention}, that user is in combat!");
+        }
+
+        public static async Task OtherUserNotInCombat(ContextIds context)
+        {
+            var user = UserHandler.GetUser(context.UserId);
+            await MessageHandler.SendMessage(context, $"{user.Mention}, that user is not in combat!");
+        }
+
+        public static async Task UserHasNoCards(ContextIds context, UserAccount user)
+        {
+            await MessageHandler.SendMessage(context, $"{user.Mention}, you must have a card to use this command!");
+        }
+
+        public static async Task OtherUserHasNoCards(ContextIds context, UserAccount user)
+        {
+            await MessageHandler.SendMessage(context, $"{user.Mention}, that user does not have a card!");
         }
 
     }

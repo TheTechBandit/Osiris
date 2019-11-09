@@ -72,9 +72,14 @@ namespace Osiris
 
         public static async Task RemovePlayerFromCombat(CombatInstance inst, UserAccount player)
         {
-            var teamNum = player.TeamNum;
+            var team = inst.GetTeam(player);
 
             inst.Players.Remove(player);
+            foreach(BasicCard card in player.ActiveCards)
+            {
+                inst.CardList.Remove(card);
+            }
+            inst.GetTeam(player).Members.Remove(player);
             player.CombatID = -1;
             player.TeamNum = -1;
 
@@ -82,7 +87,7 @@ namespace Osiris
 
             if(inst.IsDuel)
             {
-                await CheckTeamElimination(inst, teamNum);
+                await CheckTeamElimination(inst, team);
             }
             else
             {
@@ -92,73 +97,30 @@ namespace Osiris
             SaveInstances();
         }
 
-        public static async Task CheckTeamElimination(CombatInstance inst, int teamId)
+        public static async Task CheckTeamElimination(CombatInstance inst, Team team)
         {
-            var teamCount = 0;
+            var teamCount = team.Members.Count;
             var teamDead = 0;
-            foreach(UserAccount player in inst.Players)
+            foreach(UserAccount player in team.Members)
             {
-                if(player.TeamNum == teamId)
-                {
-                    teamCount++;
-                    if(player.Dead)
-                    {
-                        teamDead++;
-                    }
-                }
+                if(player.Dead)
+                    teamDead++;
             }
 
             if(teamCount == teamDead)
             {
-                await MessageHandler.TeamEliminated(inst.Location, teamId);
+                await MessageHandler.TeamEliminated(inst.Location, team.TeamNum);
+                inst.Teams.Remove(team);
                 await CheckDuelVictory(inst);
             }
         }
 
         public static async Task CheckDuelVictory(CombatInstance inst)
         {
-            //If only 1 player still remains in the combat list, that player wins
-            if(inst.Players.Count <= 1)
+            if(inst.Teams.Count <= 1)
             {
-                await MessageHandler.UserIsVictor(inst.Location, inst.Players[0]);
+                await MessageHandler.TeamVictory(inst.Location, inst.Teams[0].ToString(), inst.Teams[0].TeamNum);
                 CombatHandler.EndCombat(inst);
-            }
-            //Otherwise, loop through the list of players to check that the only living players have the same team ID. If they do, they win.
-            else
-            {
-                var teamNum = -1;
-                string victors = "";
-                var teamDetected = false;
-                var victory = true;
-
-                //Test if all living players have the same Team ID. If they do, victory is achieved
-                foreach(UserAccount player in inst.Players)
-                {
-                    if(teamDetected)
-                    {
-                        if(teamNum != player.TeamNum && !player.Dead)
-                        {
-                            victory = false;
-                        }
-                        else if(teamNum == player.TeamNum)
-                        {
-                            victors += $" {player.Mention}";
-                        }
-                    }
-
-                    if(!player.Dead && !teamDetected)
-                    {
-                        teamNum = player.TeamNum;
-                        victors += $" {player.Mention}";
-                        teamDetected = true;
-                    }
-                }
-
-                if(victory)
-                {
-                    await MessageHandler.TeamVictory(inst.Location, victors, teamNum);
-                    CombatHandler.EndCombat(inst);
-                }
             }
         }
 
@@ -174,6 +136,52 @@ namespace Osiris
 
             UserHandler.SaveUsers();
             CombatHandler.SaveInstances();
+        }
+
+        public static async Task InitiateDuel(CombatInstance inst)
+        {
+            await MessageHandler.SendMessage(inst.Location, $"The duel between {inst.Teams[0].Members[0].Mention} (Team 1) and {inst.Teams[1].Members[0].Mention} (Team 2) will now begin!");
+            await NextRound(inst);
+        }
+
+        public static async Task NextRound(CombatInstance inst)
+        {
+            inst.RoundNumber ++;
+            inst.TurnNumber = 0;
+
+            await MessageHandler.SendEmbedMessage(inst.Location, "", OsirisEmbedBuilder.RoundStart(inst));
+
+            inst.TurnNumber = -1;
+
+            await Task.Delay(1500);
+            
+            await NextTurn(inst);
+        }
+
+        public static async Task NextTurn(CombatInstance inst)
+        {
+            inst.TurnNumber++;
+            if(inst.TurnNumber >= inst.CardList.Count)
+            {
+                await NextRound(inst);
+                return;
+            }
+            var card = inst.CardList[inst.TurnNumber];
+            var user = UserHandler.GetUser(card.Owner);
+            await MessageHandler.SendEmbedMessage(inst.Location, $"{user.Mention}'s Turn!", OsirisEmbedBuilder.PlayerTurnStatus(inst.CardList[inst.TurnNumber], inst.RoundNumber));
+            card.IsTurn = true;
+        }
+
+        public static async Task UseMove(CombatInstance inst, BasicCard owner, BasicMove move)
+        {
+
+        }
+
+        public static async Task UseMove(CombatInstance inst, BasicCard owner, BasicMove move, List<BasicCard> targets)
+        {
+            await move.MoveEffect(inst, targets);
+            owner.IsTurn = false;
+            await NextTurn(inst);
         }
 
     }

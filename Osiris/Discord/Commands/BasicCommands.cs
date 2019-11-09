@@ -30,22 +30,109 @@ namespace Osiris.Discord
             }
         }
 
-        [Command("register")]
+        [Command("addcard")]
         public async Task RegisterCard([Remainder] string str)
         {
             ContextIds idList = new ContextIds(Context);
             var user = UserHandler.GetUser(idList.UserId);
 
-            if(user.ActiveCards.Count == 0)
+            //Tests each case to make sure all circumstances for the execution of this command are valid (character exists, in correct location)
+            try
             {
-                user.ActiveCards.Add(CardRegistration.RegisterCard(str));
+                await UserHandler.UserInCombat(idList);
+            }
+            catch(InvalidUserStateException)
+            {
+                return;
+            }
+
+            string[] split = str.Split(' ');
+
+            if(split.Length > 2)
+            {
+                await MessageHandler.SendMessage(idList, $"You can't use more than 2 parameters. Example Use: \"addcard vrfamily (Osiris)\"");
             }
             else
             {
-                user.ActiveCards[0] = CardRegistration.RegisterCard(str);
+                if(user.ActiveCards.Count == 0)
+                {
+                    var card = CardRegistration.RegisterCard(str);
+                    if(split.Length == 2)
+                        card.Signature = split[1];
+                    card.Owner = user.UserId;
+                    user.ActiveCards.Add(card);
+                }
+                else
+                {
+                    var card = CardRegistration.RegisterCard(str);
+                    if(split.Length == 2)
+                        card.Signature = split[1];
+                    card.Owner = user.UserId;
+                    user.ActiveCards[0] = card;
+                }
+
+                await MessageHandler.SendMessage(idList, $"Registered as {user.ActiveCards[0].Name}.");
+            }
+        }
+
+        [Command("addcardnext")]
+        public async Task AddCardNext([Remainder] string str)
+        {
+            ContextIds idList = new ContextIds(Context);
+            var user = UserHandler.GetUser(idList.UserId);
+
+            //Tests each case to make sure all circumstances for the execution of this command are valid (character exists, in correct location)
+            try
+            {
+                await UserHandler.UserInCombat(idList);
+            }
+            catch(InvalidUserStateException)
+            {
+                return;
             }
 
-            await MessageHandler.SendMessage(idList, $"Registered as {user.ActiveCards[0].Name}.");
+            string[] split = str.Split(' ');
+
+            if(split.Length > 2)
+            {
+                await MessageHandler.SendMessage(idList, $"You can't use more than 2 parameters. Example Use: \"addcard vrfamily (Osiris)\"");
+            }
+            else
+            {
+                var card = CardRegistration.RegisterCard(str);
+                if(split.Length == 2)
+                    card.Signature = split[1];
+                card.Owner = user.UserId;
+                user.ActiveCards.Add(card);
+
+                await MessageHandler.SendMessage(idList, $"Added card {user.ActiveCards[user.ActiveCards.Count-1].Name} to registration.");
+            }
+        }
+
+        [Command("removecard")]
+        public async Task RemoveCard([Remainder] string str)
+        {
+            ContextIds idList = new ContextIds(Context);
+            var user = UserHandler.GetUser(idList.UserId);
+
+            //Tests each case to make sure all circumstances for the execution of this command are valid (character exists, in correct location)
+            try
+            {
+                await UserHandler.UserInCombat(idList);
+            }
+            catch(InvalidUserStateException)
+            {
+                return;
+            }
+
+            for(int i = user.ActiveCards.Count-1; i >= 0; i--)
+            {
+                if(user.ActiveCards[i].Name.ToLower() == str.ToLower())
+                {
+                    await MessageHandler.SendMessage(idList, $"Removed {user.ActiveCards[i].Name} successfully.");
+                    user.ActiveCards.RemoveAt(i);
+                }
+            }
         }
 
         [Command("mycards")]
