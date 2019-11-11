@@ -129,12 +129,20 @@ namespace Osiris.Discord
                                 }
 
                                 if(targets.Count <= move.Targets)
-                                    await CombatHandler.UseMove(CombatHandler.GetInstance(author.CombatID), card, move, targets);
+                                {
+                                    if(!move.OnCooldown)
+                                        await CombatHandler.UseMove(CombatHandler.GetInstance(author.CombatID), card, move, targets);
+                                    else
+                                        await MessageHandler.SendMessage(CombatHandler.GetInstance(author.CombatID).Location, "That move is on cooldown!");
+                                }
                                 return;
                             }
                             else
                             {
-                                await CombatHandler.UseMove(CombatHandler.GetInstance(author.CombatID), card, move);
+                                if(!move.OnCooldown)
+                                    await CombatHandler.UseMove(CombatHandler.GetInstance(author.CombatID), card, move);
+                                else
+                                    await MessageHandler.SendMessage(CombatHandler.GetInstance(author.CombatID).Location, "That move is on cooldown!");
                                 return;
                             }
                         }

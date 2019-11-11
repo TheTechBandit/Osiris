@@ -63,19 +63,25 @@ namespace Osiris.Discord
                 builder.AddField($"**{move.Name}**", $"{move.Description}");
             }
 
-            string cooldowns = ".";
-            string buffs = ".";
-            string debuffs = ".";
+            string cooldowns = "";
+            string effects = "";
+            foreach(BuffDebuff eff in card.Effects)
+            {
+                effects += eff.ToString() + "\n";
+            }
+            if(effects.Length == 0)
+                effects += "none";
 
             foreach(BasicMove move in card.Moves)
             {
                 if(move.OnCooldown)
                     cooldowns += $"{move.Name}- Available on round {move.CurrentCooldown+round}\n";
             }
+            if(cooldowns.Length == 0)
+                cooldowns += "none";
 
             builder.AddField("Cooldowns:", cooldowns)
-            .AddField("Buffs:", buffs)
-            .AddField("Debuffs:", debuffs);
+            .AddField("Effects:", effects);
 
             int r = card.HPGradient()[0];
             int g = card.HPGradient()[1];

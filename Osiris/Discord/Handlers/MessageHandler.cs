@@ -46,6 +46,30 @@ namespace Osiris.Discord
         }
 
         /* PRESET MESSAGES */
+        public static async Task DiceThrow(ContextIds context, string dice, List<int> rolls)
+        {
+            string str = "";
+            int result = 0;
+            foreach(int roll in rolls)
+            {
+                str += $"{roll}, ";
+                result += roll;
+            }
+            str = str.Substring(0, str.Length-2);
+
+            await MessageHandler.SendMessage(context, $"{dice} = ({str}) = {result}");
+        }
+
+        public static async Task CoinFlip(ContextIds context, bool flip)
+        {
+            string str = "Tails";
+            if(flip)
+            {
+                str = "Heads";
+            }
+            await MessageHandler.SendMessage(context, $"Coin flip! {str}.");
+        }
+
         public static async Task UserIsVictor(ContextIds context, UserAccount user)
         {
             await MessageHandler.SendMessage(context, $"{user.Mention} wins the duel!");

@@ -59,5 +59,10 @@ namespace Osiris
             return Teams[player.TeamNum-1];
         }
 
+        public BasicCard GetCardTurn()
+        {
+            return CardList[TurnNumber];
+        }
+
     }
 }

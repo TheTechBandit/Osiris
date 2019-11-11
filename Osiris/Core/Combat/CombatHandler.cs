@@ -146,12 +146,22 @@ namespace Osiris
 
         public static async Task NextRound(CombatInstance inst)
         {
-            inst.RoundNumber ++;
+            inst.RoundNumber++;
             inst.TurnNumber = 0;
 
             await MessageHandler.SendEmbedMessage(inst.Location, "", OsirisEmbedBuilder.RoundStart(inst));
 
             inst.TurnNumber = -1;
+
+            foreach(BasicCard card in inst.CardList)
+            {
+                foreach(BuffDebuff eff in card.Effects)
+                {
+                    eff.RoundTick();
+                }
+
+                card.EffectCleanup();
+            }
 
             await Task.Delay(1500);
             
@@ -168,13 +178,25 @@ namespace Osiris
             }
             var card = inst.CardList[inst.TurnNumber];
             var user = UserHandler.GetUser(card.Owner);
+
+            foreach(BasicMove move in card.Moves)
+                move.CooldownTick();
+            
             await MessageHandler.SendEmbedMessage(inst.Location, $"{user.Mention}'s Turn!", OsirisEmbedBuilder.PlayerTurnStatus(inst.CardList[inst.TurnNumber], inst.RoundNumber));
             card.IsTurn = true;
+            card.TurnTick();
         }
 
         public static async Task UseMove(CombatInstance inst, BasicCard owner, BasicMove move)
         {
+            await move.MoveEffect(inst);
+            
+            foreach(BuffDebuff eff in owner.Effects)
+                eff.TurnTick();
+            owner.EffectCleanup();
 
+            owner.IsTurn = false;
+            await NextTurn(inst);
         }
 
         public static async Task UseMove(CombatInstance inst, BasicCard owner, BasicMove move, List<BasicCard> targets)

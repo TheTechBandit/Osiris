@@ -28,8 +28,27 @@ namespace Osiris
         {
             foreach(BasicCard card in targets)
             {
-                card.CurrentHP -= 50;
-                await MessageHandler.SendMessage(inst.Location, $"{Owner} crashes into {card.Name} + {card.Signature}, dealing 50 damage!");
+                List<int> rolls = RandomGen.RollDice(15);
+                var flip = RandomGen.CoinFlip();
+
+                int damage = rolls[0];
+                damage = inst.GetCardTurn().ApplyDamageBuffs(damage);
+                damage = card.TakeDamage(damage);
+                await MessageHandler.DiceThrow(inst.Location, "1d15", rolls);
+                await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} crashes into {card.Signature}, dealing {damage} damage!");
+                await MessageHandler.CoinFlip(inst.Location, flip);
+
+                if(!flip)
+                {
+                    await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} gains a 15% boost on their next attack.");
+                    inst.GetCardTurn().AddBuff(new BuffDebuff()
+                    {
+                        Name = $"Crashed ({inst.GetCardTurn().Signature})",
+                        Description = "15% increased damage on next attack.",
+                        DamagePercentBuff = 0.15,
+                        Attacks = 1
+                    });
+                }
             }
         }
         

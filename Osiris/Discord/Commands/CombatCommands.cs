@@ -78,6 +78,7 @@ namespace Osiris.Discord
             }
         }
 
+        /*
         [Command("use")]
         public async Task Use([Remainder] string str)
         {
@@ -96,6 +97,7 @@ namespace Osiris.Discord
                 }
             }
         }
+        */
 
         [Command("jointeam")]
         public async Task JoinTeam(SocketGuildUser target)

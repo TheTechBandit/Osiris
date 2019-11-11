@@ -16,6 +16,11 @@ namespace Osiris
         public VRFamilyCard(bool newcard) : base(newcard)
         {
             Moves.Add(new Crash());
+            Moves.Add(new Jaunt());
+            Moves.Add(new StalwartSoul());
+            Moves.Add(new DeRez());
+            TotalHP = 250;
+            CurrentHP = 250;
         }
     }
 }

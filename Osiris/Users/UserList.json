@@ -12,5 +12,314 @@
     "TeamNum": -1,
     "Dead": false,
     "ActiveCards": []
+  },
+  "389523789504970752": {
+    "UserId": 389523789504970752,
+    "DmId": 627981174647554048,
+    "Mention": "<@!389523789504970752>",
+    "Name": "ika bog",
+    "AvatarUrl": "https://cdn.discordapp.com/avatars/389523789504970752/1459a9c679f36a015ff4ee910c5cf0cb.png?size=128",
+    "Celestial": false,
+    "PromptState": -1,
+    "CombatRequest": 0,
+    "CombatID": 1,
+    "TeamNum": 1,
+    "Dead": false,
+    "ActiveCards": [
+      {
+        "$type": "Osiris.VRFamilyCard, Osiris",
+        "Name": "VRFamily",
+        "RequiresCelestial": false,
+        "Moves": [
+          {
+            "$type": "Osiris.Crash, Osiris",
+            "Name": "Crash",
+            "Owner": "VRFamily",
+            "Description": "Hit the enemy with a crasher. Roll a D15 for damage to an enemy and flip a coin. If the coin is tails, apply a 15% boost to your next attack.",
+            "TargetType": "SingleEnemy",
+            "Targets": 1,
+            "IsUltimate": false,
+            "Cooldown": 0,
+            "CurrentCooldown": 0,
+            "OnCooldown": false
+          },
+          {
+            "$type": "Osiris.Jaunt, Osiris",
+            "Name": "Jaunt",
+            "Owner": "VRFamily",
+            "Description": "Hops through the world at blistering speeds! Deal 45 damage to a target enemy.",
+            "TargetType": "SingleEnemy",
+            "Targets": 1,
+            "IsUltimate": false,
+            "Cooldown": 6,
+            "CurrentCooldown": 6,
+            "OnCooldown": true
+          },
+          {
+            "$type": "Osiris.StalwartSoul, Osiris",
+            "Name": "Stalwart Soul",
+            "Owner": "VRFamily",
+            "Description": "Nullify all damage to the party for the rest of this turn and the next.",
+            "TargetType": "AllFriendly",
+            "Targets": 0,
+            "IsUltimate": false,
+            "Cooldown": 12,
+            "CurrentCooldown": 0,
+            "OnCooldown": false
+          },
+          {
+            "$type": "Osiris.DeRez, Osiris",
+            "Name": "De-Rez",
+            "Owner": "VRFamily",
+            "Description": "Demoralize the enemy! Reduce a target enemy's next 2 attacks by 20%.",
+            "TargetType": "SingleEnemy",
+            "Targets": 1,
+            "IsUltimate": false,
+            "Cooldown": 12,
+            "CurrentCooldown": 8,
+            "OnCooldown": true
+          }
+        ],
+        "Owner": 389523789504970752,
+        "Signature": "ika bog",
+        "Dead": false,
+        "TotalHP": 500,
+        "CurrentHP": 455,
+        "IsTurn": false,
+        "Effects": []
+      }
+    ]
+  },
+  "525121685654077480": {
+    "UserId": 525121685654077480,
+    "DmId": 630472550295535635,
+    "Mention": "<@!525121685654077480>",
+    "Name": "Jack The Ripper",
+    "AvatarUrl": "https://cdn.discordapp.com/avatars/525121685654077480/20348ebf072cc2e4921f106c34bb6d76.png?size=128",
+    "Celestial": false,
+    "PromptState": -1,
+    "CombatRequest": 0,
+    "CombatID": -1,
+    "TeamNum": -1,
+    "Dead": false,
+    "ActiveCards": []
+  },
+  "125446144833748993": {
+    "UserId": 125446144833748993,
+    "DmId": 630472549792219197,
+    "Mention": "<@!125446144833748993>",
+    "Name": "Durgenburn",
+    "AvatarUrl": "https://cdn.discordapp.com/avatars/125446144833748993/ef958120192dae481ffb47cccfeb5b33.png?size=128",
+    "Celestial": false,
+    "PromptState": -1,
+    "CombatRequest": 0,
+    "CombatID": -1,
+    "TeamNum": -1,
+    "Dead": false,
+    "ActiveCards": []
+  },
+  "81609609986441216": {
+    "UserId": 81609609986441216,
+    "DmId": 631303992399626251,
+    "Mention": "<@!81609609986441216>",
+    "Name": "HackaFiskende",
+    "AvatarUrl": "https://cdn.discordapp.com/avatars/81609609986441216/a_f4bbd64426d89a10d4242f5ccba1020e.gif?size=128",
+    "Celestial": false,
+    "PromptState": -1,
+    "CombatRequest": 0,
+    "CombatID": -1,
+    "TeamNum": -1,
+    "Dead": false,
+    "ActiveCards": []
+  },
+  "175698286815084545": {
+    "UserId": 175698286815084545,
+    "DmId": 627492203026972682,
+    "Mention": "<@!175698286815084545>",
+    "Name": "Ghub",
+    "AvatarUrl": "https://cdn.discordapp.com/avatars/175698286815084545/a_7b7e751725c394743ad52f6ae1ac930b.gif?size=128",
+    "Celestial": false,
+    "PromptState": -1,
+    "CombatRequest": 0,
+    "CombatID": -1,
+    "TeamNum": -1,
+    "Dead": false,
+    "ActiveCards": [
+      {
+        "$type": "Osiris.VRFamilyCard, Osiris",
+        "Name": "VRFamily",
+        "RequiresCelestial": false,
+        "Moves": [
+          {
+            "$type": "Osiris.Crash, Osiris",
+            "Name": "Crash",
+            "Owner": "VRFamily",
+            "Description": "Hit the enemy with a crasher. Roll a D15 for damage to an enemy and flip a coin. If the coin is tails, apply a 15% boost to your next attack.",
+            "TargetType": "SingleEnemy",
+            "Targets": 1,
+            "IsUltimate": false,
+            "Cooldown": 0,
+            "CurrentCooldown": 0,
+            "OnCooldown": false
+          },
+          {
+            "$type": "Osiris.Jaunt, Osiris",
+            "Name": "Jaunt",
+            "Owner": "VRFamily",
+            "Description": "Hops through the world at blistering speeds! Deal 45 damage to a target enemy.",
+            "TargetType": "SingleEnemy",
+            "Targets": 1,
+            "IsUltimate": false,
+            "Cooldown": 6,
+            "CurrentCooldown": 0,
+            "OnCooldown": false
+          },
+          {
+            "$type": "Osiris.StalwartSoul, Osiris",
+            "Name": "Stalwart Soul",
+            "Owner": "VRFamily",
+            "Description": "Nullify all damage to the party for the rest of this turn and the next.",
+            "TargetType": "AllFriendly",
+            "Targets": 0,
+            "IsUltimate": false,
+            "Cooldown": 12,
+            "CurrentCooldown": 4,
+            "OnCooldown": true
+          },
+          {
+            "$type": "Osiris.DeRez, Osiris",
+            "Name": "De-Rez",
+            "Owner": "VRFamily",
+            "Description": "Demoralize the enemy! Reduce a target enemy's next 2 attacks by 20%.",
+            "TargetType": "SingleEnemy",
+            "Targets": 1,
+            "IsUltimate": false,
+            "Cooldown": 12,
+            "CurrentCooldown": 2,
+            "OnCooldown": true
+          }
+        ],
+        "Owner": 175698286815084545,
+        "Signature": "Ghub",
+        "Dead": false,
+        "TotalHP": 500,
+        "CurrentHP": 488,
+        "IsTurn": true,
+        "Effects": [
+          {
+            "Name": "De-Rez (All-hail-king-george)",
+            "Description": "Attack decreased by 20%.",
+            "Rounds": -1,
+            "Turns": 0,
+            "Attacks": 1,
+            "Strikes": -1,
+            "TotalShield": 0,
+            "Shield": 0,
+            "HealingPerTurn": 0,
+            "DamagePerTurn": 0,
+            "DamagePercentBuff": 0.0,
+            "DamageStaticBuff": 0,
+            "DamagePercentDebuff": 0.0,
+            "DamageStaticDebuff": 0,
+            "DefensePercentBuff": 0.0,
+            "DefenseStaticBuff": 0,
+            "DefenseSetBuff": -1,
+            "DefensePercentDebuff": 0.2,
+            "TurnSkip": false
+          }
+        ]
+      }
+    ]
+  },
+  "208440011039834113": {
+    "UserId": 208440011039834113,
+    "DmId": 627979272266711072,
+    "Mention": "<@!208440011039834113>",
+    "Name": "AngelOfHonor",
+    "AvatarUrl": "https://cdn.discordapp.com/avatars/208440011039834113/92990fecc184f56ab357b893f9dc3836.png?size=128",
+    "Celestial": false,
+    "PromptState": -1,
+    "CombatRequest": 0,
+    "CombatID": 1,
+    "TeamNum": 2,
+    "Dead": false,
+    "ActiveCards": [
+      {
+        "$type": "Osiris.VRFamilyCard, Osiris",
+        "Name": "VRFamily",
+        "RequiresCelestial": false,
+        "Moves": [
+          {
+            "$type": "Osiris.Crash, Osiris",
+            "Name": "Crash",
+            "Owner": "VRFamily",
+            "Description": "Hit the enemy with a crasher. Roll a D15 for damage to an enemy and flip a coin. If the coin is tails, apply a 15% boost to your next attack.",
+            "TargetType": "SingleEnemy",
+            "Targets": 1,
+            "IsUltimate": false,
+            "Cooldown": 0,
+            "CurrentCooldown": 0,
+            "OnCooldown": false
+          },
+          {
+            "$type": "Osiris.Jaunt, Osiris",
+            "Name": "Jaunt",
+            "Owner": "VRFamily",
+            "Description": "Hops through the world at blistering speeds! Deal 45 damage to a target enemy.",
+            "TargetType": "SingleEnemy",
+            "Targets": 1,
+            "IsUltimate": false,
+            "Cooldown": 6,
+            "CurrentCooldown": 0,
+            "OnCooldown": false
+          },
+          {
+            "$type": "Osiris.StalwartSoul, Osiris",
+            "Name": "Stalwart Soul",
+            "Owner": "VRFamily",
+            "Description": "Nullify all damage to the party for the rest of this turn and the next.",
+            "TargetType": "AllFriendly",
+            "Targets": 0,
+            "IsUltimate": false,
+            "Cooldown": 12,
+            "CurrentCooldown": 0,
+            "OnCooldown": false
+          },
+          {
+            "$type": "Osiris.DeRez, Osiris",
+            "Name": "De-Rez",
+            "Owner": "VRFamily",
+            "Description": "Demoralize the enemy! Reduce a target enemy's next 2 attacks by 20%.",
+            "TargetType": "SingleEnemy",
+            "Targets": 1,
+            "IsUltimate": false,
+            "Cooldown": 12,
+            "CurrentCooldown": 10,
+            "OnCooldown": true
+          }
+        ],
+        "Owner": 208440011039834113,
+        "Signature": "All-hail-king-george",
+        "Dead": false,
+        "TotalHP": 500,
+        "CurrentHP": 330,
+        "IsTurn": false,
+        "Effects": []
+      }
+    ]
+  },
+  "627140507411415049": {
+    "UserId": 627140507411415049,
+    "DmId": 0,
+    "Mention": null,
+    "Name": null,
+    "AvatarUrl": null,
+    "Celestial": false,
+    "PromptState": -1,
+    "CombatRequest": 0,
+    "CombatID": -1,
+    "TeamNum": -1,
+    "Dead": false,
+    "ActiveCards": []
   }
 }

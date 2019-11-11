@@ -57,16 +57,24 @@ namespace Osiris.Discord
                 if(user.ActiveCards.Count == 0)
                 {
                     var card = CardRegistration.RegisterCard(str);
+
                     if(split.Length == 2)
                         card.Signature = split[1];
+                    else
+                        card.Signature = user.Name;
+
                     card.Owner = user.UserId;
                     user.ActiveCards.Add(card);
                 }
                 else
                 {
                     var card = CardRegistration.RegisterCard(str);
+                    
                     if(split.Length == 2)
                         card.Signature = split[1];
+                    else
+                        card.Signature = user.Name;
+
                     card.Owner = user.UserId;
                     user.ActiveCards[0] = card;
                 }

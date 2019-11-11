@@ -5,15 +5,23 @@ namespace Osiris
 {
     public class BasicMove
     {
+        //Name of the move
         public virtual string Name { get; }
+        //Card this move belongs to
         public virtual string Owner { get; }
+        //Description of what this move does
         public virtual string Description { get; }
-        //SingleEnemy, AOEEnemy"N", SingleFriendly, AOEFriendly"N", AllEnemy, AllFriendly, All
+        //How many targets it hits- SingleEnemy, AOEEnemy"N", SingleFriendly, AOEFriendly"N", AllEnemy, AllFriendly, All
         public virtual string TargetType { get; }
+        //Number of targets
         public virtual int Targets { get; }
+        //True if this is an ultimate- false if not
         public virtual bool IsUltimate { get; }
+        //Number of turns this move takes to cool down
         public virtual int Cooldown { get; }
+        //Current cooldown timer
         public int CurrentCooldown { get; set; }
+        //True if on cooldown, false otherwise
         public bool OnCooldown { get; set; }
 
         public BasicMove()
@@ -39,7 +47,10 @@ namespace Osiris
 
         public void CooldownTick()
         {
-            CurrentCooldown -= 1;
+            if(CurrentCooldown > 0)
+                CurrentCooldown -= 1;
+            if(CurrentCooldown == 0)
+                OnCooldown = false;
         }
 
         public void CooldownReset()

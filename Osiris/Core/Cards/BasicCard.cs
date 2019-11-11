@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -14,6 +15,7 @@ namespace Osiris
         public int TotalHP { get; set; }
         public int CurrentHP { get; set; }
         public bool IsTurn { get; set; }
+        public List<BuffDebuff> Effects { get; set; }
 
         public BasicCard()
         {
@@ -28,6 +30,7 @@ namespace Osiris
             TotalHP = 500;
             CurrentHP = 500;
             IsTurn = false;
+            Effects = new List<BuffDebuff>();
         }
 
         public void CooldownTickdown()
@@ -44,6 +47,11 @@ namespace Osiris
             {
                 move.CooldownReset();
             }
+        }
+
+        public string HPTextString()
+        {
+            return $"{CurrentHP}/{TotalHP}";
         }
 
         public List<int> HPGradient()
@@ -72,5 +80,96 @@ namespace Osiris
             }
             return null;
         }
+
+        public void AddBuff(BuffDebuff buff)
+        {
+            CurrentHP += buff.Shield;
+            TotalHP += buff.TotalShield;
+            Effects.Add(buff);
+        }
+
+        public int ApplyDamageBuffs(int damage)
+        {
+            double perc = 0;
+            int stat = 0;
+            foreach(BuffDebuff eff in Effects)
+            {
+                perc += eff.DamagePercentBuff;
+                perc -= eff.DamagePercentDebuff;
+                stat += eff.DamageStaticBuff;
+                stat -= eff.DamageStaticDebuff;
+                eff.AttackTick();
+            }
+            EffectCleanup();
+
+            return damage + (int)((double)damage*perc)+stat;
+        }
+
+        public void TurnTick()
+        {
+            foreach(BuffDebuff eff in Effects)
+            {
+                eff.TurnTick();
+            }
+            foreach(BasicMove move in Moves)
+            {
+                move.CooldownTick();
+            }
+        }
+
+        public void EffectCleanup()
+        {
+            for (int i = Effects.Count-1; i >= 0; i--)
+            {
+                if (Effects[i].Attacks == 0 || Effects[i].Turns == 0 || Effects[i].Rounds == 0|| Effects[i].Strikes == 0)
+                {
+                    CurrentHP -= Effects[i].Shield;
+                    TotalHP -= Effects[i].TotalShield;
+                    Effects.RemoveAt(i);
+                }
+            }
+        }
+
+        public int TakeDamage(int damage)
+        {
+            double perc = 0;
+            int stat = 0;
+            var temp = Int32.MaxValue;
+            foreach(BuffDebuff eff in Effects)
+            {
+                perc += eff.DefensePercentBuff;
+                perc -= eff.DefensePercentDebuff;
+                stat += eff.DefenseStaticBuff;
+                //Find the Minimum of DefenseSetBuff in Effects
+                if(eff.DefenseSetBuff >= 0 && eff.DefenseSetBuff < temp)
+                    temp = eff.DefenseSetBuff;
+                eff.StrikeTick();
+            }
+
+            damage = damage - (int)((double)damage*perc)+stat;
+            if(damage > temp)
+                damage = temp;
+
+            foreach(BuffDebuff eff in Effects)
+            {
+                if(damage > 0 && eff.Shield > 0)
+                {
+                    eff.Shield = temp;
+                    eff.Shield -= damage;
+                    if(eff.Shield < 0)
+                        eff.Shield = 0;
+                    damage -= temp;
+                    if(damage < 0)
+                        damage = 0;
+                }
+            }
+
+            CurrentHP -= damage;
+            if(CurrentHP < 0)
+                CurrentHP = 0;
+            EffectCleanup();
+            return damage;
+        }
+
     }
 }
