@@ -75,10 +75,23 @@ namespace Osiris
             var team = inst.GetTeam(player);
 
             inst.Players.Remove(player);
+
             foreach(BasicCard card in player.ActiveCards)
             {
+                //Remove any markers corresponding to the cards to be removed from combat
+                var turnnum = inst.CardList.IndexOf(card);
+                foreach(BasicCard card2 in inst.CardList)
+                {
+                    for (int i = card2.Markers.Count - 1; i >= 0; i--)  
+                    {  
+                        if(card2.Markers[i].OriginTurnNum == turnnum)
+                            card2.Markers.RemoveAt(i);
+                    } 
+                }
+
                 inst.CardList.Remove(card);
             }
+
             inst.GetTeam(player).Members.Remove(player);
             player.CombatID = -1;
             player.TeamNum = -1;
@@ -95,6 +108,19 @@ namespace Osiris
             }
 
             SaveInstances();
+        }
+
+        public static async Task CheckPlayerDeath(CombatInstance inst)
+        {
+            foreach(BasicCard card in inst.CardList)
+            {
+                if(!card.Dead && card.CurrentHP <= 0)
+                {
+                    card.Dead = true;
+                    await MessageHandler.SendMessage(inst.Location, card.DeathMessage);
+                    await CheckTeamElimination(inst, inst.GetTeam(card));
+                }
+            }
         }
 
         public static async Task CheckTeamElimination(CombatInstance inst, Team team)
@@ -170,31 +196,42 @@ namespace Osiris
 
         public static async Task NextTurn(CombatInstance inst)
         {
+            await CheckPlayerDeath(inst);
+            
             inst.TurnNumber++;
             if(inst.TurnNumber >= inst.CardList.Count)
             {
                 await NextRound(inst);
                 return;
             }
+
             var card = inst.CardList[inst.TurnNumber];
             var user = UserHandler.GetUser(card.Owner);
 
-            foreach(BasicMove move in card.Moves)
-                move.CooldownTick();
-            
-            await MessageHandler.SendEmbedMessage(inst.Location, $"{user.Mention}'s Turn!", OsirisEmbedBuilder.PlayerTurnStatus(inst.CardList[inst.TurnNumber], inst.RoundNumber));
-            card.IsTurn = true;
             card.TurnTick();
+
+            var skip = false;
+            foreach(BuffDebuff eff in card.Effects)
+            {
+                if(eff.TurnSkip)
+                    skip = true;
+            }
+            
+            if(!card.Dead && !skip)
+            {
+                await MessageHandler.SendEmbedMessage(inst.Location, $"{user.Mention}'s Turn!", OsirisEmbedBuilder.PlayerTurnStatus(inst.CardList[inst.TurnNumber], inst.RoundNumber));
+                card.IsTurn = true;
+            }
+            else
+            {
+                await NextTurn(inst);
+            }
         }
 
         public static async Task UseMove(CombatInstance inst, BasicCard owner, BasicMove move)
         {
             await move.MoveEffect(inst);
             
-            foreach(BuffDebuff eff in owner.Effects)
-                eff.TurnTick();
-            owner.EffectCleanup();
-
             owner.IsTurn = false;
             await NextTurn(inst);
         }
@@ -202,6 +239,7 @@ namespace Osiris
         public static async Task UseMove(CombatInstance inst, BasicCard owner, BasicMove move, List<BasicCard> targets)
         {
             await move.MoveEffect(inst, targets);
+
             owner.IsTurn = false;
             await NextTurn(inst);
         }

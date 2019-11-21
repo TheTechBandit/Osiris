@@ -19,6 +19,12 @@ namespace Osiris
                 case "vrfamily":
                     card = new VRFamilyCard(true);
                     break;
+                case "touched":
+                    card = new TouchedCard(true);
+                    break;
+                case "ghub":
+                    card = new GhubCard(true);
+                    break;
                 default:
                     card = new VRFamilyCard(true);
                     break;

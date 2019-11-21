@@ -21,5 +21,6 @@ namespace Osiris.Discord
             GuildId = context.Guild.Id;
             MessageId = context.Message.Id;
         }
+        
     }
 }

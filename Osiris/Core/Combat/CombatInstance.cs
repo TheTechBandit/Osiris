@@ -59,9 +59,29 @@ namespace Osiris
             return Teams[player.TeamNum-1];
         }
 
+        public Team GetTeam(BasicCard player)
+        {
+            return GetTeam(UserHandler.GetUser(player.Owner));
+        }
+
         public BasicCard GetCardTurn()
         {
             return CardList[TurnNumber];
+        }
+
+        public List<BasicCard> SearchForMarker(int turnNum)
+        {
+            List<BasicCard> marked = new List<BasicCard>();
+
+            foreach(BasicCard card in CardList)
+            {
+                if(card.SearchForMarker(turnNum) != null)
+                {
+                    marked.Add(card);
+                }
+            }
+
+            return marked;
         }
 
     }

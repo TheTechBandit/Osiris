@@ -56,7 +56,8 @@ namespace Osiris.Discord
             {
                 if(user.ActiveCards.Count == 0)
                 {
-                    var card = CardRegistration.RegisterCard(str);
+                    var card = CardRegistration.RegisterCard(split[0]);
+                    Console.WriteLine($"{split[0]}");
 
                     if(split.Length == 2)
                         card.Signature = split[1];
@@ -69,6 +70,7 @@ namespace Osiris.Discord
                 else
                 {
                     var card = CardRegistration.RegisterCard(str);
+                    Console.WriteLine($"{split[0]}");
                     
                     if(split.Length == 2)
                         card.Signature = split[1];
@@ -153,6 +155,15 @@ namespace Osiris.Discord
             {
                 await MessageHandler.SendEmbedMessage(idList, "", OsirisEmbedBuilder.CardList(card));
             }
+        }
+
+        [Command("echo")]
+        public async Task Echo(SocketGuildChannel channel, [Remainder] string str)
+        {
+            ContextIds idList = new ContextIds(Context);
+            idList.ChannelId = channel.Id;
+
+            await MessageHandler.SendMessage(idList, $"{str}");
         }
 
     }

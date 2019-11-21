@@ -11,7 +11,7 @@ namespace Osiris
         public virtual string Owner { get; }
         //Description of what this move does
         public virtual string Description { get; }
-        //How many targets it hits- SingleEnemy, AOEEnemy"N", SingleFriendly, AOEFriendly"N", AllEnemy, AllFriendly, All
+        //How many targets it hits- SingleEnemy, AOEEnemy"N", SingleFriendly, AOEFriendly"N", AllEnemy, AllFriendly, All, Self
         public virtual string TargetType { get; }
         //Number of targets
         public virtual int Targets { get; }
@@ -19,6 +19,8 @@ namespace Osiris
         public virtual bool IsUltimate { get; }
         //Number of turns this move takes to cool down
         public virtual int Cooldown { get; }
+        //Tells whether or not this move can target dead people
+        public bool CanTargetDead { get; set; }
         //Current cooldown timer
         public int CurrentCooldown { get; set; }
         //True if on cooldown, false otherwise
@@ -31,6 +33,7 @@ namespace Osiris
 
         public BasicMove(bool newcard)
         {
+            CanTargetDead = false;
             CurrentCooldown = 0;
             OnCooldown = false;
         }

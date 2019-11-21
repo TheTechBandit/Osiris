@@ -12,6 +12,8 @@ namespace Osiris
         public int Attacks { get; set; } = -1;
         //Number of hits you can take before the effect wears off. -1 for infinite.
         public int Strikes { get; set; } = -1;
+        //Number of heals you can get before the effect wears off. -1 for infinite.
+        public int Heals { get; set; } = -1;
         //Gain x temporary health
         public int TotalShield { get; set; } = 0;
         //x temporary health remaining
@@ -20,6 +22,12 @@ namespace Osiris
         public int HealingPerTurn { get; set; } = 0;
         //Damage taken per turn
         public int DamagePerTurn { get; set; } = 0;
+        //Bleed damage taken upon using an attack
+        public int BleedAttackDamage { get; set; } = 0;
+        //healing increased by x%
+        public double HealingPercentBuff { get; set; } = 0.0;
+        //healing decreased by x%
+        public double HealingPercentDebuff { get; set; } = 0.0;
         //damage increased by x%
         public double DamagePercentBuff { get; set; } = 0.0;
         //damage increased by x
@@ -77,13 +85,26 @@ namespace Osiris
                 Strikes--;
         }
 
+        public void HealTick()
+        {
+            if(Heals > 0)
+                Heals--;
+        }
+
+
         public new string ToString()
         {
             string extra = "";
-            if(Attacks > 0)
-                extra += $" {Attacks} attack(s) remaining.";
+            if(Rounds > 0)
+                extra += $" {Rounds} round(s) remaining.";
             if(Turns > 0)
                 extra += $" {Turns} turn(s) remaining.";
+            if(Attacks > 0)
+                extra += $" {Attacks} attack(s) remaining.";
+            if(Strikes > 0)
+                extra += $" {Strikes} hit(s) remaining.";
+            if(Heals > 0)
+                extra += $" {Heals} heal(s) remaining.";
             
             return $"**{Name}**- {Description}{extra}";
         }
