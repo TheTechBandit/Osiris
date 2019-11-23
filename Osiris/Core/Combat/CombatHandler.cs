@@ -129,8 +129,11 @@ namespace Osiris
             var teamDead = 0;
             foreach(UserAccount player in team.Members)
             {
-                if(player.Dead)
-                    teamDead++;
+                foreach(BasicCard card in player.ActiveCards)
+                {
+                    if(card.Dead)
+                        teamDead++;
+                }
             }
 
             if(teamCount == teamDead)
@@ -153,6 +156,7 @@ namespace Osiris
         public static void EndCombat(CombatInstance inst)
         {
             _dic.Remove(inst.Players[0].CombatID);
+            inst.CombatEnded = true;
 
             foreach(UserAccount player in inst.Players)
             {
@@ -174,6 +178,12 @@ namespace Osiris
         {
             inst.RoundNumber++;
             inst.TurnNumber = 0;
+
+            if(inst.CombatEnded)
+            {
+                await MessageHandler.SendEmbedMessage(inst.Location, "**Combat End**", OsirisEmbedBuilder.RoundStart(inst));
+                return;
+            }
 
             await MessageHandler.SendEmbedMessage(inst.Location, "", OsirisEmbedBuilder.RoundStart(inst));
 
@@ -224,7 +234,10 @@ namespace Osiris
             }
             else
             {
-                await NextTurn(inst);
+                if(inst.CombatEnded)
+                    await MessageHandler.SendEmbedMessage(inst.Location, "**Combat End**", OsirisEmbedBuilder.RoundStart(inst));
+                else
+                    await NextTurn(inst);
             }
         }
 

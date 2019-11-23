@@ -13,6 +13,7 @@ namespace Osiris
         public override int Targets { get; } = 1;
         public override bool IsUltimate { get; } = false;
         public override int Cooldown { get; } = 3;
+        public override string CooldownText { get; } = "COOLDOWN: 3 Turns";
 
         public Ghubs1911() : base()
         {
@@ -61,6 +62,9 @@ namespace Osiris
                 }
                 
             }
+            
+            OnCooldown = true;
+            CurrentCooldown = Cooldown;
         }
         
     }

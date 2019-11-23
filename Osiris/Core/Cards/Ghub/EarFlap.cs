@@ -13,6 +13,7 @@ namespace Osiris
         public override int Targets { get; } = 0;
         public override bool IsUltimate { get; } = false;
         public override int Cooldown { get; } = 4;
+        public override string CooldownText { get; } = "COOLDOWN: 4 Turns";
 
         public EarFlap() : base()
         {
@@ -66,6 +67,9 @@ namespace Osiris
 
             await MessageHandler.DiceThrow(inst.Location, "4d20", rolls);
             await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} hits the enemy team with a powerful gust of wind!{str}");
+
+            OnCooldown = true;
+            CurrentCooldown = Cooldown;
         }
         
     }

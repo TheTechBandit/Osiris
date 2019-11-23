@@ -148,7 +148,7 @@ namespace Osiris
         {
             if(otherUser.ActiveCards.Count <= 0)
             {
-                await MessageHandler.UserHasNoCards(ids, user);
+                await MessageHandler.OtherUserHasNoCards(ids, user);
                 throw new InvalidUserStateException("other user has no card");
             }
         }

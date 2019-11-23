@@ -14,6 +14,7 @@ namespace Osiris
         public int RoundNumber { get; set; }
         public int TurnNumber { get; set; }
         public bool IsDuel { get; set; }
+        public bool CombatEnded { get; set; }
         
         public CombatInstance()
         {
@@ -30,6 +31,7 @@ namespace Osiris
             RoundNumber = 0;
             TurnNumber = 0;
             IsDuel = true;
+            CombatEnded = false;
         }
 
         public Team CreateNewTeam()

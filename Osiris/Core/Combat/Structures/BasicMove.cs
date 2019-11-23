@@ -19,6 +19,8 @@ namespace Osiris
         public virtual bool IsUltimate { get; }
         //Number of turns this move takes to cool down
         public virtual int Cooldown { get; }
+        //Text representing the cooldown
+        public virtual string CooldownText { get; }
         //Tells whether or not this move can target dead people
         public bool CanTargetDead { get; set; }
         //Current cooldown timer
@@ -38,12 +40,16 @@ namespace Osiris
             OnCooldown = false;
         }
 
+#pragma warning disable CS1998 // This async method lacks 'await' operators and will run synchronously. Consider using the 'await' operator to await non-blocking API calls, or 'await Task.Run(...)' to do CPU-bound work on a background thread.
         public virtual async Task MoveEffect(CombatInstance inst)
+#pragma warning restore CS1998 // This async method lacks 'await' operators and will run synchronously. Consider using the 'await' operator to await non-blocking API calls, or 'await Task.Run(...)' to do CPU-bound work on a background thread.
         {
 
         }
 
+#pragma warning disable CS1998 // This async method lacks 'await' operators and will run synchronously. Consider using the 'await' operator to await non-blocking API calls, or 'await Task.Run(...)' to do CPU-bound work on a background thread.
         public virtual async Task MoveEffect(CombatInstance inst, List<BasicCard> targets)
+#pragma warning restore CS1998 // This async method lacks 'await' operators and will run synchronously. Consider using the 'await' operator to await non-blocking API calls, or 'await Task.Run(...)' to do CPU-bound work on a background thread.
         {
 
         }

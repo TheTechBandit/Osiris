@@ -168,5 +168,25 @@ namespace Osiris.Discord
 
             await CombatHandler.RemovePlayerFromCombat(inst, user);
         }
+
+        [Command("round")]
+        public async Task RoundUpdate()
+        {
+            ContextIds idList = new ContextIds(Context);
+            var user = UserHandler.GetUser(Context.User.Id);
+
+            //Tests each case to make sure all circumstances for the execution of this command are valid (character exists, in correct location)
+            try
+            {
+                await UserHandler.UserNotInCombat(idList);
+            }
+            catch(InvalidUserStateException)
+            {
+                return;
+            }
+
+            await MessageHandler.SendEmbedMessage(idList, "", OsirisEmbedBuilder.RoundStart(CombatHandler.GetInstance(user.CombatID)));
+        }
+
     }
 }

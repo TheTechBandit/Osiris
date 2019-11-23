@@ -30,7 +30,7 @@ namespace Osiris.Discord
             }
         }
 
-        [Command("addcard")]
+        [Command("setcard")]
         public async Task RegisterCard([Remainder] string str)
         {
             ContextIds idList = new ContextIds(Context);
@@ -46,43 +46,22 @@ namespace Osiris.Discord
                 return;
             }
 
-            string[] split = str.Split(' ');
+            var card = CardRegistration.RegisterCard(str);
+            var nick = Context.Guild.GetUser(Context.User.Id).Nickname;
 
-            if(split.Length > 2)
-            {
-                await MessageHandler.SendMessage(idList, $"You can't use more than 2 parameters. Example Use: \"addcard vrfamily (Osiris)\"");
-            }
+            if(nick == null)
+                card.Signature = Context.User.Username;
             else
-            {
-                if(user.ActiveCards.Count == 0)
-                {
-                    var card = CardRegistration.RegisterCard(split[0]);
-                    Console.WriteLine($"{split[0]}");
+                card.Signature = nick;
 
-                    if(split.Length == 2)
-                        card.Signature = split[1];
-                    else
-                        card.Signature = user.Name;
+            card.Owner = user.UserId;
 
-                    card.Owner = user.UserId;
-                    user.ActiveCards.Add(card);
-                }
-                else
-                {
-                    var card = CardRegistration.RegisterCard(str);
-                    Console.WriteLine($"{split[0]}");
-                    
-                    if(split.Length == 2)
-                        card.Signature = split[1];
-                    else
-                        card.Signature = user.Name;
+            if(user.ActiveCards.Count == 0)
+                user.ActiveCards.Add(card);
+            else
+                user.ActiveCards[0] = card;
 
-                    card.Owner = user.UserId;
-                    user.ActiveCards[0] = card;
-                }
-
-                await MessageHandler.SendMessage(idList, $"Registered as {user.ActiveCards[0].Name}.");
-            }
+            await MessageHandler.SendMessage(idList, $"Registered as {user.ActiveCards[0].Name}.");
         }
 
         [Command("addcardnext")]
@@ -101,21 +80,119 @@ namespace Osiris.Discord
                 return;
             }
 
-            string[] split = str.Split(' ');
+            var card = CardRegistration.RegisterCard(str);
+            var nick = Context.Guild.GetUser(Context.User.Id).Nickname;
 
-            if(split.Length > 2)
+            if(nick == null)
+                card.Signature = Context.User.Username;
+            else
+                card.Signature = nick;
+
+            card.Owner = user.UserId;
+            user.ActiveCards.Add(card);
+
+            await MessageHandler.SendMessage(idList, $"Added card {user.ActiveCards[user.ActiveCards.Count-1].Name} to registration.");
+        }
+
+        [Command("sigset")]
+        public async Task SigSet()
+        {
+            ContextIds idList = new ContextIds(Context);
+            var user = UserHandler.GetUser(idList.UserId);
+
+            //Tests each case to make sure all circumstances for the execution of this command are valid (character exists, in correct location)
+            try
             {
-                await MessageHandler.SendMessage(idList, $"You can't use more than 2 parameters. Example Use: \"addcard vrfamily (Osiris)\"");
+                await UserHandler.UserInCombat(idList);
+                await UserHandler.UserHasNoCards(idList, user);
+            }
+            catch(InvalidUserStateException)
+            {
+                return;
+            }
+
+            await MessageHandler.SendMessage(idList, $"Changed signature from {user.ActiveCards[0].Signature} to a blank signature.");
+
+            user.ActiveCards[0].Signature = "";
+        }
+
+        [Command("sigset")]
+        public async Task SigSet([Remainder] string str)
+        {
+            ContextIds idList = new ContextIds(Context);
+            var user = UserHandler.GetUser(idList.UserId);
+
+            //Tests each case to make sure all circumstances for the execution of this command are valid (character exists, in correct location)
+            try
+            {
+                await UserHandler.UserInCombat(idList);
+                await UserHandler.UserHasNoCards(idList, user);
+            }
+            catch(InvalidUserStateException)
+            {
+                return;
+            }
+
+            await MessageHandler.SendMessage(idList, $"Changed signature from {user.ActiveCards[0].Signature} to {str}.");
+
+            user.ActiveCards[0].Signature = str;
+        }
+
+        [Command("sigset")]
+        public async Task SigSet(int i, [Remainder] string str)
+        {
+            ContextIds idList = new ContextIds(Context);
+            var user = UserHandler.GetUser(idList.UserId);
+
+            //Tests each case to make sure all circumstances for the execution of this command are valid (character exists, in correct location)
+            try
+            {
+                await UserHandler.UserInCombat(idList);
+                await UserHandler.UserHasNoCards(idList, user);
+            }
+            catch(InvalidUserStateException)
+            {
+                return;
+            }
+
+            if(i > 0 && i <= user.ActiveCards.Count)
+            {
+                await MessageHandler.SendMessage(idList, $"Changed signature from {user.ActiveCards[i-1].Signature} to {str}.");
+
+                user.ActiveCards[i-1].Signature = str;
             }
             else
             {
-                var card = CardRegistration.RegisterCard(str);
-                if(split.Length == 2)
-                    card.Signature = split[1];
-                card.Owner = user.UserId;
-                user.ActiveCards.Add(card);
+                await MessageHandler.SendMessage(idList, $"The number you choose must be no less than one and no greater than the number of cards you own.");
+            }
+        }
 
-                await MessageHandler.SendMessage(idList, $"Added card {user.ActiveCards[user.ActiveCards.Count-1].Name} to registration.");
+        [Command("sigset")]
+        public async Task SigSet(int i)
+        {
+            ContextIds idList = new ContextIds(Context);
+            var user = UserHandler.GetUser(idList.UserId);
+
+            //Tests each case to make sure all circumstances for the execution of this command are valid (character exists, in correct location)
+            try
+            {
+                await UserHandler.UserInCombat(idList);
+                await UserHandler.UserHasNoCards(idList, user);
+            }
+            catch(InvalidUserStateException)
+            {
+                return;
+            }
+
+            if(i > 0 && i <= user.ActiveCards.Count)
+            {
+                await MessageHandler.SendMessage(idList, $"Changed signature from {user.ActiveCards[i-1].Signature} to a blank signature.");
+
+                user.ActiveCards[i-1].Signature = "";
+            }
+            else
+            {
+                await MessageHandler.SendMessage(idList, $"The number you choose must be no less than one and no greater than the number of cards you own.");
             }
         }
 
@@ -155,6 +232,47 @@ namespace Osiris.Discord
             {
                 await MessageHandler.SendEmbedMessage(idList, "", OsirisEmbedBuilder.CardList(card));
             }
+        }
+
+        [Command("skillcheck")]
+        public async Task CheckCard(SocketGuildUser target)
+        {
+            ContextIds idList = new ContextIds(Context);
+            var user = UserHandler.GetUser(idList.UserId);
+            var other = UserHandler.GetUser(target.Id);
+
+            try
+            {
+                await UserHandler.OtherUserHasNoCards(idList, user, other);
+            }
+            catch(InvalidUserStateException)
+            {
+                return;
+            }
+
+            if(other.CombatID == -1)
+            {
+                foreach(BasicCard card in other.ActiveCards)
+                {
+                    await MessageHandler.SendEmbedMessage(idList, "", OsirisEmbedBuilder.CardList(card));
+                }
+            }
+            else
+            {
+                foreach(BasicCard card in other.ActiveCards)
+                {
+                    await MessageHandler.SendEmbedMessage(idList, "", OsirisEmbedBuilder.PlayerTurnStatus(card, CombatHandler.GetInstance(user.CombatID).RoundNumber));
+                }
+            }
+        }
+
+        [Command("skillcheck")]
+        public async Task CheckCard([Remainder] string str)
+        {
+            ContextIds idList = new ContextIds(Context);
+            var user = UserHandler.GetUser(idList.UserId);
+
+            await MessageHandler.SendEmbedMessage(idList, "", OsirisEmbedBuilder.CardList(CardRegistration.RegisterCard(str)));
         }
 
         [Command("echo")]

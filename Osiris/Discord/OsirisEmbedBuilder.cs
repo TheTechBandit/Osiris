@@ -12,12 +12,16 @@ namespace Osiris.Discord
 
         public static Embed CardList(BasicCard card)
         {
-            var builder = new EmbedBuilder()
-	        .WithAuthor($"{card.Name} {card.Signature}");
+            var builder = new EmbedBuilder();
+
+            if(card.Name.Equals(card.Signature))
+                builder.WithAuthor($"{card.Name}");
+            else
+	            builder.WithAuthor($"{card.Name} {card.Signature}");
 
             foreach(BasicMove move in card.Moves)
             {
-                builder.AddField($"**{move.Name}**", $"{move.Description}");
+                builder.AddField($"**{move.Name}**", $"{move.Description} {move.CooldownText}");
             }
 
             int r = card.HPGradient()[0];
@@ -35,16 +39,39 @@ namespace Osiris.Discord
 	        .WithAuthor($"Round: {inst.RoundNumber}");
 
             var players = "";
+            var effects = "";
             foreach(UserAccount user in inst.Players)
             {
                 foreach(BasicCard card in user.ActiveCards)
                 {
-                    players += $"{card.Name} {card.Signature}: {card.CurrentHP}/{card.TotalHP} HP\n";
+                    if(card.Name.Equals(card.Signature))
+                        players += $"{card.Name}: {card.CurrentHP}/{card.TotalHP} HP\n";
+                    else
+                        players += $"{card.Name} {card.Signature}: {card.CurrentHP}/{card.TotalHP} HP\n";
+                        
+                    if(card.Effects.Count > 0 || card.Markers.Count > 0)
+                        effects += $"({card.Signature})";
+                        
+                    foreach(BuffDebuff eff in card.Effects)
+                    {
+                        effects += $"\n{eff.ToString()}";
+                    }
+                    foreach(Marker mark in card.Markers)
+                    {
+                        effects += $"\n{mark.ToString()}";
+                    }
+
+                    if(card.Effects.Count > 0 || card.Markers.Count > 0)
+                        effects += "\n.\n";
                 }
+            }
+            if(effects.Length == 0)
+            {
+                effects = "none";
             }
 
             builder.WithDescription(players);
-            builder.AddField("ACTIVE EFFECTS", ".", false);
+            builder.AddField("ACTIVE EFFECTS", effects, false);
             builder.WithFooter($"It is {inst.Players[inst.TurnNumber].Name}'s turn.");
         	builder.WithColor(62, 62, 255);
 
@@ -54,13 +81,18 @@ namespace Osiris.Discord
 
         public static Embed PlayerTurnStatus(BasicCard card, int round)
         {
-            var builder = new EmbedBuilder()
-	        .WithAuthor($"{card.Name} {card.Signature}")
-            .WithTitle($"HP: {card.CurrentHP}/{card.TotalHP}");
+            var builder = new EmbedBuilder();
+
+	        if(card.Name.Equals(card.Signature))
+                builder.WithAuthor($"{card.Name}");
+            else
+	            builder.WithAuthor($"{card.Name} {card.Signature}");
+
+            builder.WithTitle($"HP: {card.CurrentHP}/{card.TotalHP}");
 
             foreach(BasicMove move in card.Moves)
             {
-                builder.AddField($"**{move.Name}**", $"{move.Description}");
+                builder.AddField($"**{move.Name}**", $"{move.Description} {move.CooldownText}");
             }
 
             string cooldowns = "";
@@ -68,6 +100,10 @@ namespace Osiris.Discord
             foreach(BuffDebuff eff in card.Effects)
             {
                 effects += eff.ToString() + "\n";
+            }
+            foreach(Marker mark in card.Markers)
+            {
+                effects += mark.ToString() + "\n";
             }
             if(effects.Length == 0)
                 effects += "none";

@@ -25,7 +25,90 @@
     "CombatID": -1,
     "TeamNum": -1,
     "Dead": false,
-    "ActiveCards": []
+    "ActiveCards": [
+      {
+        "$type": "Osiris.TouchedCard, Osiris",
+        "Name": "Touched",
+        "RequiresCelestial": false,
+        "Moves": [
+          {
+            "$type": "Osiris.Strike, Osiris",
+            "Name": "Strike",
+            "Owner": "Touched",
+            "Description": "Punch the enemy with the force of a soldier. 1 D20 damage to a target enemy.",
+            "TargetType": "SingleEnemy",
+            "Targets": 1,
+            "IsUltimate": false,
+            "Cooldown": 0,
+            "CooldownText": null,
+            "CanTargetDead": false,
+            "CurrentCooldown": 0,
+            "OnCooldown": false
+          },
+          {
+            "$type": "Osiris.RestingSanctuary, Osiris",
+            "Name": "Resting Sanctuary",
+            "Owner": "Touched",
+            "Description": "Take a break! Heal 3 D10 damage.",
+            "TargetType": "SingleEnemy",
+            "Targets": 0,
+            "IsUltimate": false,
+            "Cooldown": 6,
+            "CooldownText": "**COOLDOWN:** 6 turns",
+            "CanTargetDead": false,
+            "CurrentCooldown": 0,
+            "OnCooldown": false
+          },
+          {
+            "$type": "Osiris.DesperateFlurry, Osiris",
+            "Name": "Desperate Flurry",
+            "Owner": "Touched",
+            "Description": "It's make or break! Does 5 D10 damage to a target enemy.",
+            "TargetType": "SingleEnemy",
+            "Targets": 1,
+            "IsUltimate": false,
+            "Cooldown": 10,
+            "CooldownText": "**COOLDOWN:** 10 turns",
+            "CanTargetDead": false,
+            "CurrentCooldown": 10,
+            "OnCooldown": true
+          },
+          {
+            "$type": "Osiris.Rush, Osiris",
+            "Name": "Rush",
+            "Owner": "Touched",
+            "Description": "Plow through the enemy lines! Deal 20 damage to all enemies.",
+            "TargetType": "AllEnemy",
+            "Targets": 0,
+            "IsUltimate": false,
+            "Cooldown": 10,
+            "CooldownText": "**COOLDOWN:** 10 turns",
+            "CanTargetDead": false,
+            "CurrentCooldown": 0,
+            "OnCooldown": false
+          }
+        ],
+        "Owner": 389523789504970752,
+        "Signature": "ika bog",
+        "Dead": true,
+        "TotalHP": 250,
+        "CurrentHP": 0,
+        "IsTurn": false,
+        "DeathMessage": "Touched has been slain!",
+        "Effects": [],
+        "Markers": [
+          {
+            "MarkerName": "Latched",
+            "CardOrigin": "Ghub",
+            "MoveOrigin": "Chomp",
+            "OriginTurnNum": 1,
+            "IgnoreBool": false,
+            "MarkerBool": true,
+            "MarkerStack": 0
+          }
+        ]
+      }
+    ]
   },
   "525121685654077480": {
     "UserId": 525121685654077480,
@@ -69,12 +152,12 @@
     "Dead": false,
     "ActiveCards": []
   },
-  "175698286815084545": {
-    "UserId": 175698286815084545,
-    "DmId": 627492203026972682,
-    "Mention": "<@!175698286815084545>",
-    "Name": "Ghub",
-    "AvatarUrl": "https://cdn.discordapp.com/avatars/175698286815084545/a_8a810e7167abd4cfb19db7822f9fa7b5.gif?size=128",
+  "208440011039834113": {
+    "UserId": 208440011039834113,
+    "DmId": 627979272266711072,
+    "Mention": "<@!208440011039834113>",
+    "Name": "AngelOfHonor",
+    "AvatarUrl": "https://cdn.discordapp.com/avatars/208440011039834113/92990fecc184f56ab357b893f9dc3836.png?size=128",
     "Celestial": false,
     "PromptState": -1,
     "CombatRequest": 0,
@@ -83,12 +166,113 @@
     "Dead": false,
     "ActiveCards": []
   },
-  "208440011039834113": {
-    "UserId": 208440011039834113,
-    "DmId": 627979272266711072,
-    "Mention": "<@!208440011039834113>",
-    "Name": "AngelOfHonor",
-    "AvatarUrl": "https://cdn.discordapp.com/avatars/208440011039834113/92990fecc184f56ab357b893f9dc3836.png?size=128",
+  "175698286815084545": {
+    "UserId": 175698286815084545,
+    "DmId": 627492203026972682,
+    "Mention": "<@!175698286815084545>",
+    "Name": "Ghub",
+    "AvatarUrl": "https://cdn.discordapp.com/avatars/175698286815084545/a_e1f3f6ce546bc7ec4d9b637639095710.gif?size=128",
+    "Celestial": false,
+    "PromptState": -1,
+    "CombatRequest": 0,
+    "CombatID": -1,
+    "TeamNum": -1,
+    "Dead": false,
+    "ActiveCards": [
+      {
+        "$type": "Osiris.GhubCard, Osiris",
+        "Name": "Ghub",
+        "RequiresCelestial": false,
+        "Moves": [
+          {
+            "$type": "Osiris.Chomp, Osiris",
+            "Name": "Chomp",
+            "Owner": "Ghub",
+            "Description": "Bite down on an enemy. Roll 3 D15! for damage and flip a coin. If the coin is heads, you latch on to enemy and cannot be shaken off. **(Chomping again dismounts you from the target)**",
+            "TargetType": "SingleEnemy",
+            "Targets": 1,
+            "IsUltimate": false,
+            "Cooldown": 0,
+            "CooldownText": "",
+            "CanTargetDead": false,
+            "CurrentCooldown": 0,
+            "OnCooldown": false
+          },
+          {
+            "$type": "Osiris.Ghubs1911, Osiris",
+            "Name": "Ghub's 1911",
+            "Owner": "Ghub",
+            "Description": "Empty a clip into a target enemy. Roll 12 D4 For damage. if you are latched onto the target enemy, chomp down harder adding a 10 damage bleed on that enemies next attack.",
+            "TargetType": "SingleEnemy",
+            "Targets": 1,
+            "IsUltimate": false,
+            "Cooldown": 3,
+            "CooldownText": "**COOLDOWN:** 3 turns",
+            "CanTargetDead": false,
+            "CurrentCooldown": 2,
+            "OnCooldown": true
+          },
+          {
+            "$type": "Osiris.EarFlap, Osiris",
+            "Name": "Ear Flap",
+            "Owner": "Ghub",
+            "Description": "Flap your ears with Tremendous force! Roll 4 D20 for damage to the entire enemy team. If you are latched onto a player, deal 50% more damage to that target and dismount.",
+            "TargetType": "AllEnemy",
+            "Targets": 0,
+            "IsUltimate": false,
+            "Cooldown": 4,
+            "CooldownText": "**COOLDOWN:** 4 turns",
+            "CanTargetDead": false,
+            "CurrentCooldown": 1,
+            "OnCooldown": true
+          },
+          {
+            "$type": "Osiris.DemigodOfEarth, Osiris",
+            "Name": "Demigod Of Earth",
+            "Owner": "Ghub",
+            "Description": "Gain mass at an alarming rate. You become immune to damage for 2 turns. If you are latched onto an enemy when this is cast, enemy is pinned underneath you for the duration and is disabled for the duration.",
+            "TargetType": "Self",
+            "Targets": 0,
+            "IsUltimate": false,
+            "Cooldown": 5,
+            "CooldownText": "**COOLDOWN:** 5 turns",
+            "CanTargetDead": false,
+            "CurrentCooldown": 1,
+            "OnCooldown": true
+          },
+          {
+            "$type": "Osiris.GhubStomp, Osiris",
+            "Name": "Ghub Stomp",
+            "Owner": "Ghub",
+            "Description": "Plant your foot firmly into the back of a target enemy. Deal 60 DMG. If you are latched onto an enemy, deal an additional 60 DMG. If the enemy is pinned under the effect of Demigod of Earth, Deal an extra 50 DMG.",
+            "TargetType": "SingleEnemy",
+            "Targets": 1,
+            "IsUltimate": true,
+            "Cooldown": 18,
+            "CooldownText": "**COOLDOWN:** 18 turns",
+            "CanTargetDead": false,
+            "CurrentCooldown": 18,
+            "OnCooldown": true
+          }
+        ],
+        "Owner": 175698286815084545,
+        "Signature": "Ghub",
+        "Dead": false,
+        "TotalHP": 500,
+        "CurrentHP": 434,
+        "IsTurn": false,
+        "DeathMessage": "Ghub has been slain!",
+        "Effects": [],
+        "Markers": []
+      }
+    ]
+  },
+  "627140507411415049": {
+    "UserId": 627140507411415049,
+    "DmId": 0,
+    "Mention": null,
+    "Name": null,
+    "AvatarUrl": null,
     "Celestial": false,
     "PromptState": -1,
     "CombatRequest": 0,

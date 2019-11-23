@@ -13,6 +13,7 @@ namespace Osiris
         public override int Targets { get; } = 1;
         public override bool IsUltimate { get; } = true;
         public override int Cooldown { get; } = 18;
+        public override string CooldownText { get; } = "COOLDOWN: 18 Turns";
 
         public GhubStomp() : base()
         {
@@ -55,6 +56,9 @@ namespace Osiris
 
                 await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} Ghub Stomps {card.Signature}, dealing {damage} damage!");
             }
+
+            OnCooldown = true;
+            CurrentCooldown = Cooldown;
         }
         
     }

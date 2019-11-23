@@ -13,6 +13,7 @@ namespace Osiris
         public override int Targets { get; } = 1;
         public override bool IsUltimate { get; } = false;
         public override int Cooldown { get; } = 0;
+        public override string CooldownText { get; } = "";
 
         public Chomp() : base()
         {
@@ -63,11 +64,13 @@ namespace Osiris
                     if(flip)
                     {
                         await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} is latched on!");
-                        card.AddMarker(new Marker()
+                        card.AddMarker(new Marker(true)
                         {
                             CardOrigin = "Ghub",
                             MoveOrigin = "Chomp",
+                            MarkerName = "Latched",
                             OriginTurnNum = inst.TurnNumber,
+                            IgnoreBool = false,
                             MarkerBool = true
                         });
                     }

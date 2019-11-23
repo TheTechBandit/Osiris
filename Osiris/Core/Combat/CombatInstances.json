@@ -4,7 +4,7 @@
       "UserId": 175698286815084545,
       "ChannelId": 627550060032426005,
       "GuildId": 554027524536008705,
-      "MessageId": 645801399925473320
+      "MessageId": 647858926468988929
     },
     "CombatId": -1,
     "Teams": [],
@@ -12,6 +12,7 @@
     "CardList": [],
     "RoundNumber": 0,
     "TurnNumber": 0,
-    "IsDuel": true
+    "IsDuel": true,
+    "CombatEnded": false
   }
 }
