@@ -37,6 +37,25 @@ namespace Osiris
             ActiveCards = new List<BasicCard>();
         }
 
+        public void ResetCombatFields(bool duel)
+        {
+            CombatID = -1;
+            TeamNum = -1;
+            foreach(BasicCard card in ActiveCards)
+            {
+                card.IsTurn = false;
+                card.CooldownsReset();
+                card.Effects.Clear();
+                card.Markers.Clear();
+                
+                if(duel)
+                {
+                    card.CurrentHP = card.TotalHP;
+                    card.Dead = false;
+                }
+            }
+        }
+
         public string DebugString()
         {
             string str = $"UserID: {UserId}\nDmId: {DmId}\nMention: {Mention}\nName: {Name}\nAvatarUrl: {AvatarUrl}\nCelestial: {Celestial}\nPromptState: {PromptState}";

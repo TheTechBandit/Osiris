@@ -44,9 +44,8 @@ namespace Osiris.Discord
             await Task.Delay(-1);
         }
 
-#pragma warning disable CS1998 // This async method lacks 'await' operators and will run synchronously. Consider using the 'await' operator to await non-blocking API calls, or 'await Task.Run(...)' to do CPU-bound work on a background thread.
+        #pragma warning disable CS1998 // This async method lacks 'await' operators and will run synchronously. Consider using the 'await' operator to await non-blocking API calls, or 'await Task.Run(...)' to do CPU-bound work on a background thread.
         private async Task HandleConnected(SocketGuild guild)
-#pragma warning restore CS1998 // This async method lacks 'await' operators and will run synchronously. Consider using the 'await' operator to await non-blocking API calls, or 'await Task.Run(...)' to do CPU-bound work on a background thread.
         {
             //Upon connecting, update every user's info in every guild.
             foreach(SocketUser user in guild.Users)
@@ -56,9 +55,8 @@ namespace Osiris.Discord
             }
         }
 
-#pragma warning disable CS1998 // This async method lacks 'await' operators and will run synchronously. Consider using the 'await' operator to await non-blocking API calls, or 'await Task.Run(...)' to do CPU-bound work on a background thread.
+        #pragma warning disable CS1998 // This async method lacks 'await' operators and will run synchronously. Consider using the 'await' operator to await non-blocking API calls, or 'await Task.Run(...)' to do CPU-bound work on a background thread.
         private async Task HandleUserJoin(SocketGuildUser user)
-#pragma warning restore CS1998 // This async method lacks 'await' operators and will run synchronously. Consider using the 'await' operator to await non-blocking API calls, or 'await Task.Run(...)' to do CPU-bound work on a background thread.
         {
             UserHandler.UpdateUserInfo(user.Id, user.GetOrCreateDMChannelAsync().Result.Id, user.Username, user.Mention, user.GetAvatarUrl());
         }
@@ -86,17 +84,17 @@ namespace Osiris.Discord
             //**MOVE CHECK LOGIC**\\
             foreach(BasicCard card in UserHandler.GetUser(message.Author.Id).ActiveCards)
             {
-                if(card.IsTurn)
+                if(card.IsTurn && UserHandler.GetUser(message.Author.Id).CombatID != -1)
                 {
+                    var author = UserHandler.GetUser(message.Author.Id);
+                    var inst = CombatHandler.GetInstance(author.CombatID);
+
                     //Loop through the card's moves
                     foreach(BasicMove move in card.Moves)
                     {
                         //If the message contains any of the moves' names
                         if(message.Content.Contains($"{move.Name}"))
                         {
-                            var author = UserHandler.GetUser(message.Author.Id);
-                            var inst = CombatHandler.GetInstance(author.CombatID);
-
                             //Count the inputs, if necessary
                             if(move.Targets >= 1)
                             {
@@ -174,6 +172,11 @@ namespace Osiris.Discord
                                 return;
                             }
                         }
+                    }
+
+                    if(message.Content.Contains("Skip") || message.Content.Contains("Pass"))
+                    {
+                        await CombatHandler.SkipTurn(inst, card);
                     }
                 }
             }

@@ -55,7 +55,7 @@ namespace Osiris
                     card.AddBuff(new BuffDebuff()
                     {
                         Name = $"Chomp Wound ({inst.GetCardTurn().Signature})",
-                        Description = "recieve 10 bleed damage on next attack.",
+                        Description = "receive 10 bleed damage on next attack.",
                         BleedAttackDamage = 10,
                         Attacks = 1
                     });

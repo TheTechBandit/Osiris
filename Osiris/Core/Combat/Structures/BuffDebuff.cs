@@ -14,12 +14,22 @@ namespace Osiris
         public int Strikes { get; set; } = -1;
         //Number of heals you can get before the effect wears off. -1 for infinite.
         public int Heals { get; set; } = -1;
+        //If this is Shield Only, it will be removed upon hitting 0 shield
+        public bool ShieldOnly { get; set; } = false;
+        //Gain x light shielding (blocks up to 5 damage)
+        public int LightShield { get; set; } = 0;
+        //Gain x light shielding (blocks up to 5 damage)
+        public int MediumShield { get; set; } = 0;
+        //Gain x light shielding (blocks up to 5 damage)
+        public int HeavyShield { get; set; } = 0;
         //Gain x temporary health
-        public int TotalShield { get; set; } = 0;
+        public int TotalGrowth { get; set; } = 0;
         //x temporary health remaining
-        public int Shield { get; set; } = 0;
+        public int Growth { get; set; } = 0;
         //Health regained per turn
         public int HealingPerTurn { get; set; } = 0;
+        //Damage taken per round
+        public int DamagePerRound { get; set; } = 0;
         //Damage taken per turn
         public int DamagePerTurn { get; set; } = 0;
         //Bleed damage taken upon using an attack

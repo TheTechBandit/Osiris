@@ -6,6 +6,7 @@ namespace Osiris
     {
         public override string Name { get; } = "Ghub";
         public override bool RequiresCelestial { get; } = false;
+        public override bool Hidden { get; } = false;
         public override List<BasicMove> Moves { get; } = new List<BasicMove>();
 
         public GhubCard() : base()
@@ -15,11 +16,11 @@ namespace Osiris
 
         public GhubCard(bool newcard) : base(newcard)
         {
-            Moves.Add(new Chomp());
-            Moves.Add(new Ghubs1911());
-            Moves.Add(new EarFlap());
-            Moves.Add(new DemigodOfEarth());
-            Moves.Add(new GhubStomp());
+            Moves.Add(new Chomp(true));
+            Moves.Add(new Ghubs1911(true));
+            Moves.Add(new EarFlap(true));
+            Moves.Add(new DemigodOfEarth(true));
+            Moves.Add(new GhubStomp(true));
             TotalHP = 500;
             CurrentHP = 500;
         }

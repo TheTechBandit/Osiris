@@ -47,6 +47,15 @@ namespace Osiris.Discord
             }
 
             var card = CardRegistration.RegisterCard(str);
+
+            if(card.RequiresCelestial && !user.Celestial && !card.Hidden)
+            {
+                await MessageHandler.SendMessage(idList, "That card requires Celestial rank.");
+                return;
+            }
+            else if(card.Hidden && !user.Celestial)
+                card = CardRegistration.RegisterCard("vrfamily");
+
             var nick = Context.Guild.GetUser(Context.User.Id).Nickname;
 
             if(nick == null)
@@ -81,6 +90,15 @@ namespace Osiris.Discord
             }
 
             var card = CardRegistration.RegisterCard(str);
+
+            if(card.RequiresCelestial && !user.Celestial && !card.Hidden)
+            {
+                await MessageHandler.SendMessage(idList, "That card requires Celestial rank.");
+                return;
+            }
+            else if(card.Hidden && !user.Celestial)
+                card = CardRegistration.RegisterCard("vrfamily");
+            
             var nick = Context.Guild.GetUser(Context.User.Id).Nickname;
 
             if(nick == null)
@@ -272,7 +290,12 @@ namespace Osiris.Discord
             ContextIds idList = new ContextIds(Context);
             var user = UserHandler.GetUser(idList.UserId);
 
-            await MessageHandler.SendEmbedMessage(idList, "", OsirisEmbedBuilder.CardList(CardRegistration.RegisterCard(str)));
+            var card = CardRegistration.RegisterCard(str);
+
+            if(card.Hidden && !user.Celestial)
+                card = CardRegistration.RegisterCard("vrfamily");
+
+            await MessageHandler.SendEmbedMessage(idList, "", OsirisEmbedBuilder.CardList(card));
         }
 
         [Command("echo")]

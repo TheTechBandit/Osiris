@@ -25,90 +25,7 @@
     "CombatID": -1,
     "TeamNum": -1,
     "Dead": false,
-    "ActiveCards": [
-      {
-        "$type": "Osiris.TouchedCard, Osiris",
-        "Name": "Touched",
-        "RequiresCelestial": false,
-        "Moves": [
-          {
-            "$type": "Osiris.Strike, Osiris",
-            "Name": "Strike",
-            "Owner": "Touched",
-            "Description": "Punch the enemy with the force of a soldier. 1 D20 damage to a target enemy.",
-            "TargetType": "SingleEnemy",
-            "Targets": 1,
-            "IsUltimate": false,
-            "Cooldown": 0,
-            "CooldownText": null,
-            "CanTargetDead": false,
-            "CurrentCooldown": 0,
-            "OnCooldown": false
-          },
-          {
-            "$type": "Osiris.RestingSanctuary, Osiris",
-            "Name": "Resting Sanctuary",
-            "Owner": "Touched",
-            "Description": "Take a break! Heal 3 D10 damage.",
-            "TargetType": "SingleEnemy",
-            "Targets": 0,
-            "IsUltimate": false,
-            "Cooldown": 6,
-            "CooldownText": "**COOLDOWN:** 6 turns",
-            "CanTargetDead": false,
-            "CurrentCooldown": 0,
-            "OnCooldown": false
-          },
-          {
-            "$type": "Osiris.DesperateFlurry, Osiris",
-            "Name": "Desperate Flurry",
-            "Owner": "Touched",
-            "Description": "It's make or break! Does 5 D10 damage to a target enemy.",
-            "TargetType": "SingleEnemy",
-            "Targets": 1,
-            "IsUltimate": false,
-            "Cooldown": 10,
-            "CooldownText": "**COOLDOWN:** 10 turns",
-            "CanTargetDead": false,
-            "CurrentCooldown": 10,
-            "OnCooldown": true
-          },
-          {
-            "$type": "Osiris.Rush, Osiris",
-            "Name": "Rush",
-            "Owner": "Touched",
-            "Description": "Plow through the enemy lines! Deal 20 damage to all enemies.",
-            "TargetType": "AllEnemy",
-            "Targets": 0,
-            "IsUltimate": false,
-            "Cooldown": 10,
-            "CooldownText": "**COOLDOWN:** 10 turns",
-            "CanTargetDead": false,
-            "CurrentCooldown": 0,
-            "OnCooldown": false
-          }
-        ],
-        "Owner": 389523789504970752,
-        "Signature": "ika bog",
-        "Dead": true,
-        "TotalHP": 250,
-        "CurrentHP": 0,
-        "IsTurn": false,
-        "DeathMessage": "Touched has been slain!",
-        "Effects": [],
-        "Markers": [
-          {
-            "MarkerName": "Latched",
-            "CardOrigin": "Ghub",
-            "MoveOrigin": "Chomp",
-            "OriginTurnNum": 1,
-            "IgnoreBool": false,
-            "MarkerBool": true,
-            "MarkerStack": 0
-          }
-        ]
-      }
-    ]
+    "ActiveCards": []
   },
   "525121685654077480": {
     "UserId": 525121685654077480,
@@ -138,6 +55,34 @@
     "Dead": false,
     "ActiveCards": []
   },
+  "293964555317542912": {
+    "UserId": 293964555317542912,
+    "DmId": 648243410234507284,
+    "Mention": "<@!293964555317542912>",
+    "Name": "CrazyPilot",
+    "AvatarUrl": "https://cdn.discordapp.com/avatars/293964555317542912/f067d9530fdd8c424165b4f3c572b363.png?size=128",
+    "Celestial": false,
+    "PromptState": -1,
+    "CombatRequest": 0,
+    "CombatID": -1,
+    "TeamNum": -1,
+    "Dead": false,
+    "ActiveCards": []
+  },
+  "285595741798531072": {
+    "UserId": 285595741798531072,
+    "DmId": 648245615473590272,
+    "Mention": "<@!285595741798531072>",
+    "Name": "DespairFest",
+    "AvatarUrl": "https://cdn.discordapp.com/avatars/285595741798531072/a4c57a9f7f64a7536b463981a926de1d.png?size=128",
+    "Celestial": false,
+    "PromptState": -1,
+    "CombatRequest": 0,
+    "CombatID": -1,
+    "TeamNum": -1,
+    "Dead": false,
+    "ActiveCards": []
+  },
   "81609609986441216": {
     "UserId": 81609609986441216,
     "DmId": 631303992399626251,
@@ -152,26 +97,12 @@
     "Dead": false,
     "ActiveCards": []
   },
-  "208440011039834113": {
-    "UserId": 208440011039834113,
-    "DmId": 627979272266711072,
-    "Mention": "<@!208440011039834113>",
-    "Name": "AngelOfHonor",
-    "AvatarUrl": "https://cdn.discordapp.com/avatars/208440011039834113/92990fecc184f56ab357b893f9dc3836.png?size=128",
-    "Celestial": false,
-    "PromptState": -1,
-    "CombatRequest": 0,
-    "CombatID": -1,
-    "TeamNum": -1,
-    "Dead": false,
-    "ActiveCards": []
-  },
   "175698286815084545": {
     "UserId": 175698286815084545,
     "DmId": 627492203026972682,
     "Mention": "<@!175698286815084545>",
     "Name": "Ghub",
-    "AvatarUrl": "https://cdn.discordapp.com/avatars/175698286815084545/a_e1f3f6ce546bc7ec4d9b637639095710.gif?size=128",
+    "AvatarUrl": "https://cdn.discordapp.com/avatars/175698286815084545/a_7b7e751725c394743ad52f6ae1ac930b.gif?size=128",
     "Celestial": false,
     "PromptState": -1,
     "CombatRequest": 0,
@@ -183,6 +114,7 @@
         "$type": "Osiris.GhubCard, Osiris",
         "Name": "Ghub",
         "RequiresCelestial": false,
+        "Hidden": false,
         "Moves": [
           {
             "$type": "Osiris.Chomp, Osiris",
@@ -207,10 +139,10 @@
             "Targets": 1,
             "IsUltimate": false,
             "Cooldown": 3,
-            "CooldownText": "**COOLDOWN:** 3 turns",
+            "CooldownText": "COOLDOWN: 3 Turns",
             "CanTargetDead": false,
-            "CurrentCooldown": 2,
-            "OnCooldown": true
+            "CurrentCooldown": 0,
+            "OnCooldown": false
           },
           {
             "$type": "Osiris.EarFlap, Osiris",
@@ -221,10 +153,10 @@
             "Targets": 0,
             "IsUltimate": false,
             "Cooldown": 4,
-            "CooldownText": "**COOLDOWN:** 4 turns",
+            "CooldownText": "COOLDOWN: 4 Turns",
             "CanTargetDead": false,
-            "CurrentCooldown": 1,
-            "OnCooldown": true
+            "CurrentCooldown": 0,
+            "OnCooldown": false
           },
           {
             "$type": "Osiris.DemigodOfEarth, Osiris",
@@ -235,10 +167,10 @@
             "Targets": 0,
             "IsUltimate": false,
             "Cooldown": 5,
-            "CooldownText": "**COOLDOWN:** 5 turns",
+            "CooldownText": "COOLDOWN: 5 Turns",
             "CanTargetDead": false,
-            "CurrentCooldown": 1,
-            "OnCooldown": true
+            "CurrentCooldown": 0,
+            "OnCooldown": false
           },
           {
             "$type": "Osiris.GhubStomp, Osiris",
@@ -249,19 +181,109 @@
             "Targets": 1,
             "IsUltimate": true,
             "Cooldown": 18,
-            "CooldownText": "**COOLDOWN:** 18 turns",
+            "CooldownText": "COOLDOWN: 18 Turns",
             "CanTargetDead": false,
-            "CurrentCooldown": 18,
-            "OnCooldown": true
+            "CurrentCooldown": 0,
+            "OnCooldown": false
           }
         ],
         "Owner": 175698286815084545,
         "Signature": "Ghub",
+        "Picture": "",
         "Dead": false,
         "TotalHP": 500,
-        "CurrentHP": 434,
+        "CurrentHP": 500,
         "IsTurn": false,
-        "DeathMessage": "Ghub has been slain!",
+        "DeathMessage": " has been slain!",
+        "Effects": [],
+        "Markers": []
+      }
+    ]
+  },
+  "208440011039834113": {
+    "UserId": 208440011039834113,
+    "DmId": 627979272266711072,
+    "Mention": "<@!208440011039834113>",
+    "Name": "AngelOfHonor",
+    "AvatarUrl": "https://cdn.discordapp.com/avatars/208440011039834113/92990fecc184f56ab357b893f9dc3836.png?size=128",
+    "Celestial": false,
+    "PromptState": -1,
+    "CombatRequest": 0,
+    "CombatID": -1,
+    "TeamNum": -1,
+    "Dead": false,
+    "ActiveCards": [
+      {
+        "$type": "Osiris.VRFamilyCard, Osiris",
+        "Name": "VRFamily",
+        "RequiresCelestial": false,
+        "Hidden": false,
+        "Moves": [
+          {
+            "$type": "Osiris.Crash, Osiris",
+            "Name": "Crash",
+            "Owner": "VRFamily",
+            "Description": "Hit the enemy with a crasher. Roll a D15 for damage to an enemy and flip a coin. If the coin is tails, apply a 15% boost to your next attack.",
+            "TargetType": "SingleEnemy",
+            "Targets": 1,
+            "IsUltimate": false,
+            "Cooldown": 0,
+            "CooldownText": "",
+            "CanTargetDead": false,
+            "CurrentCooldown": 0,
+            "OnCooldown": false
+          },
+          {
+            "$type": "Osiris.Jaunt, Osiris",
+            "Name": "Jaunt",
+            "Owner": "VRFamily",
+            "Description": "Hops through the world at blistering speeds! Deal 45 damage to a target enemy.",
+            "TargetType": "SingleEnemy",
+            "Targets": 1,
+            "IsUltimate": false,
+            "Cooldown": 6,
+            "CooldownText": "COOLDOWN: 6 Turns",
+            "CanTargetDead": false,
+            "CurrentCooldown": 0,
+            "OnCooldown": false
+          },
+          {
+            "$type": "Osiris.StalwartSoul, Osiris",
+            "Name": "Stalwart Soul",
+            "Owner": "VRFamily",
+            "Description": "Nullify all damage to the party for the rest of this turn and the next.",
+            "TargetType": "AllFriendly",
+            "Targets": 0,
+            "IsUltimate": false,
+            "Cooldown": 12,
+            "CooldownText": "COOLDOWN: 12 Turns",
+            "CanTargetDead": false,
+            "CurrentCooldown": 0,
+            "OnCooldown": false
+          },
+          {
+            "$type": "Osiris.DeRez, Osiris",
+            "Name": "De-Rez",
+            "Owner": "VRFamily",
+            "Description": "Demoralize the enemy! Reduce a target enemy's next 2 attacks by 20% for 2 turns.",
+            "TargetType": "SingleEnemy",
+            "Targets": 1,
+            "IsUltimate": false,
+            "Cooldown": 12,
+            "CooldownText": "COOLDOWN: 12 Turns",
+            "CanTargetDead": false,
+            "CurrentCooldown": 0,
+            "OnCooldown": false
+          }
+        ],
+        "Owner": 208440011039834113,
+        "Signature": "AngelOfHonor",
+        "Picture": "",
+        "Dead": false,
+        "TotalHP": 250,
+        "CurrentHP": 250,
+        "IsTurn": false,
+        "DeathMessage": " has been slain!",
         "Effects": [],
         "Markers": []
       }

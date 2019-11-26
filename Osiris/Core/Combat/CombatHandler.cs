@@ -117,7 +117,7 @@ namespace Osiris
                 if(!card.Dead && card.CurrentHP <= 0)
                 {
                     card.Dead = true;
-                    await MessageHandler.SendMessage(inst.Location, card.DeathMessage);
+                    await MessageHandler.SendMessage(inst.Location, card.GetDeathMessage());
                     await CheckTeamElimination(inst, inst.GetTeam(card));
                 }
             }
@@ -149,19 +149,20 @@ namespace Osiris
             if(inst.Teams.Count <= 1)
             {
                 await MessageHandler.TeamVictory(inst.Location, inst.Teams[0].ToString(), inst.Teams[0].TeamNum);
-                CombatHandler.EndCombat(inst);
+                await CombatHandler.EndCombat(inst);
             }
         }
 
-        public static void EndCombat(CombatInstance inst)
+        public static async Task EndCombat(CombatInstance inst)
         {
             _dic.Remove(inst.Players[0].CombatID);
             inst.CombatEnded = true;
 
+            await MessageHandler.SendEmbedMessage(inst.Location, "**Combat End**", OsirisEmbedBuilder.RoundStart(inst));
+
             foreach(UserAccount player in inst.Players)
             {
-                player.CombatID = -1;
-                player.TeamNum = -1;
+                player.ResetCombatFields(true);
             }
 
             UserHandler.SaveUsers();
@@ -185,19 +186,14 @@ namespace Osiris
                 return;
             }
 
+            foreach(BasicCard card in inst.CardList)
+            {
+                await card.RoundTick();
+            }
+            
             await MessageHandler.SendEmbedMessage(inst.Location, "", OsirisEmbedBuilder.RoundStart(inst));
 
             inst.TurnNumber = -1;
-
-            foreach(BasicCard card in inst.CardList)
-            {
-                foreach(BuffDebuff eff in card.Effects)
-                {
-                    eff.RoundTick();
-                }
-
-                card.EffectCleanup();
-            }
 
             await Task.Delay(1500);
             
@@ -207,6 +203,11 @@ namespace Osiris
         public static async Task NextTurn(CombatInstance inst)
         {
             await CheckPlayerDeath(inst);
+
+            if(inst.CombatEnded)
+            {
+                return;
+            }
             
             inst.TurnNumber++;
             if(inst.TurnNumber >= inst.CardList.Count)
@@ -218,7 +219,7 @@ namespace Osiris
             var card = inst.CardList[inst.TurnNumber];
             var user = UserHandler.GetUser(card.Owner);
 
-            card.TurnTick();
+            await card.TurnTick();
 
             var skip = false;
             foreach(BuffDebuff eff in card.Effects)
@@ -234,10 +235,7 @@ namespace Osiris
             }
             else
             {
-                if(inst.CombatEnded)
-                    await MessageHandler.SendEmbedMessage(inst.Location, "**Combat End**", OsirisEmbedBuilder.RoundStart(inst));
-                else
-                    await NextTurn(inst);
+                await NextTurn(inst);
             }
         }
 
@@ -254,6 +252,12 @@ namespace Osiris
             await move.MoveEffect(inst, targets);
 
             owner.IsTurn = false;
+            await NextTurn(inst);
+        }
+
+        public static async Task SkipTurn(CombatInstance inst, BasicCard player)
+        {
+            player.IsTurn = false;
             await NextTurn(inst);
         }
 

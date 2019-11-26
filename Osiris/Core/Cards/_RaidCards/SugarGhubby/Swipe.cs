@@ -4,33 +4,33 @@ using Osiris.Discord;
 
 namespace Osiris
 {
-    public class Rush : BasicMove
+    public class Swipe : BasicMove
     {
-        public override string Name { get; } = "Rush";
-        public override string Owner { get; } = "Touched";
-        public override string Description { get; } = "Plow through the enemy lines! Deal 20 damage to all enemies.";
+        public override string Name { get; } = "Swipe";
+        public override string Owner { get; } = "Sugar Ghubby";
+        public override string Description { get; } = "Swipe the enemy team with your giant tail. Deal 25 damage to all enemy players.";
         public override string TargetType { get; } = "AllEnemy";
         public override int Targets { get; } = 0;
         public override bool IsUltimate { get; } = false;
-        public override int Cooldown { get; } = 10;
-        public override string CooldownText { get; } = "COOLDOWN: 10 Turns";
+        public override int Cooldown { get; } = 0;
+        public override string CooldownText { get; } = "";
 
-        public Rush() : base()
+        public Swipe() : base()
         {
             
         }
 
-        public Rush(bool newmove) : base(newmove)
+        public Swipe(bool newmove) : base(newmove)
         {
             
         }
 
         public override async Task MoveEffect(CombatInstance inst)
         {
-            int damage = 20;
+            int damage = 25;
             damage = inst.GetCardTurn().ApplyDamageBuffs(damage);
+            
             string str = "";
-
             var tempDam = 0;
             var totalDam = 0;
             foreach(Team team in inst.Teams)
@@ -49,9 +49,7 @@ namespace Osiris
                 }
             }
 
-            await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} rushes the enemy team!{str}\n{inst.GetCardTurn().Signature} dealt a total of {totalDam}");
-            OnCooldown = true;
-            CurrentCooldown = Cooldown;
+            await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} swipes using their tail!{str}\n{inst.GetCardTurn().Signature} dealt a total of {totalDam} damage.");
         }
         
     }

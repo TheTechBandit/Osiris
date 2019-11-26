@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading.Tasks;
+using Osiris.Discord;
 
 namespace Osiris
 {
@@ -8,9 +10,11 @@ namespace Osiris
     {
         public virtual string Name { get; }
         public virtual bool RequiresCelestial { get; }
+        public virtual bool Hidden { get; }
         public virtual List<BasicMove> Moves { get; }
         public ulong Owner { get; set; }
         public string Signature { get; set; }
+        public string Picture { get; set; }
         public bool Dead { get; set; }
         public int TotalHP { get; set; }
         public int CurrentHP { get; set; }
@@ -28,11 +32,12 @@ namespace Osiris
         {
             Owner = 0;
             Signature = Name;
+            Picture = "";
             Dead = false;
             TotalHP = 500;
             CurrentHP = 500;
             IsTurn = false;
-            DeathMessage = $"{Signature} has been slain!";
+            DeathMessage = " has been slain!";
             Effects = new List<BuffDebuff>();
             Markers = new List<Marker>();
         }
@@ -87,8 +92,8 @@ namespace Osiris
 
         public void AddBuff(BuffDebuff buff)
         {
-            CurrentHP += buff.Shield;
-            TotalHP += buff.TotalShield;
+            CurrentHP += buff.Growth;
+            TotalHP += buff.TotalGrowth;
             Effects.Add(buff);
         }
 
@@ -109,7 +114,7 @@ namespace Osiris
                 stat -= eff.DamageStaticDebuff;
                 if(eff.BleedAttackDamage > 0)
                 {
-                    this.TakeDebuffDamage(eff.BleedAttackDamage);
+                    TakeDebuffDamage(eff.BleedAttackDamage);
                 }
                 eff.AttackTick();
             }
@@ -132,11 +137,30 @@ namespace Osiris
             return heal + (int)((double)heal*perc);
         }
 
-        public void TurnTick()
+        public async Task RoundTick()
+        {
+            foreach(BuffDebuff eff in Effects)
+            {
+                eff.RoundTick();
+                if(eff.DamagePerRound > 0)
+                {
+                    TakeDebuffDamage(eff.DamagePerRound);
+                    await MessageHandler.SendMessage(CombatHandler.GetInstance(UserHandler.GetUser(Owner).CombatID).Location, $"{Signature} takes {eff.DamagePerRound} damage from a debuff.");
+                }
+            }
+            EffectCleanup();
+        }
+
+        public async Task TurnTick()
         {
             foreach(BuffDebuff eff in Effects)
             {
                 eff.TurnTick();
+                if(eff.DamagePerTurn > 0)
+                {
+                    TakeDebuffDamage(eff.DamagePerTurn);
+                    await MessageHandler.SendMessage(CombatHandler.GetInstance(UserHandler.GetUser(Owner).CombatID).Location, $"{Signature} takes {eff.DamagePerTurn} damage from a debuff.");
+                }
             }
             foreach(BasicMove move in Moves)
             {
@@ -151,8 +175,8 @@ namespace Osiris
             {
                 if (Effects[i].Attacks == 0 || Effects[i].Turns == 0 || Effects[i].Rounds == 0|| Effects[i].Strikes == 0 || Effects[i].Heals == 0)
                 {
-                    CurrentHP -= Effects[i].Shield;
-                    TotalHP -= Effects[i].TotalShield;
+                    CurrentHP -= Effects[i].Growth;
+                    TotalHP -= Effects[i].TotalGrowth;
                     Effects.RemoveAt(i);
                 }
             }
@@ -163,6 +187,10 @@ namespace Osiris
             double perc = 0;
             int stat = 0;
             var temp = Int32.MaxValue;
+            var heavyBroken = 0;
+            var mediumBroken = 0;
+            var lightBroken = 0;
+
             foreach(BuffDebuff eff in Effects)
             {
                 perc += eff.DefensePercentBuff;
@@ -174,19 +202,78 @@ namespace Osiris
                 eff.StrikeTick();
             }
 
+            //Buffs are applied
             damage = damage - (int)((double)damage*perc)+stat;
             if(damage > temp)
                 damage = temp;
+                
+            var totalDamage = damage;
+
+            //Calculate shield cascading
+            foreach(BuffDebuff eff in Effects)
+            {
+                if(damage >= 30 && eff.HeavyShield > 0)
+                {
+                    while(eff.HeavyShield > 0 && damage > 0)
+                    {
+                        damage -= 30;
+                        if(damage < 0)
+                        {
+                            damage = 0;
+                        }
+                        else
+                        {
+                            eff.HeavyShield--;
+                            heavyBroken++;
+                        }
+                    }
+                }
+                else if(damage >= 15 && eff.MediumShield > 0 && eff.HeavyShield <= 0)
+                {
+                    while(eff.MediumShield > 0 && damage > 0)
+                    {
+                        damage -= 15;
+                        if(damage < 0)
+                        {
+                            damage = 0;
+                        }
+                        else
+                        {
+                            eff.MediumShield--;
+                            mediumBroken++;
+                        }
+                    }
+                }
+                else if(damage >= 5 && eff.LightShield > 0 && eff.MediumShield <= 0 && eff.HeavyShield <= 0)
+                {
+                    while(eff.LightShield > 0 && damage > 0)
+                    {
+                        damage -= 5;
+                        if(damage < 0)
+                        {
+                            damage = 0;
+                        }
+                        else
+                        {
+                            eff.LightShield--;
+                            lightBroken++;
+                        }
+                    }
+                }
+            }
 
             foreach(BuffDebuff eff in Effects)
             {
-                if(damage > 0 && eff.Shield > 0)
+                if(damage > 0 && eff.Growth > 0)
                 {
-                    eff.Shield = temp;
-                    eff.Shield -= damage;
-                    if(eff.Shield < 0)
-                        eff.Shield = 0;
+                    temp = eff.Growth;
+                    eff.Growth -= damage;
+
+                    if(eff.Growth <= 0)
+                        eff.Growth = 0;
+
                     damage -= temp;
+
                     if(damage < 0)
                         damage = 0;
                 }
@@ -207,12 +294,12 @@ namespace Osiris
 
             foreach(BuffDebuff eff in Effects)
             {
-                if(damage > 0 && eff.Shield > 0)
+                if(damage > 0 && eff.Growth > 0)
                 {
-                    eff.Shield = temp;
-                    eff.Shield -= damage;
-                    if(eff.Shield < 0)
-                        eff.Shield = 0;
+                    eff.Growth = temp;
+                    eff.Growth -= damage;
+                    if(eff.Growth < 0)
+                        eff.Growth = 0;
                     damage -= temp;
                     if(damage < 0)
                         damage = 0;
@@ -222,9 +309,9 @@ namespace Osiris
             CurrentHP -= damage;
         }
 
-        public void Death()
+        public string GetDeathMessage()
         {
-
+            return $"{Signature}{DeathMessage}";
         }
 
         //Searches for a mark based on the specified turn number. If found, return this card.
@@ -237,7 +324,7 @@ namespace Osiris
             }
 
             return null;
-        } 
+        }
 
     }
 }

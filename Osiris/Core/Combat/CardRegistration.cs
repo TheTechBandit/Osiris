@@ -25,6 +25,9 @@ namespace Osiris
                 case "ghub":
                     card = new GhubCard(true);
                     break;
+                case "sugar ghubby":
+                    card = new SugarGhubbyCard(true);
+                    break;
                 default:
                     card = new VRFamilyCard(true);
                     break;

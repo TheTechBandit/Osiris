@@ -27,13 +27,6 @@ namespace Osiris.Discord
             UserHandler.ClearUserData();
         }
 
-        [Command("touchmeinthepeepee")]
-        public async Task TouchMe()
-        {
-            ContextIds idList = new ContextIds(Context);
-            await MessageHandler.SendMessage(idList, "You disgust me, mortal.");
-        }
-
         [Command("hug")]
         public async Task Hug([Remainder] string str)
         {

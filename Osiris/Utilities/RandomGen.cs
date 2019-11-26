@@ -12,6 +12,11 @@ namespace Osiris
             Gen = new Random();
         }
 
+        public static int RandomNum(int min, int max)
+        {
+            return Gen.Next(min, max+1);
+        }
+
         //True = heads False = tails
         public static bool CoinFlip()
         {

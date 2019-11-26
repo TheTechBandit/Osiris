@@ -19,9 +19,14 @@ namespace Osiris.Discord
             else
 	            builder.WithAuthor($"{card.Name} {card.Signature}");
 
+            builder.WithImageUrl(card.Picture);
+
             foreach(BasicMove move in card.Moves)
             {
-                builder.AddField($"**{move.Name}**", $"{move.Description} {move.CooldownText}");
+                string cooldownText = "";
+                if(move.Cooldown != 0)
+                    cooldownText += $"**{move.CooldownText}**";
+                builder.AddField($"**{move.Name}**", $"{move.Description} {cooldownText}");
             }
 
             int r = card.HPGradient()[0];
@@ -40,31 +45,30 @@ namespace Osiris.Discord
 
             var players = "";
             var effects = "";
-            foreach(UserAccount user in inst.Players)
-            {
-                foreach(BasicCard card in user.ActiveCards)
-                {
-                    if(card.Name.Equals(card.Signature))
-                        players += $"{card.Name}: {card.CurrentHP}/{card.TotalHP} HP\n";
-                    else
-                        players += $"{card.Name} {card.Signature}: {card.CurrentHP}/{card.TotalHP} HP\n";
-                        
-                    if(card.Effects.Count > 0 || card.Markers.Count > 0)
-                        effects += $"({card.Signature})";
-                        
-                    foreach(BuffDebuff eff in card.Effects)
-                    {
-                        effects += $"\n{eff.ToString()}";
-                    }
-                    foreach(Marker mark in card.Markers)
-                    {
-                        effects += $"\n{mark.ToString()}";
-                    }
 
-                    if(card.Effects.Count > 0 || card.Markers.Count > 0)
-                        effects += "\n.\n";
+            foreach(BasicCard card in inst.CardList)
+            {
+                if(card.Name.Equals(card.Signature))
+                    players += $"[{card.Name}]: {card.CurrentHP}/{card.TotalHP} HP\n";
+                else
+                    players += $"[{card.Name}] {card.Signature}: {card.CurrentHP}/{card.TotalHP} HPn";
+                    
+                if(card.Effects.Count > 0 || card.Markers.Count > 0)
+                    effects += $"({card.Signature})";
+                    
+                foreach(BuffDebuff eff in card.Effects)
+                {
+                    effects += $"\n{eff.ToString()}";
                 }
+                foreach(Marker mark in card.Markers)
+                {
+                    effects += $"\n{mark.ToString()}";
+                }
+
+                if(card.Effects.Count > 0 || card.Markers.Count > 0)
+                    effects += "\n.\n";
             }
+
             if(effects.Length == 0)
             {
                 effects = "none";
@@ -88,11 +92,16 @@ namespace Osiris.Discord
             else
 	            builder.WithAuthor($"{card.Name} {card.Signature}");
 
-            builder.WithTitle($"HP: {card.CurrentHP}/{card.TotalHP}");
+            builder.WithImageUrl(card.Picture);
+
+            builder.WithTitle($"HP: {card.CurrentHP}/{card.TotalHP}\n");
 
             foreach(BasicMove move in card.Moves)
             {
-                builder.AddField($"**{move.Name}**", $"{move.Description} {move.CooldownText}");
+                string cooldownText = "";
+                if(move.Cooldown != 0)
+                    cooldownText += $"**{move.CooldownText}**";
+                builder.AddField($"**{move.Name}**", $"{move.Description} {cooldownText}");
             }
 
             string cooldowns = "";
