@@ -219,7 +219,10 @@ namespace Osiris
             var card = inst.CardList[inst.TurnNumber];
             var user = UserHandler.GetUser(card.Owner);
 
-            await card.TurnTick();
+            //Turn start tick. Moved to turn end. May implement here later.
+            //await card.TurnTick();
+
+            card.ApplyBonusActions();
 
             var skip = false;
             foreach(BuffDebuff eff in card.Effects)
@@ -235,6 +238,8 @@ namespace Osiris
             }
             else
             {
+                await card.TurnTick();
+                card.IsTurn = false;
                 await NextTurn(inst);
             }
         }
@@ -242,17 +247,35 @@ namespace Osiris
         public static async Task UseMove(CombatInstance inst, BasicCard owner, BasicMove move)
         {
             await move.MoveEffect(inst);
-            
-            owner.IsTurn = false;
-            await NextTurn(inst);
+
+            if(owner.Actions <= 0)
+            {
+                await owner.TurnTick();
+                owner.Actions = owner.TotalActions;
+                owner.IsTurn = false;
+                await NextTurn(inst);
+            }
+            else
+            {
+                await MessageHandler.SendMessage(inst.Location, $"It is {owner.Signature}'s turn... Again!");
+            }
         }
 
         public static async Task UseMove(CombatInstance inst, BasicCard owner, BasicMove move, List<BasicCard> targets)
         {
             await move.MoveEffect(inst, targets);
 
-            owner.IsTurn = false;
-            await NextTurn(inst);
+            if(owner.Actions <= 0)
+            {
+                await owner.TurnTick();
+                owner.Actions = owner.TotalActions;
+                owner.IsTurn = false;
+                await NextTurn(inst);
+            }
+            else
+            {
+                await MessageHandler.SendMessage(inst.Location, $"It is {owner.Signature}'s turn... Again!");
+            }
         }
 
         public static async Task SkipTurn(CombatInstance inst, BasicCard player)

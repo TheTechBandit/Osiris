@@ -31,7 +31,8 @@ namespace Osiris
             {
                 card.AddBuff(new BuffDebuff()
                 {
-                    Name = $"De-Rez ({inst.GetCardTurn().Signature})",
+                    Name = "De-Rez",
+                    Origin = $"({inst.GetCardTurn().Signature})",
                     Description = "Attack decreased by 20%.",
                     Attacks = 2,
                     Turns = 2,
@@ -40,6 +41,7 @@ namespace Osiris
                 await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} De-Rezzes {card.Name}, lowering their next 2 attacks by 20% for 2 turns.");
             }
 
+            inst.GetCardTurn().Actions--;
             OnCooldown = true;
             CurrentCooldown = Cooldown;
         }

@@ -38,6 +38,7 @@ namespace Osiris
 
             OnCooldown = true;
             CurrentCooldown = Cooldown;
+            inst.GetCardTurn().Actions--;
         }
         
     }

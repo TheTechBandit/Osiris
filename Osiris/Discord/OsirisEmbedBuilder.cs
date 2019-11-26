@@ -48,25 +48,42 @@ namespace Osiris.Discord
 
             foreach(BasicCard card in inst.CardList)
             {
-                if(card.Name.Equals(card.Signature))
-                    players += $"[{card.Name}]: {card.CurrentHP}/{card.TotalHP} HP\n";
-                else
-                    players += $"[{card.Name}] {card.Signature}: {card.CurrentHP}/{card.TotalHP} HPn";
-                    
+                string shields = "";
+
                 if(card.Effects.Count > 0 || card.Markers.Count > 0)
                     effects += $"({card.Signature})";
-                    
+
+                
+                var light = 0;
+                var medium = 0;
+                var heavy = 0;    
                 foreach(BuffDebuff eff in card.Effects)
                 {
+                    light += eff.LightShield;
+                    medium += eff.MediumShield;
+                    heavy += eff.HeavyShield;
+                    
                     effects += $"\n{eff.ToString()}";
                 }
+                if(light > 0)
+                    shields += $"{light} light shields. ";
+                if(medium > 0)
+                    shields += $"{medium} medium shields. ";
+                if(heavy > 0)
+                    shields += $"{heavy} heavy shields.";
+                    
                 foreach(Marker mark in card.Markers)
                 {
                     effects += $"\n{mark.ToString()}";
                 }
-
                 if(card.Effects.Count > 0 || card.Markers.Count > 0)
                     effects += "\n.\n";
+
+                if(card.Name.Equals(card.Signature))
+                    players += $"**[{card.Name}]:** {card.CurrentHP}/{card.TotalHP} HP {shields}\n";
+                else
+                    players += $"**[{card.Name}] {card.Signature}:** {card.CurrentHP}/{card.TotalHP} HP {shields}\n";
+
             }
 
             if(effects.Length == 0)
@@ -87,27 +104,20 @@ namespace Osiris.Discord
         {
             var builder = new EmbedBuilder();
 
-	        if(card.Name.Equals(card.Signature))
-                builder.WithAuthor($"{card.Name}");
-            else
-	            builder.WithAuthor($"{card.Name} {card.Signature}");
-
-            builder.WithImageUrl(card.Picture);
-
-            builder.WithTitle($"HP: {card.CurrentHP}/{card.TotalHP}\n");
-
-            foreach(BasicMove move in card.Moves)
-            {
-                string cooldownText = "";
-                if(move.Cooldown != 0)
-                    cooldownText += $"**{move.CooldownText}**";
-                builder.AddField($"**{move.Name}**", $"{move.Description} {cooldownText}");
-            }
-
             string cooldowns = "";
             string effects = "";
+            var lightShield = "";
+            var mediumShield = "";
+            var heavyShield = "";
             foreach(BuffDebuff eff in card.Effects)
             {
+                for(int i = 0; i < eff.HeavyShield; i++)
+                    heavyShield += "🟥";
+                for(int i = 0; i < eff.LightShield; i++)
+                    lightShield += "🟦";
+                for(int i = 0; i < eff.MediumShield; i++)
+                    mediumShield += "🟪";
+                
                 effects += eff.ToString() + "\n";
             }
             foreach(Marker mark in card.Markers)
@@ -116,6 +126,23 @@ namespace Osiris.Discord
             }
             if(effects.Length == 0)
                 effects += "none";
+
+	        if(card.Name.Equals(card.Signature))
+                builder.WithAuthor($"{card.Name}");
+            else
+	            builder.WithAuthor($"{card.Name} {card.Signature}");
+
+            builder.WithImageUrl(card.Picture);
+            
+            builder.WithTitle($"HP: {card.CurrentHP}/{card.TotalHP}\n{heavyShield}{mediumShield}{lightShield}\n");
+
+            foreach(BasicMove move in card.Moves)
+            {
+                string cooldownText = "";
+                if(move.Cooldown != 0)
+                    cooldownText += $"**{move.CooldownText}**";
+                builder.AddField($"**{move.Name}**", $"{move.Description} {cooldownText}");
+            }
 
             foreach(BasicMove move in card.Moves)
             {
@@ -133,8 +160,17 @@ namespace Osiris.Discord
             int b = card.HPGradient()[2];
         	builder.WithColor(r, g, b)
             .WithFooter($"Round {round}");
-            var embed = builder.Build();
 
+            var embed = builder.Build();
+            return embed;
+        }
+
+        public static Embed Blinder()
+        {
+            var builder = new EmbedBuilder()
+            .WithImageUrl("https://cdn.discordapp.com/attachments/460357767484407809/648733197726646304/blinding_flash.jpg");
+
+            var embed = builder.Build();
             return embed;
         }
 

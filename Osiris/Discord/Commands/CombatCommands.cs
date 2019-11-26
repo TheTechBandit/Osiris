@@ -110,6 +110,7 @@ namespace Osiris.Discord
             //Tests each case to make sure all circumstances for the execution of this command are valid (character exists, in correct location)
             try
             {
+                await UserHandler.UserHasNoCards(idList, user);
                 await UserHandler.UserInCombat(idList);
                 await UserHandler.OtherUserNotInCombat(idList, targ);
             }
@@ -134,6 +135,7 @@ namespace Osiris.Discord
             //Tests each case to make sure all circumstances for the execution of this command are valid (character exists, in correct location)
             try
             {
+                await UserHandler.UserHasNoCards(idList, user);
                 await UserHandler.UserInCombat(idList);
                 await UserHandler.OtherUserNotInCombat(idList, targ);
             }

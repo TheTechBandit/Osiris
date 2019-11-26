@@ -33,7 +33,8 @@ namespace Osiris
                 {
                     BuffDebuff buff = new BuffDebuff()
                     {
-                        Name = $"Stalwart Soul ({inst.GetCardTurn().Signature})",
+                        Name = $"Stalwart Soul",
+                        Origin = $"({inst.GetCardTurn().Signature})",
                         Description = "All damage nullified.",
                         DefenseSetBuff = 0,
                         Rounds = 2
@@ -45,6 +46,7 @@ namespace Osiris
 
             await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} fortifies the party against all damage!");
 
+            inst.GetCardTurn().Actions--;
             OnCooldown = true;
             CurrentCooldown = Cooldown;
         }

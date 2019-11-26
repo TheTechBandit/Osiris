@@ -52,13 +52,14 @@ namespace Osiris
                 }
 
                 damage = inst.GetCardTurn().ApplyDamageBuffs(damage);
-                damage = card.TakeDamage(damage);
+                var damages = card.TakeDamage(damage);
 
-                await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} Ghub Stomps {card.Signature}, dealing {damage} damage!");
+                await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} Stomps on {card.Signature} with the force of a mountain! {card.DamageTakenString(damages)}");
             }
 
             OnCooldown = true;
             CurrentCooldown = Cooldown;
+            inst.GetCardTurn().Actions--;
         }
         
     }

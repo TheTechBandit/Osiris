@@ -28,6 +28,15 @@ namespace Osiris
                 case "sugar ghubby":
                     card = new SugarGhubbyCard(true);
                     break;
+                case "fluffy angora":
+                    card = new FluffyAngoraCard(true);
+                    break;
+                case "speedy hare":
+                    card = new SpeedyHareCard(true);
+                    break;
+                case "angry jackalope":
+                    card = new AngryJackalopeCard(true);
+                    break;
                 default:
                     card = new VRFamilyCard(true);
                     break;

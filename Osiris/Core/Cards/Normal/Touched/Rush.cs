@@ -30,9 +30,8 @@ namespace Osiris
             int damage = 20;
             damage = inst.GetCardTurn().ApplyDamageBuffs(damage);
             string str = "";
-
-            var tempDam = 0;
             var totalDam = 0;
+
             foreach(Team team in inst.Teams)
             {
                 if(team.TeamNum != inst.GetTeam(inst.GetCardTurn()).TeamNum)
@@ -41,17 +40,19 @@ namespace Osiris
                     {
                         foreach(BasicCard card in user.ActiveCards)
                         {
-                            tempDam = card.TakeDamage(damage);
-                            totalDam += tempDam;
-                            str += $"\n{card.Signature} takes {tempDam} damage!";
+                            var tempDam = card.TakeDamage(damage);
+                            totalDam += tempDam[0];
+                            str += $"\n{card.DamageTakenString(tempDam)}";
                         }
                     }
                 }
             }
 
             await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} rushes the enemy team!{str}\n{inst.GetCardTurn().Signature} dealt a total of {totalDam}");
+            
             OnCooldown = true;
             CurrentCooldown = Cooldown;
+            inst.GetCardTurn().Actions--;
         }
         
     }

@@ -35,12 +35,14 @@ namespace Osiris
                     damage += roll;
                 
                 damage = inst.GetCardTurn().ApplyDamageBuffs(damage);
-                damage = card.TakeDamage(damage);
+                var damages = card.TakeDamage(damage);
                 await MessageHandler.DiceThrow(inst.Location, "5d10", rolls);
-                await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} hits {card.Signature} with a flurry of attacks! {card.Signature} takes {damage} damage!");
+                await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} hits {card.Signature} with a flurry of attacks! {card.DamageTakenString(damages)}");
             }
+
             OnCooldown = true;
             CurrentCooldown = Cooldown;
+            inst.GetCardTurn().Actions--;
         }
         
     }

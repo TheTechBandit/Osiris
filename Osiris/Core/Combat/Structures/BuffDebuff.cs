@@ -3,6 +3,7 @@ namespace Osiris
     public class BuffDebuff
     {
         public string Name { get; set; } = "Buff";
+        public string Origin { get; set; } = "(you should never see this text. if you do, something went wrong and Ghub is an idiot.)";
         public string Description { get; set; } = "A Buff";
         //Rounds this effects last for. -1 for infinite
         public int Rounds { get; set; } = -1;
@@ -54,8 +55,14 @@ namespace Osiris
         public int DefenseSetBuff { get; set; } = -1;
         //Incoming damage increased by x%
         public double DefensePercentDebuff { get; set; } = 0.0;
+        //Number of bonus actions per turn
+        public int BonusActions = 0;
         //If true user's turn will be skipped
         public bool TurnSkip { get; set; } = false;
+        //If true, the player will be untargetable (AOE will still hit)
+        public bool Untargetable { get; set; } = false;
+        //If false, this buff cannot be stacked
+        public bool Stackable { get; set; } = true;
 
         public BuffDebuff()
         {
@@ -116,7 +123,7 @@ namespace Osiris
             if(Heals > 0)
                 extra += $" {Heals} heal(s) remaining.";
             
-            return $"**{Name}**- {Description}{extra}";
+            return $"**{Name} {Origin}**- {Description}{extra}";
         }
 
     }

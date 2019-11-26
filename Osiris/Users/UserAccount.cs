@@ -20,6 +20,7 @@ namespace Osiris
         public int TeamNum { get; set; }
         public bool Dead { get; set; }
         public List<BasicCard> ActiveCards { get; set; }
+        public bool Blocked { get; set; }
 
         public UserAccount()
         {
@@ -35,6 +36,7 @@ namespace Osiris
             TeamNum = -1;
             Dead = false;
             ActiveCards = new List<BasicCard>();
+            Blocked = false;
         }
 
         public void ResetCombatFields(bool duel)

@@ -23,6 +23,8 @@ namespace Osiris
         public virtual string CooldownText { get; }
         //Tells whether or not this move can target dead people
         public bool CanTargetDead { get; set; }
+        //Tells whether or not this move can target its owner
+        public bool CanTargetSelf { get; set; }
         //Current cooldown timer
         public int CurrentCooldown { get; set; }
         //True if on cooldown, false otherwise
@@ -36,6 +38,7 @@ namespace Osiris
         public BasicMove(bool newcard)
         {
             CanTargetDead = false;
+            CanTargetSelf = true;
             CurrentCooldown = 0;
             OnCooldown = false;
         }

@@ -36,6 +36,7 @@ namespace Osiris
                 await MessageHandler.CoinFlip(inst.Location, flip1);
 
                 var damage = roll1[0];
+                List<int> tempDams;
                 var tempDam = 0;
                 var totalDam = 0;
                 var hits = 0;
@@ -50,13 +51,13 @@ namespace Osiris
                     await MessageHandler.DiceThrow(inst.Location, "1d20", roll2);
 
                     damage = roll1[0] * roll2[0];
-
                     await MessageHandler.SendMessage(inst.Location, $"{roll1[0]} * {roll2[0]} = {damage}");
+
                     tempDam = inst.GetCardTurn().ApplyDamageBuffs(damage);
-                    tempDam = card.TakeDamage(tempDam);
-                    totalDam += tempDam;
+                    tempDams = card.TakeDamage(tempDam);
+                    totalDam += tempDams[0];
                     hits++;
-                    await MessageHandler.SendMessage(inst.Location, $"{card.Signature} gets stomped on by {inst.GetCardTurn().Signature}. They take {tempDam} damage!");
+                    await MessageHandler.SendMessage(inst.Location, $"{card.Signature} gets stomped on by {inst.GetCardTurn().Signature}. {card.DamageTakenString(tempDams)}");
                     await Task.Delay(1500);
 
                     //If the result is even...
@@ -64,7 +65,8 @@ namespace Osiris
                     {
                         card.AddBuff(new BuffDebuff()
                         {
-                            Name = $"Sticky ({inst.GetCardTurn().Signature})",
+                            Name = "Sticky",
+                            Origin = $"({inst.GetCardTurn().Signature})",
                             Description = "Sticky syrup got on you! Your next attack is reduced by 50%",
                             DamagePercentDebuff = 0.5,
                             Attacks = 1
@@ -79,10 +81,10 @@ namespace Osiris
                             if(inst.GetCardTurn().Owner != card2.Owner && card.Owner != card2.Owner)
                             {
                                 tempDam = inst.GetCardTurn().ApplyDamageBuffs(damage);
-                                tempDam = card2.TakeDamage(tempDam);
-                                totalDam += tempDam;
+                                tempDams = card2.TakeDamage(tempDam);
+                                totalDam += tempDams[0];
                                 hits++;
-                                await MessageHandler.SendMessage(inst.Location, $"{card2.Signature} gets stomped on by {inst.GetCardTurn().Signature}. They take {tempDam} damage!");
+                                await MessageHandler.SendMessage(inst.Location, $"{card2.Signature} gets stomped on by {inst.GetCardTurn().Signature}. {card.DamageTakenString(tempDams)}");
                                 await Task.Delay(1500);
                                 count++;
                             }
@@ -93,25 +95,25 @@ namespace Osiris
                         if(count == 0)
                         {
                             tempDam = inst.GetCardTurn().ApplyDamageBuffs(damage);
-                            tempDam = card.TakeDamage(tempDam);
-                            totalDam += tempDam;
+                            tempDams = card.TakeDamage(tempDam);
+                            totalDam += tempDams[0];
                             hits++;
-                            await MessageHandler.SendMessage(inst.Location, $"{card.Signature} gets stomped on by {inst.GetCardTurn().Signature} a second time! They take {tempDam} damage!");
+                            await MessageHandler.SendMessage(inst.Location, $"{card.Signature} gets stomped on by {inst.GetCardTurn().Signature} a second time! {card.DamageTakenString(tempDams)}");
                             await Task.Delay(1500);
                             tempDam = inst.GetCardTurn().ApplyDamageBuffs(damage);
-                            tempDam = card.TakeDamage(tempDam);
-                            totalDam += tempDam;
+                            tempDams = card.TakeDamage(tempDam);
+                            totalDam += tempDams[0];
                             hits++;
-                            await MessageHandler.SendMessage(inst.Location, $"{card.Signature} gets stomped on by {inst.GetCardTurn().Signature} a third time! They take {tempDam} damage!");
+                            await MessageHandler.SendMessage(inst.Location, $"{card.Signature} gets stomped on by {inst.GetCardTurn().Signature} a third time! {card.DamageTakenString(tempDams)}");
                             await Task.Delay(1500);
                         }
                         if(count == 1)
                         {
                             tempDam = inst.GetCardTurn().ApplyDamageBuffs(damage);
-                            tempDam = card.TakeDamage(damage);
-                            totalDam += tempDam;
+                            tempDams = card.TakeDamage(damage);
+                            totalDam += tempDams[0];
                             hits++;
-                            await MessageHandler.SendMessage(inst.Location, $"{card.Signature} gets stomped on by {inst.GetCardTurn().Signature} a second time! They take {tempDam} damage!");
+                            await MessageHandler.SendMessage(inst.Location, $"{card.Signature} gets stomped on by {inst.GetCardTurn().Signature} a second time! {card.DamageTakenString(tempDams)}");
                             await Task.Delay(1500);
                         }
                     }
@@ -162,11 +164,11 @@ namespace Osiris
                         damage *= temp;
                         await MessageHandler.SendMessage(inst.Location, $"{roll1[0]} * {temp} = {damage}");
                         tempDam = inst.GetCardTurn().ApplyDamageBuffs(damage);
-                        tempDam = card.TakeDamage(tempDam);
-                        totalDam += tempDam;
+                        tempDams = card.TakeDamage(tempDam);
+                        totalDam += tempDams[0];
                         hits++;
                         
-                        await MessageHandler.SendMessage(inst.Location, $"{card.Signature} gets stomped on by {inst.GetCardTurn().Signature}. They take {tempDam} damage!");
+                        await MessageHandler.SendMessage(inst.Location, $"{card.Signature} gets stomped on by {inst.GetCardTurn().Signature}. {card.DamageTakenString(tempDams)}");
                         await Task.Delay(1500);
                         await MessageHandler.SendMessage(inst.Location, "The battlefield shakes, shuffling the turn order!");
                         await Task.Delay(1500);
@@ -183,11 +185,11 @@ namespace Osiris
                         await MessageHandler.SendMessage(inst.Location, $"{roll1[0]} + {(int)result} = {damage}");
 
                         tempDam = inst.GetCardTurn().ApplyDamageBuffs(damage);
-                        tempDam = card.TakeDamage(tempDam);
-                        totalDam += tempDam;
+                        tempDams = card.TakeDamage(tempDam);
+                        totalDam += tempDams[0];
                         hits++;
                         
-                        await MessageHandler.SendMessage(inst.Location, $"{card.Signature} gets super stomped by {inst.GetCardTurn().Signature}! They take {tempDam} damage!");
+                        await MessageHandler.SendMessage(inst.Location, $"{card.Signature} gets super stomped by {inst.GetCardTurn().Signature}! {card.DamageTakenString(tempDams)}");
                         await Task.Delay(1500);
                     }
                 }
@@ -201,6 +203,7 @@ namespace Osiris
 
             OnCooldown = true;
             CurrentCooldown = Cooldown;
+            inst.GetCardTurn().Actions--;
         }
         
     }

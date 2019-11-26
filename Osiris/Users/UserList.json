@@ -11,7 +11,8 @@
     "CombatID": -1,
     "TeamNum": -1,
     "Dead": false,
-    "ActiveCards": []
+    "ActiveCards": [],
+    "Blocked": false
   },
   "389523789504970752": {
     "UserId": 389523789504970752,
@@ -25,7 +26,89 @@
     "CombatID": -1,
     "TeamNum": -1,
     "Dead": false,
-    "ActiveCards": []
+    "ActiveCards": [
+      {
+        "$type": "Osiris.FluffyAngoraCard, Osiris",
+        "Name": "Fluffy Angora",
+        "RequiresCelestial": false,
+        "Hidden": false,
+        "Moves": [
+          {
+            "$type": "Osiris.Poof, Osiris",
+            "Name": "Poof",
+            "Owner": "Fluffy Angora",
+            "Description": "Poof! Do 4d6 for damage and gain 1d2 light shielding.",
+            "TargetType": "SingleEnemy",
+            "Targets": 1,
+            "IsUltimate": false,
+            "Cooldown": 0,
+            "CooldownText": "",
+            "CanTargetDead": false,
+            "CanTargetSelf": true,
+            "CurrentCooldown": 0,
+            "OnCooldown": false
+          },
+          {
+            "$type": "Osiris.Rollout, Osiris",
+            "Name": "Rollout",
+            "Owner": "Fluffy Angora",
+            "Description": "Deal 35 damage to a target. Deal added bonus damage according to the amount of shielding you have (1 light shield = 5 damage)",
+            "TargetType": "SingleEnemy",
+            "Targets": 1,
+            "IsUltimate": false,
+            "Cooldown": 2,
+            "CooldownText": "Cooldown: 2 Turns",
+            "CanTargetDead": false,
+            "CanTargetSelf": true,
+            "CurrentCooldown": 0,
+            "OnCooldown": true
+          },
+          {
+            "$type": "Osiris.Nuzzle, Osiris",
+            "Name": "Nuzzle",
+            "Owner": "Fluffy Angora",
+            "Description": "Give 2 medium shielding to a target. This buff is not stackable.",
+            "TargetType": "SingleFriendly",
+            "Targets": 1,
+            "IsUltimate": false,
+            "Cooldown": 3,
+            "CooldownText": "Cooldown: 3 Turns",
+            "CanTargetDead": false,
+            "CanTargetSelf": false,
+            "CurrentCooldown": 0,
+            "OnCooldown": false
+          },
+          {
+            "$type": "Osiris.HairRaise, Osiris",
+            "Name": "Hair Raise",
+            "Owner": "Fluffy Angora",
+            "Description": "Make all other party members untargetable and they take 25% less damage for 2 rounds",
+            "TargetType": "AllFriendly",
+            "Targets": 0,
+            "IsUltimate": false,
+            "Cooldown": 8,
+            "CooldownText": "COOLDOWN: 8 Turns",
+            "CanTargetDead": false,
+            "CanTargetSelf": false,
+            "CurrentCooldown": 0,
+            "OnCooldown": true
+          }
+        ],
+        "Owner": 389523789504970752,
+        "Signature": "ika bog",
+        "Picture": "https://cdn.discordapp.com/attachments/460357767484407809/648638003752992771/angora.jpg",
+        "Dead": false,
+        "TotalHP": 500,
+        "CurrentHP": 500,
+        "TotalActions": 1,
+        "Actions": 1,
+        "IsTurn": false,
+        "DeathMessage": " has been slain!",
+        "Effects": [],
+        "Markers": []
+      }
+    ],
+    "Blocked": false
   },
   "525121685654077480": {
     "UserId": 525121685654077480,
@@ -39,7 +122,8 @@
     "CombatID": -1,
     "TeamNum": -1,
     "Dead": false,
-    "ActiveCards": []
+    "ActiveCards": [],
+    "Blocked": false
   },
   "125446144833748993": {
     "UserId": 125446144833748993,
@@ -53,7 +137,8 @@
     "CombatID": -1,
     "TeamNum": -1,
     "Dead": false,
-    "ActiveCards": []
+    "ActiveCards": [],
+    "Blocked": false
   },
   "293964555317542912": {
     "UserId": 293964555317542912,
@@ -67,7 +152,8 @@
     "CombatID": -1,
     "TeamNum": -1,
     "Dead": false,
-    "ActiveCards": []
+    "ActiveCards": [],
+    "Blocked": false
   },
   "285595741798531072": {
     "UserId": 285595741798531072,
@@ -81,7 +167,8 @@
     "CombatID": -1,
     "TeamNum": -1,
     "Dead": false,
-    "ActiveCards": []
+    "ActiveCards": [],
+    "Blocked": false
   },
   "81609609986441216": {
     "UserId": 81609609986441216,
@@ -95,7 +182,8 @@
     "CombatID": -1,
     "TeamNum": -1,
     "Dead": false,
-    "ActiveCards": []
+    "ActiveCards": [],
+    "Blocked": false
   },
   "175698286815084545": {
     "UserId": 175698286815084545,
@@ -103,7 +191,7 @@
     "Mention": "<@!175698286815084545>",
     "Name": "Ghub",
     "AvatarUrl": "https://cdn.discordapp.com/avatars/175698286815084545/a_7b7e751725c394743ad52f6ae1ac930b.gif?size=128",
-    "Celestial": false,
+    "Celestial": true,
     "PromptState": -1,
     "CombatRequest": 0,
     "CombatID": -1,
@@ -111,94 +199,87 @@
     "Dead": false,
     "ActiveCards": [
       {
-        "$type": "Osiris.GhubCard, Osiris",
-        "Name": "Ghub",
+        "$type": "Osiris.AngryJackalopeCard, Osiris",
+        "Name": "Angry Jackalope",
         "RequiresCelestial": false,
         "Hidden": false,
         "Moves": [
           {
-            "$type": "Osiris.Chomp, Osiris",
-            "Name": "Chomp",
-            "Owner": "Ghub",
-            "Description": "Bite down on an enemy. Roll 3 D15! for damage and flip a coin. If the coin is heads, you latch on to enemy and cannot be shaken off. **(Chomping again dismounts you from the target)**",
+            "$type": "Osiris.Gore, Osiris",
+            "Name": "Gore",
+            "Owner": "Angry Jackalope",
+            "Description": "Deal 5d15 damage to a target and flip a coin. If heads, apply a bleeding debuff that deals 5 damage on every attack they make for 2 turns.",
             "TargetType": "SingleEnemy",
             "Targets": 1,
             "IsUltimate": false,
             "Cooldown": 0,
             "CooldownText": "",
             "CanTargetDead": false,
+            "CanTargetSelf": true,
             "CurrentCooldown": 0,
             "OnCooldown": false
           },
           {
-            "$type": "Osiris.Ghubs1911, Osiris",
-            "Name": "Ghub's 1911",
-            "Owner": "Ghub",
-            "Description": "Empty a clip into a target enemy. Roll 12 D4 For damage. if you are latched onto the target enemy, chomp down harder adding a 10 damage bleed on that enemies next attack.",
+            "$type": "Osiris.Impale, Osiris",
+            "Name": "Impale",
+            "Owner": "Angry Jackalope",
+            "Description": "Charge into the enemy and impale yourself into them. Deal 40 damage to the target and add a 20% defense debuff to the target that lasts for the next two strikes against them.",
             "TargetType": "SingleEnemy",
             "Targets": 1,
             "IsUltimate": false,
-            "Cooldown": 3,
-            "CooldownText": "COOLDOWN: 3 Turns",
+            "Cooldown": 6,
+            "CooldownText": "COOLDOWN: 6 Turns",
             "CanTargetDead": false,
+            "CanTargetSelf": true,
             "CurrentCooldown": 0,
             "OnCooldown": false
           },
           {
-            "$type": "Osiris.EarFlap, Osiris",
-            "Name": "Ear Flap",
-            "Owner": "Ghub",
-            "Description": "Flap your ears with Tremendous force! Roll 4 D20 for damage to the entire enemy team. If you are latched onto a player, deal 50% more damage to that target and dismount.",
-            "TargetType": "AllEnemy",
-            "Targets": 0,
-            "IsUltimate": false,
-            "Cooldown": 4,
-            "CooldownText": "COOLDOWN: 4 Turns",
-            "CanTargetDead": false,
-            "CurrentCooldown": 0,
-            "OnCooldown": false
-          },
-          {
-            "$type": "Osiris.DemigodOfEarth, Osiris",
-            "Name": "Demigod Of Earth",
-            "Owner": "Ghub",
-            "Description": "Gain mass at an alarming rate. You become immune to damage for 2 turns. If you are latched onto an enemy when this is cast, enemy is pinned underneath you for the duration and is disabled for the duration.",
-            "TargetType": "Self",
-            "Targets": 0,
-            "IsUltimate": false,
-            "Cooldown": 5,
-            "CooldownText": "COOLDOWN: 5 Turns",
-            "CanTargetDead": false,
-            "CurrentCooldown": 0,
-            "OnCooldown": false
-          },
-          {
-            "$type": "Osiris.GhubStomp, Osiris",
-            "Name": "Ghub Stomp",
-            "Owner": "Ghub",
-            "Description": "Plant your foot firmly into the back of a target enemy. Deal 60 DMG. If you are latched onto an enemy, deal an additional 60 DMG. If the enemy is pinned under the effect of Demigod of Earth, Deal an extra 50 DMG.",
+            "$type": "Osiris.RackTap, Osiris",
+            "Name": "Rack Tap",
+            "Owner": "Angry Jackalope",
+            "Description": "Flip a coin. if the coin is heads, deal 60 damage and flip another. If the next coin is tails, deal an additional 30 damage.",
             "TargetType": "SingleEnemy",
             "Targets": 1,
-            "IsUltimate": true,
-            "Cooldown": 18,
-            "CooldownText": "COOLDOWN: 18 Turns",
+            "IsUltimate": false,
+            "Cooldown": 8,
+            "CooldownText": "COOLDOWN: 8 Turns",
             "CanTargetDead": false,
+            "CanTargetSelf": true,
+            "CurrentCooldown": 0,
+            "OnCooldown": false
+          },
+          {
+            "$type": "Osiris.Plow, Osiris",
+            "Name": "Plow",
+            "Owner": "Angry Jackalope",
+            "Description": "Knock the target down. They are disabled on their next turn. Flip a coin. If heads, the target takes 7d10 damage. If tails, the target receives 200% more damage on the next hit they take.",
+            "TargetType": "SingleEnemy",
+            "Targets": 1,
+            "IsUltimate": false,
+            "Cooldown": 10,
+            "CooldownText": "COOLDOWN: 10 Turns",
+            "CanTargetDead": false,
+            "CanTargetSelf": true,
             "CurrentCooldown": 0,
             "OnCooldown": false
           }
         ],
         "Owner": 175698286815084545,
         "Signature": "Ghub",
-        "Picture": "",
+        "Picture": "https://cdn.discordapp.com/attachments/460357767484407809/647278129798184966/jackalope_by_mickehill-da3y98v.png",
         "Dead": false,
         "TotalHP": 500,
         "CurrentHP": 500,
+        "TotalActions": 1,
+        "Actions": 1,
         "IsTurn": false,
         "DeathMessage": " has been slain!",
         "Effects": [],
         "Markers": []
       }
-    ]
+    ],
+    "Blocked": false
   },
   "208440011039834113": {
     "UserId": 208440011039834113,
@@ -212,82 +293,8 @@
     "CombatID": -1,
     "TeamNum": -1,
     "Dead": false,
-    "ActiveCards": [
-      {
-        "$type": "Osiris.VRFamilyCard, Osiris",
-        "Name": "VRFamily",
-        "RequiresCelestial": false,
-        "Hidden": false,
-        "Moves": [
-          {
-            "$type": "Osiris.Crash, Osiris",
-            "Name": "Crash",
-            "Owner": "VRFamily",
-            "Description": "Hit the enemy with a crasher. Roll a D15 for damage to an enemy and flip a coin. If the coin is tails, apply a 15% boost to your next attack.",
-            "TargetType": "SingleEnemy",
-            "Targets": 1,
-            "IsUltimate": false,
-            "Cooldown": 0,
-            "CooldownText": "",
-            "CanTargetDead": false,
-            "CurrentCooldown": 0,
-            "OnCooldown": false
-          },
-          {
-            "$type": "Osiris.Jaunt, Osiris",
-            "Name": "Jaunt",
-            "Owner": "VRFamily",
-            "Description": "Hops through the world at blistering speeds! Deal 45 damage to a target enemy.",
-            "TargetType": "SingleEnemy",
-            "Targets": 1,
-            "IsUltimate": false,
-            "Cooldown": 6,
-            "CooldownText": "COOLDOWN: 6 Turns",
-            "CanTargetDead": false,
-            "CurrentCooldown": 0,
-            "OnCooldown": false
-          },
-          {
-            "$type": "Osiris.StalwartSoul, Osiris",
-            "Name": "Stalwart Soul",
-            "Owner": "VRFamily",
-            "Description": "Nullify all damage to the party for the rest of this turn and the next.",
-            "TargetType": "AllFriendly",
-            "Targets": 0,
-            "IsUltimate": false,
-            "Cooldown": 12,
-            "CooldownText": "COOLDOWN: 12 Turns",
-            "CanTargetDead": false,
-            "CurrentCooldown": 0,
-            "OnCooldown": false
-          },
-          {
-            "$type": "Osiris.DeRez, Osiris",
-            "Name": "De-Rez",
-            "Owner": "VRFamily",
-            "Description": "Demoralize the enemy! Reduce a target enemy's next 2 attacks by 20% for 2 turns.",
-            "TargetType": "SingleEnemy",
-            "Targets": 1,
-            "IsUltimate": false,
-            "Cooldown": 12,
-            "CooldownText": "COOLDOWN: 12 Turns",
-            "CanTargetDead": false,
-            "CurrentCooldown": 0,
-            "OnCooldown": false
-          }
-        ],
-        "Owner": 208440011039834113,
-        "Signature": "AngelOfHonor",
-        "Picture": "",
-        "Dead": false,
-        "TotalHP": 250,
-        "CurrentHP": 250,
-        "IsTurn": false,
-        "DeathMessage": " has been slain!",
-        "Effects": [],
-        "Markers": []
-      }
-    ]
+    "ActiveCards": [],
+    "Blocked": false
   },
   "627140507411415049": {
     "UserId": 627140507411415049,
@@ -301,6 +308,7 @@
     "CombatID": -1,
     "TeamNum": -1,
     "Dead": false,
-    "ActiveCards": []
+    "ActiveCards": [],
+    "Blocked": false
   }
 }

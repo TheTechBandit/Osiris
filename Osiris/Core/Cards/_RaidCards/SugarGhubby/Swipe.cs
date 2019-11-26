@@ -31,7 +31,6 @@ namespace Osiris
             damage = inst.GetCardTurn().ApplyDamageBuffs(damage);
             
             string str = "";
-            var tempDam = 0;
             var totalDam = 0;
             foreach(Team team in inst.Teams)
             {
@@ -41,15 +40,17 @@ namespace Osiris
                     {
                         foreach(BasicCard card in user.ActiveCards)
                         {
-                            tempDam = card.TakeDamage(damage);
-                            totalDam += tempDam;
-                            str += $"\n{card.Signature} takes {tempDam} damage!";
+                            var tempDams = card.TakeDamage(damage);
+                            totalDam += tempDams[0];
+                            str += $"\n{card.DamageTakenString(tempDams)}";
                         }
                     }
                 }
             }
 
             await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} swipes using their tail!{str}\n{inst.GetCardTurn().Signature} dealt a total of {totalDam} damage.");
+
+            inst.GetCardTurn().Actions--;
         }
         
     }

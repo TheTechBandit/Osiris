@@ -11,25 +11,31 @@ namespace Osiris.Discord
 {
     public class BasicCommands : ModuleBase<SocketCommandContext>
     {
-        [RequireUserPermission(GuildPermission.Administrator)]
-        [Command("togglecelestial")]
-        public async Task ToggleCelestial(SocketGuildUser target)
+        [Command("commands")]
+        public async Task Commands()
         {
             ContextIds idList = new ContextIds(Context);
-            var user = UserHandler.GetUser(target.Id);
-
-            if(user.Celestial == true)
-            {
-                user.Celestial = false;
-                await MessageHandler.SendMessage(idList, $"{user.Name} is no longer **Celestial**!");
-            }
-            else
-            {
-                user.Celestial = true;
-                await MessageHandler.SendMessage(idList, $"{user.Name} is now **Celestial**!");
-            }
+            string str = "";
+            str += "[] signifies an optional input, {} signifies required input";
+            str += "\n**DEBUG:**\n";
+            str += "_ping_: Osiris responds with pong. Used to check if he is responding.\n";
+            str += "\n**BASIC**\n";
+            str += "_commands_: Displays all commands, excluding the secret ones.\n";
+            str += "_setcard {card}_: Sets your card to a specified card. If you misspell, it will give you VRFamily by default.\n";
+            str += "_removecard {card}_: Unequips card with the specified name.\n";
+            str += "_mycards_: Lists your active cards.\n";
+            str += "_check {user}_: Displays the selected user's card. Alternatively, replace user with a card name and it will give you the specified card's info. If used during combat, it will display active effects and cooldowns.\n";
+            str += "_info {card name}_: Displays the info for the specified card. If you misspell, it will display VRFamily by default.\n";
+            str += "\n**COMBAT**\n";
+            str += "_duel {user}_: Sends a duel request to the user.\n";
+            str += "_jointeam {user}_: Join the specified user's team, if they are in a duel.\n";
+            str += "_newteam {user}_: Creates a new team in the specified user's duel.\n";
+            str += "_round_: Displays the current round info.\n";
+            str += "_forfeit_: Exit combat. Counts as a loss.";
+            str += "_use {move}_: This command is, ironically, unused for now.\n";
+            await MessageHandler.SendMessage(idList, str);   
         }
-
+        
         [Command("setcard")]
         public async Task RegisterCard([Remainder] string str)
         {
@@ -73,45 +79,6 @@ namespace Osiris.Discord
             await MessageHandler.SendMessage(idList, $"Registered as {user.ActiveCards[0].Name}.");
         }
 
-        [Command("addcardnext")]
-        public async Task AddCardNext([Remainder] string str)
-        {
-            ContextIds idList = new ContextIds(Context);
-            var user = UserHandler.GetUser(idList.UserId);
-
-            //Tests each case to make sure all circumstances for the execution of this command are valid (character exists, in correct location)
-            try
-            {
-                await UserHandler.UserInCombat(idList);
-            }
-            catch(InvalidUserStateException)
-            {
-                return;
-            }
-
-            var card = CardRegistration.RegisterCard(str);
-
-            if(card.RequiresCelestial && !user.Celestial && !card.Hidden)
-            {
-                await MessageHandler.SendMessage(idList, "That card requires Celestial rank.");
-                return;
-            }
-            else if(card.Hidden && !user.Celestial)
-                card = CardRegistration.RegisterCard("vrfamily");
-            
-            var nick = Context.Guild.GetUser(Context.User.Id).Nickname;
-
-            if(nick == null)
-                card.Signature = Context.User.Username;
-            else
-                card.Signature = nick;
-
-            card.Owner = user.UserId;
-            user.ActiveCards.Add(card);
-
-            await MessageHandler.SendMessage(idList, $"Added card {user.ActiveCards[user.ActiveCards.Count-1].Name} to registration.");
-        }
-
         [Command("sigset")]
         public async Task SigSet()
         {
@@ -132,86 +99,6 @@ namespace Osiris.Discord
             await MessageHandler.SendMessage(idList, $"Changed signature from {user.ActiveCards[0].Signature} to a blank signature.");
 
             user.ActiveCards[0].Signature = "";
-        }
-
-        [Command("sigset")]
-        public async Task SigSet([Remainder] string str)
-        {
-            ContextIds idList = new ContextIds(Context);
-            var user = UserHandler.GetUser(idList.UserId);
-
-            //Tests each case to make sure all circumstances for the execution of this command are valid (character exists, in correct location)
-            try
-            {
-                await UserHandler.UserInCombat(idList);
-                await UserHandler.UserHasNoCards(idList, user);
-            }
-            catch(InvalidUserStateException)
-            {
-                return;
-            }
-
-            await MessageHandler.SendMessage(idList, $"Changed signature from {user.ActiveCards[0].Signature} to {str}.");
-
-            user.ActiveCards[0].Signature = str;
-        }
-
-        [Command("sigset")]
-        public async Task SigSet(int i, [Remainder] string str)
-        {
-            ContextIds idList = new ContextIds(Context);
-            var user = UserHandler.GetUser(idList.UserId);
-
-            //Tests each case to make sure all circumstances for the execution of this command are valid (character exists, in correct location)
-            try
-            {
-                await UserHandler.UserInCombat(idList);
-                await UserHandler.UserHasNoCards(idList, user);
-            }
-            catch(InvalidUserStateException)
-            {
-                return;
-            }
-
-            if(i > 0 && i <= user.ActiveCards.Count)
-            {
-                await MessageHandler.SendMessage(idList, $"Changed signature from {user.ActiveCards[i-1].Signature} to {str}.");
-
-                user.ActiveCards[i-1].Signature = str;
-            }
-            else
-            {
-                await MessageHandler.SendMessage(idList, $"The number you choose must be no less than one and no greater than the number of cards you own.");
-            }
-        }
-
-        [Command("sigset")]
-        public async Task SigSet(int i)
-        {
-            ContextIds idList = new ContextIds(Context);
-            var user = UserHandler.GetUser(idList.UserId);
-
-            //Tests each case to make sure all circumstances for the execution of this command are valid (character exists, in correct location)
-            try
-            {
-                await UserHandler.UserInCombat(idList);
-                await UserHandler.UserHasNoCards(idList, user);
-            }
-            catch(InvalidUserStateException)
-            {
-                return;
-            }
-
-            if(i > 0 && i <= user.ActiveCards.Count)
-            {
-                await MessageHandler.SendMessage(idList, $"Changed signature from {user.ActiveCards[i-1].Signature} to a blank signature.");
-
-                user.ActiveCards[i-1].Signature = "";
-            }
-            else
-            {
-                await MessageHandler.SendMessage(idList, $"The number you choose must be no less than one and no greater than the number of cards you own.");
-            }
         }
 
         [Command("removecard")]
@@ -252,7 +139,7 @@ namespace Osiris.Discord
             }
         }
 
-        [Command("skillcheck")]
+        [Command("check")]
         public async Task CheckCard(SocketGuildUser target)
         {
             ContextIds idList = new ContextIds(Context);
@@ -284,8 +171,8 @@ namespace Osiris.Discord
             }
         }
 
-        [Command("skillcheck")]
-        public async Task CheckCard([Remainder] string str)
+        [Command("info")]
+        public async Task CheckCardInfo([Remainder] string str)
         {
             ContextIds idList = new ContextIds(Context);
             var user = UserHandler.GetUser(idList.UserId);
@@ -296,15 +183,6 @@ namespace Osiris.Discord
                 card = CardRegistration.RegisterCard("vrfamily");
 
             await MessageHandler.SendEmbedMessage(idList, "", OsirisEmbedBuilder.CardList(card));
-        }
-
-        [Command("echo")]
-        public async Task Echo(SocketGuildChannel channel, [Remainder] string str)
-        {
-            ContextIds idList = new ContextIds(Context);
-            idList.ChannelId = channel.Id;
-
-            await MessageHandler.SendMessage(idList, $"{str}");
         }
 
     }

@@ -127,6 +127,23 @@ namespace Osiris.Discord
                                         }
                                     }
 
+                                    //Check if the target is the player using the move. If so and this move cannot target self, cancel.
+                                    if(player.ActiveCards[0].Owner == card.Owner)
+                                    {
+                                        if(!move.CanTargetSelf)
+                                        {
+                                            await MessageHandler.SendMessage(inst.Location, $"MOVE FAILED! {move.Name} cannot target yourself!");
+                                            return;
+                                        }
+                                    }
+
+                                    //Check if the target is the player using the move. If so and this move cannot target self, cancel.
+                                    if(player.ActiveCards[0].IsUntargetable())
+                                    {
+                                        await MessageHandler.SendMessage(inst.Location, $"MOVE FAILED! {player.ActiveCards[0].Signature} is untargetable.");
+                                        return;
+                                    }
+
                                     if(player.CombatID == author.CombatID)
                                         targets.Add(player.ActiveCards[0]);
                                 }
@@ -148,6 +165,23 @@ namespace Osiris.Discord
                                                 await MessageHandler.SendMessage(inst.Location, $"MOVE FAILED! {move.Name} cannot target the dead! {target.Signature} is dead.");
                                                 return;
                                             }
+                                        }
+
+                                            //Check if the target is the player using the move. If so and this move cannot target self, cancel.
+                                        if(target.Owner == card.Owner)
+                                        {
+                                            if(!move.CanTargetSelf)
+                                            {
+                                                await MessageHandler.SendMessage(inst.Location, $"MOVE FAILED! {move.Name} cannot target yourself!");
+                                                return;
+                                            }
+                                        }
+
+                                        //Check if the target is the player using the move. If so and this move cannot target self, cancel.
+                                        if(target.IsUntargetable() && UserHandler.GetUser(target.Owner).TeamNum != author.TeamNum)
+                                        {
+                                            await MessageHandler.SendMessage(inst.Location, $"MOVE FAILED! {target.Signature} is untargetable.");
+                                            return;
                                         }
 
                                         targets.Add(target);
@@ -190,6 +224,11 @@ namespace Osiris.Discord
             
             // Create a WebSocket-based command context based on the message
             var context = new SocketCommandContext(_client, message);
+
+            if(UserHandler.GetUser(message.Author.Id).Blocked)
+            {
+                await context.Channel.SendMessageAsync($"{context.User.Username} you have been blocked from using Osiris. Please speak to an admin if this was not supposed to happen.");
+            }
 
             // Execute the command with the command context we just
             // created, along with the service provider for precondition checks.

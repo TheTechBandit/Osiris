@@ -18,6 +18,8 @@ namespace Osiris
         public bool Dead { get; set; }
         public int TotalHP { get; set; }
         public int CurrentHP { get; set; }
+        public int TotalActions { get; set; }
+        public int Actions { get; set; }
         public bool IsTurn { get; set; }
         public string DeathMessage { get; set; }
         public List<BuffDebuff> Effects { get; set; }
@@ -36,6 +38,8 @@ namespace Osiris
             Dead = false;
             TotalHP = 500;
             CurrentHP = 500;
+            TotalActions = 1;
+            Actions = TotalActions;
             IsTurn = false;
             DeathMessage = " has been slain!";
             Effects = new List<BuffDebuff>();
@@ -173,7 +177,7 @@ namespace Osiris
         {
             for (int i = Effects.Count-1; i >= 0; i--)
             {
-                if (Effects[i].Attacks == 0 || Effects[i].Turns == 0 || Effects[i].Rounds == 0|| Effects[i].Strikes == 0 || Effects[i].Heals == 0)
+                if (Effects[i].Attacks == 0 || Effects[i].Turns == 0 || Effects[i].Rounds == 0|| Effects[i].Strikes == 0 || Effects[i].Heals == 0 || (Effects[i].ShieldOnly && Effects[i].LightShield <= 0 && Effects[i].MediumShield <= 0 && Effects[i].HeavyShield <= 0))
                 {
                     CurrentHP -= Effects[i].Growth;
                     TotalHP -= Effects[i].TotalGrowth;
@@ -182,7 +186,7 @@ namespace Osiris
             }
         }
 
-        public int TakeDamage(int damage)
+        public List<int> TakeDamage(int damage)
         {
             double perc = 0;
             int stat = 0;
@@ -212,39 +216,7 @@ namespace Osiris
             //Calculate shield cascading
             foreach(BuffDebuff eff in Effects)
             {
-                if(damage >= 30 && eff.HeavyShield > 0)
-                {
-                    while(eff.HeavyShield > 0 && damage > 0)
-                    {
-                        damage -= 30;
-                        if(damage < 0)
-                        {
-                            damage = 0;
-                        }
-                        else
-                        {
-                            eff.HeavyShield--;
-                            heavyBroken++;
-                        }
-                    }
-                }
-                else if(damage >= 15 && eff.MediumShield > 0 && eff.HeavyShield <= 0)
-                {
-                    while(eff.MediumShield > 0 && damage > 0)
-                    {
-                        damage -= 15;
-                        if(damage < 0)
-                        {
-                            damage = 0;
-                        }
-                        else
-                        {
-                            eff.MediumShield--;
-                            mediumBroken++;
-                        }
-                    }
-                }
-                else if(damage >= 5 && eff.LightShield > 0 && eff.MediumShield <= 0 && eff.HeavyShield <= 0)
+                if(eff.LightShield > 0 && damage > 0)
                 {
                     while(eff.LightShield > 0 && damage > 0)
                     {
@@ -260,7 +232,159 @@ namespace Osiris
                         }
                     }
                 }
+                if(eff.MediumShield > 0 && TotalLightShield() <= 0 && damage > 0)
+                {
+                    while(eff.MediumShield > 0 && damage > 0)
+                    {
+                        damage -= 15;
+                        if(damage < 0)
+                        {
+                            damage = 0;
+                        }
+                        else
+                        {
+                            eff.MediumShield--;
+                            mediumBroken++;
+                        }
+                    }
+                }
+                if(eff.HeavyShield > 0 && TotalLightShield() <= 0 && TotalMediumShield() <= 0 && damage > 0)
+                {
+                    while(eff.HeavyShield > 0 && damage > 0)
+                    {
+                        damage -= 30;
+                        if(damage < 0)
+                        {
+                            damage = 0;
+                        }
+                        else
+                        {
+                            eff.HeavyShield--;
+                            heavyBroken++;
+                        }
+                    }
+                }
             }
+
+            var healthDamage = damage;
+
+            foreach(BuffDebuff eff in Effects)
+            {
+                if(damage > 0 && eff.Growth > 0)
+                {
+                    temp = eff.Growth;
+                    eff.Growth -= damage;
+
+                    if(eff.Growth < 0)
+                        eff.Growth = 0;
+
+                    damage -= temp;
+
+                    if(damage < 0)
+                        damage = 0;
+                }
+            }
+
+            CurrentHP -= healthDamage;
+
+            if(CurrentHP < 0)
+                CurrentHP = 0;
+
+            EffectCleanup();
+
+            List<int> output = new List<int>();
+            output.Add(totalDamage);
+            output.Add(healthDamage);
+            output.Add(heavyBroken);
+            output.Add(mediumBroken);
+            output.Add(lightBroken);
+            return output;
+        }
+
+        public int TotalShield()
+        {
+            var total = 0;
+            foreach(BuffDebuff eff in Effects)
+            {
+                total += eff.HeavyShield;
+                total += eff.MediumShield;
+                total += eff.LightShield;
+            }
+            return total;
+        }
+
+        public int TotalHeavyShield()
+        {
+            var total = 0;
+            foreach(BuffDebuff eff in Effects)
+            {
+                total += eff.HeavyShield;
+            }
+            return total;
+        }
+
+        public int TotalMediumShield()
+        {
+            var total = 0;
+            foreach(BuffDebuff eff in Effects)
+            {
+                total += eff.MediumShield;
+            }
+            return total;
+        }
+
+        public int TotalLightShield()
+        {
+            var total = 0;
+            foreach(BuffDebuff eff in Effects)
+            {
+                total += eff.LightShield;
+            }
+            return total;
+        }
+
+        public string DamageTakenString(List<int> damages)
+        {
+            string str = "";
+            if(TotalShield() > 0 && damages [2] == 0 && damages[3] == 0 && damages[4] == 0 && damages[1] == 0)
+            {
+                str += $"{damages[0]} damage bounces off {Signature}'s shields! It wasn't enough to break through.";
+            }
+            if(damages[2] > 0 || damages[3] > 0 || damages[4] > 0)
+            {
+                str += $"{Signature} is hit with a total of {damages[0]} damage! {ShieldBreakString(damages)}They take {damages[1]} HP damage.";
+            }
+            else
+            {
+                str += $"{Signature} takes {damages[0]} damage!";
+            }
+
+            return str;
+        }
+
+        public string ShieldBreakString(List<int> damages)
+        {
+            string str = "";
+            if(damages[2] > 0)
+            {
+                str += $"{damages[2]} heavy shield(s) broke! ";
+            }
+            if(damages[3] > 0)
+            {
+                str += $"{damages[3]} medium shield(s) broke! ";
+            }
+            if(damages[4] > 0)
+            {
+                str += $"{damages[4]} light shield(s) broke! ";
+            }
+
+            return str;
+        }
+
+        public void TakeDebuffDamage(int damage)
+        {
+            var temp = 0;
+            var totalDamage = damage;
 
             foreach(BuffDebuff eff in Effects)
             {
@@ -279,34 +403,7 @@ namespace Osiris
                 }
             }
 
-            CurrentHP -= damage;
-
-            if(CurrentHP < 0)
-                CurrentHP = 0;
-
-            EffectCleanup();
-            return damage;
-        }
-
-        public void TakeDebuffDamage(int damage)
-        {
-            var temp = 0;
-
-            foreach(BuffDebuff eff in Effects)
-            {
-                if(damage > 0 && eff.Growth > 0)
-                {
-                    eff.Growth = temp;
-                    eff.Growth -= damage;
-                    if(eff.Growth < 0)
-                        eff.Growth = 0;
-                    damage -= temp;
-                    if(damage < 0)
-                        damage = 0;
-                }
-            }
-
-            CurrentHP -= damage;
+            CurrentHP -= totalDamage;
         }
 
         public string GetDeathMessage()
@@ -314,7 +411,7 @@ namespace Osiris
             return $"{Signature}{DeathMessage}";
         }
 
-        //Searches for a mark based on the specified turn number. If found, return this card.
+        //Searches for a mark based on the specified turn number. If found, return this card. IN FUTURE CHANGE THIS TO USE UUID
         public BasicCard SearchForMarker(int turnNum)
         {
             foreach(Marker mark in Markers)
@@ -324,6 +421,44 @@ namespace Osiris
             }
 
             return null;
+        }
+
+        public bool HasBuff(string buffName)
+        {
+            var hasBuff = false;
+            foreach(BuffDebuff eff in Effects)
+            {
+                if(eff.Name.Contains(buffName))
+                {
+                    hasBuff = true;
+                }
+            }
+            return hasBuff;
+        }
+
+        public bool IsUntargetable()
+        {
+            var isUnTarget = false;
+            foreach(BuffDebuff eff in Effects)
+            {
+                if(eff.Untargetable)
+                {
+                    isUnTarget = true;
+                }
+            }
+            return isUnTarget;
+        }
+
+        public void ApplyBonusActions()
+        {
+            var bonus = 0;
+            
+            foreach(BuffDebuff eff in Effects)
+            {
+                bonus += eff.BonusActions;
+            }
+
+            Actions += bonus;
         }
 
     }

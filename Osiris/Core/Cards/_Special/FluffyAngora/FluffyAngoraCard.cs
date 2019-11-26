@@ -17,10 +17,10 @@ namespace Osiris
         public FluffyAngoraCard(bool newcard) : base(newcard)
         {
             Picture = "https://cdn.discordapp.com/attachments/460357767484407809/648638003752992771/angora.jpg";
-            Moves.Add(new Swipe(true));
-            Moves.Add(new SyrupSlide(true));
-            Moves.Add(new Devour(true));
-            Moves.Add(new StickyStomp(true));
+            Moves.Add(new Poof(true));
+            Moves.Add(new Rollout(true));
+            Moves.Add(new Nuzzle(true));
+            Moves.Add(new HairRaise(true));
             TotalHP = 500;
             CurrentHP = 500;
         }

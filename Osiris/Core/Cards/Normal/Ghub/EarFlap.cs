@@ -35,7 +35,6 @@ namespace Osiris
                 damage += roll;
 
             damage = inst.GetCardTurn().ApplyDamageBuffs(damage);
-            var tempDam = 0;
 
             foreach(Team team in inst.Teams)
             {
@@ -58,8 +57,8 @@ namespace Osiris
                                 }
                             }
 
-                            tempDam = card.TakeDamage((int)(damage*latchDmg));
-                            str += $"\n{card.Signature} takes {tempDam} damage!";
+                            var tempDam = card.TakeDamage((int)(damage*latchDmg));
+                            str += $"\n{card.DamageTakenString(tempDam)}";
                         }
                     }
                 }
@@ -70,6 +69,7 @@ namespace Osiris
 
             OnCooldown = true;
             CurrentCooldown = Cooldown;
+            inst.GetCardTurn().Actions--;
         }
         
     }

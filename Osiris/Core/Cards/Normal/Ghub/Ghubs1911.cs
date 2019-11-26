@@ -37,7 +37,7 @@ namespace Osiris
                     damage += roll;
                 
                 damage = inst.GetCardTurn().ApplyDamageBuffs(damage);
-                damage = card.TakeDamage(damage);
+                var damages = card.TakeDamage(damage);
 
                 //If any latches are detected, set latchState to true
                 var latches = inst.SearchForMarker(inst.TurnNumber);
@@ -47,14 +47,15 @@ namespace Osiris
                 }
 
                 await MessageHandler.DiceThrow(inst.Location, "12d4", rolls);
-                await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} unloads a clip into {card.Signature}, dealing {damage} damage!");
+                await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} unloads a clip into {card.Signature}. {card.DamageTakenString(damages)}");
 
                 if(latchState)
                 {
                     await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} chomps down harder, causing {card.Signature} to bleed!");
                     card.AddBuff(new BuffDebuff()
                     {
-                        Name = $"Chomp Wound ({inst.GetCardTurn().Signature})",
+                        Name = "Chomp Wound",
+                        Origin = $"({inst.GetCardTurn().Signature})",
                         Description = "receive 10 bleed damage on next attack.",
                         BleedAttackDamage = 10,
                         Attacks = 1
@@ -65,6 +66,7 @@ namespace Osiris
             
             OnCooldown = true;
             CurrentCooldown = Cooldown;
+            inst.GetCardTurn().Actions--;
         }
         
     }

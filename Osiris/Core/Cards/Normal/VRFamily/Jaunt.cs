@@ -31,9 +31,11 @@ namespace Osiris
             {
                 int damage = 45;
                 damage = inst.GetCardTurn().ApplyDamageBuffs(damage);
-                damage = card.TakeDamage(damage);
-                await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} crashes into {card.Signature} with blistering speed! {card.Signature} takes {damage} damage!");
+                var damages = card.TakeDamage(damage);
+                await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} crashes into {card.Signature} with blistering speed! {card.DamageTakenString(damages)}");
             }
+
+            inst.GetCardTurn().Actions--;
             OnCooldown = true;
             CurrentCooldown = Cooldown;
         }

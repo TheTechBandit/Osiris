@@ -38,7 +38,7 @@ namespace Osiris
                     damage += roll;
                 
                 damage = inst.GetCardTurn().ApplyDamageBuffs(damage);
-                damage = card.TakeDamage(damage);
+                var damages = card.TakeDamage(damage);
 
                 //If any latches are already detected, remove them.
                 var latches = inst.SearchForMarker(inst.TurnNumber);
@@ -56,7 +56,7 @@ namespace Osiris
                 }
 
                 await MessageHandler.DiceThrow(inst.Location, "3d15!", rolls);
-                await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} chomps down on {card.Signature}, dealing {damage} damage!");
+                await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} chomps down on {card.Signature}! {card.DamageTakenString(damages)}");
                 await MessageHandler.CoinFlip(inst.Location, flip);
 
                 if(!latchState)
@@ -78,6 +78,8 @@ namespace Osiris
                 else
                     await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} is no longer latched!");
             }
+
+            inst.GetCardTurn().Actions--;
         }
         
     }

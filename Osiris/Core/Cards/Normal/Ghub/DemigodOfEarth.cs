@@ -45,7 +45,8 @@ namespace Osiris
                 {
                     card.AddBuff(new BuffDebuff()
                     {
-                        Name = $"Demigod Of Earth ({inst.GetCardTurn().Signature})",
+                        Name = "Demigod Of Earth",
+                        Origin = $"({inst.GetCardTurn().Signature})",
                         Description = "Pinned for 2 turns.",
                         TurnSkip = true,
                         Turns = 2
@@ -56,8 +57,10 @@ namespace Osiris
             }
 
             await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} gains a massive amount of mass {str}");
+            
             OnCooldown = true;
             CurrentCooldown = Cooldown;
+            inst.GetCardTurn().Actions--;
         }
         
     }

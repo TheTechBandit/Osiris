@@ -33,9 +33,11 @@ namespace Osiris
                 int damage = rolls[0];
                 damage = inst.GetCardTurn().ApplyDamageBuffs(damage);
                 await MessageHandler.DiceThrow(inst.Location, "1d20", rolls);
-                damage = card.TakeDamage(damage);
-                await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} punches {card.Signature} with the force of a soldier! {card.Signature} takes {damage} damage!");
+                var damages = card.TakeDamage(damage);
+                await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} punches {card.Signature} with the force of a soldier! {card.DamageTakenString(damages)}");
             }
+
+            inst.GetCardTurn().Actions--;
         }
         
     }
