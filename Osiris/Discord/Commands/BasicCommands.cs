@@ -21,6 +21,7 @@ namespace Osiris.Discord
             str += "_ping_: Osiris responds with pong. Used to check if he is responding.\n";
             str += "\n**BASIC**\n";
             str += "_commands_: Displays all commands, excluding the secret ones.\n";
+            str += "_cardlist_: Lists all cards.\n";
             str += "_setcard {card}_: Sets your card to a specified card. If you misspell, it will give you VRFamily by default.\n";
             str += "_removecard {card}_: Unequips card with the specified name.\n";
             str += "_mycards_: Lists your active cards.\n";
@@ -28,12 +29,32 @@ namespace Osiris.Discord
             str += "_info {card name}_: Displays the info for the specified card. If you misspell, it will display VRFamily by default.\n";
             str += "\n**COMBAT**\n";
             str += "_duel {user}_: Sends a duel request to the user.\n";
-            str += "_jointeam {user}_: Join the specified user's team, if they are in a duel.\n";
-            str += "_newteam {user}_: Creates a new team in the specified user's duel.\n";
+            str += "_jointeam {user}_: Join the specified user's team, if they are in a duel. Does not work on Raids.\n";
+            str += "_newteam {user}_: Creates a new team in the specified user's duel. Does not work on Raids.\n";
             str += "_round_: Displays the current round info.\n";
-            str += "_forfeit_: Exit combat. Counts as a loss.";
+            str += "_forfeit_: Exit combat. Counts as a loss. If used in a Raid, you are killed.";
             str += "_use {move}_: This command is, ironically, unused for now.\n";
             await MessageHandler.SendMessage(idList, str);   
+        }
+
+        [Command("cardlist")]
+        public async Task CardList()
+        {
+            ContextIds idList = new ContextIds(Context);
+
+            string str = "";
+            //str += $"{new VRFamilyCard().Name}\n";
+            //str += $"{new TouchedCard().Name}\n";
+            //str += $"{new GhubCard().Name}\n";
+            str += "Use the 0.info {card} command to learn more about each card.\n";
+            str += "```\n";
+            str += $"{new CuteBunnyCard().Name}\n";
+            str += $"{new SpeedyHareCard().Name}\n";
+            str += $"{new FluffyAngoraCard().Name}\n";
+            str += $"{new AngryJackalopeCard().Name}\n";
+            str += "```\n";
+
+            await MessageHandler.SendMessage(idList, str);  
         }
         
         [Command("setcard")]
@@ -60,7 +81,13 @@ namespace Osiris.Discord
                 return;
             }
             else if(card.Hidden && !user.Celestial)
-                card = CardRegistration.RegisterCard("vrfamily");
+                card = CardRegistration.RegisterCard("default");
+
+            if(card.Disabled)
+            {
+                await MessageHandler.SendMessage(idList, "That card has been temporarily disabled.");
+                return;
+            }
 
             var nick = Context.Guild.GetUser(Context.User.Id).Nickname;
 

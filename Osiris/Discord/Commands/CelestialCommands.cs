@@ -19,11 +19,63 @@ namespace Osiris.Discord
             string str = "";
             str += "[] signifies an optional input, {} signifies required input";
             str += "\n**CELESTIAL:**\n";
+            str += "_celcardlist_: Lists all celestial cards.\n";
+            str += "_setcard {user} {card}_: Sets the card of another user.\n";
             str += "_addcardnext {card}_: Adds the specified card to your list of cards, allowing you to have multiple cards.\n";
             str += "_sigset_ {user} [n] [signature]_: Sets your nth card's signature to the specified signature. If n is blank, it assumes your first card. If signature is blank, your signature will become blank.\n";
             str += "_echo {channel} {message}_: Osiris says the specified message in the specified channel\n";
             str += "_blind {channel}_: Spams blinding light 10 times in selected channel.\n";
             await MessageHandler.SendMessage(idList, str);
+        }
+
+        [RequireCelestialAttribute]
+        [Command("celcardlist")]
+        public async Task CelestialCardList()
+        {
+            ContextIds idList = new ContextIds(Context);
+
+            string str = "";
+            str += "```\n";
+            str += $"{new SugarGhubbyCard().Name}\n";
+            str += "```\n";
+
+            await MessageHandler.SendMessage(idList, str);  
+        }
+
+        [RequireCelestialAttribute]
+        [Command("setcard")]
+        public async Task RegisterCard(SocketGuildUser target, [Remainder] string str)
+        {
+            ContextIds idList = new ContextIds(Context);
+            var user = UserHandler.GetUser(target.Id);
+
+            //Tests each case to make sure all circumstances for the execution of this command are valid (character exists, in correct location)
+            try
+            {
+                await UserHandler.UserInCombat(idList);
+            }
+            catch(InvalidUserStateException)
+            {
+                return;
+            }
+
+            var card = CardRegistration.RegisterCard(str);
+
+            var nick = Context.Guild.GetUser(target.Id).Nickname;
+
+            if(nick == null)
+                card.Signature = target.Username;
+            else
+                card.Signature = nick;
+
+            card.Owner = user.UserId;
+
+            if(user.ActiveCards.Count == 0)
+                user.ActiveCards.Add(card);
+            else
+                user.ActiveCards[0] = card;
+
+            await MessageHandler.SendMessage(idList, $"Registered {card.Signature} as {user.ActiveCards[0].Name}.");
         }
 
         [RequireCelestialAttribute]
@@ -44,14 +96,6 @@ namespace Osiris.Discord
             }
 
             var card = CardRegistration.RegisterCard(str);
-
-            if(card.RequiresCelestial && !user.Celestial && !card.Hidden)
-            {
-                await MessageHandler.SendMessage(idList, "That card requires Celestial rank.");
-                return;
-            }
-            else if(card.Hidden && !user.Celestial)
-                card = CardRegistration.RegisterCard("vrfamily");
             
             var nick = Context.Guild.GetUser(Context.User.Id).Nickname;
 

@@ -13,8 +13,10 @@ namespace Osiris
         public int Attacks { get; set; } = -1;
         //Number of hits you can take before the effect wears off. -1 for infinite.
         public int Strikes { get; set; } = -1;
-        //Number of heals you can get before the effect wears off. -1 for infinite.
+        //Number of heals you can give before the effect wears off. -1 for infinite.
         public int Heals { get; set; } = -1;
+        //Number of incoming heals you can receive before the effect ears off. -1 for infinite.
+        public int IncomingHeals { get; set; } = -1;
         //If this is Shield Only, it will be removed upon hitting 0 shield
         public bool ShieldOnly { get; set; } = false;
         //Gain x light shielding (blocks up to 5 damage)
@@ -27,6 +29,8 @@ namespace Osiris
         public int TotalGrowth { get; set; } = 0;
         //x temporary health remaining
         public int Growth { get; set; } = 0;
+        //Health regained per round
+        public int HealingPerRound { get; set; } = 0;
         //Health regained per turn
         public int HealingPerTurn { get; set; } = 0;
         //Damage taken per round
@@ -39,6 +43,10 @@ namespace Osiris
         public double HealingPercentBuff { get; set; } = 0.0;
         //healing decreased by x%
         public double HealingPercentDebuff { get; set; } = 0.0;
+        //Increase healing you receive by x%
+        public double IncomingHealingPercentBuff { get; set; } = 0.0;
+        //Decrease healing you receive by x%
+        public double IncomingHealingPercentDebuff { get; set; } = 0.0;
         //damage increased by x%
         public double DamagePercentBuff { get; set; } = 0.0;
         //damage increased by x
@@ -63,6 +71,8 @@ namespace Osiris
         public bool Untargetable { get; set; } = false;
         //If false, this buff cannot be stacked
         public bool Stackable { get; set; } = true;
+        //Extra fields. Used often for Passives.
+        public int Extra { get; set; } = 0;
 
         public BuffDebuff()
         {
@@ -102,10 +112,18 @@ namespace Osiris
                 Strikes--;
         }
 
+        //Given heals
         public void HealTick()
         {
             if(Heals > 0)
                 Heals--;
+        }
+
+        //Incoming heals
+        public void IncomingHealTick()
+        {
+            if(IncomingHeals > 0)
+                IncomingHeals--;
         }
 
 

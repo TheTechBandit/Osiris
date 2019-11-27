@@ -64,7 +64,7 @@ namespace Osiris.Discord
 
             if(user.Blocked == true)
             {
-                user.Celestial = false;
+                user.Blocked = false;
                 await MessageHandler.SendMessage(idList, $"{user.Name} is no longer **Command Blocked**!");
             }
             else

@@ -37,8 +37,11 @@ namespace Osiris
                 case "angry jackalope":
                     card = new AngryJackalopeCard(true);
                     break;
+                case "cute bunny":
+                    card = new CuteBunnyCard(true);
+                    break;
                 default:
-                    card = new VRFamilyCard(true);
+                    card = new CuteBunnyCard(true);
                     break;
             }
 

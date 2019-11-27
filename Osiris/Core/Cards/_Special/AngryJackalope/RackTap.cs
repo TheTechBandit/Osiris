@@ -47,7 +47,7 @@ namespace Osiris
                     if(!flip2)
                     {
                         damage += damageSecond;
-                        flavorText = $"{inst.GetCardTurn().Signature} rams {card.Signature} with their horns, then swipes them with their tail!";
+                        flavorText = $"{inst.GetCardTurn().Signature} rams {card.Signature} with their horns!";
                     }
                 }
 

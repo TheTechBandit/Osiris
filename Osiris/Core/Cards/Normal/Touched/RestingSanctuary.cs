@@ -32,7 +32,8 @@ namespace Osiris
             foreach(int roll in rolls)
                 heal += roll;
             
-            heal = inst.GetCardTurn().ApplyHealingBuffs(heal);
+            heal = inst.GetCardTurn().ApplyHealingBuffs(heal, true);
+            heal = inst.GetCardTurn().Heal(heal, true);
             await MessageHandler.DiceThrow(inst.Location, "3d10", rolls);
             await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} takes a moment to rest. They restore {heal} health.");
 

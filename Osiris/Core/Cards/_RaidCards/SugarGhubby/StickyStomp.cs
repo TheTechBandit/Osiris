@@ -13,8 +13,8 @@ namespace Osiris
         public override string TargetType { get; } = "SingleEnemy";
         public override int Targets { get; } = 1;
         public override bool IsUltimate { get; } = true;
-        public override int Cooldown { get; } = 3;
-        public override string CooldownText { get; } = "COOLDOWN: 3 Turns";
+        public override int Cooldown { get; } = 5;
+        public override string CooldownText { get; } = "COOLDOWN: 5 Turns";
 
         public StickyStomp() : base()
         {
@@ -153,6 +153,7 @@ namespace Osiris
                             initialCards.RemoveAt(rand);
                         }
 
+                        inst.FixTurnNumber();
                         shuffled = true;
                         
                         List<int> roll3 = RandomGen.RollDice(4, 4, true);

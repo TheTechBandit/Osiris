@@ -11,10 +11,14 @@ namespace Osiris
         public virtual string Name { get; }
         public virtual bool RequiresCelestial { get; }
         public virtual bool Hidden { get; }
+        public virtual bool Disabled { get; }
         public virtual List<BasicMove> Moves { get; }
+        public virtual BasicPassive Passive { get; }
         public ulong Owner { get; set; }
         public string Signature { get; set; }
         public string Picture { get; set; }
+        public bool HasUltimate { get; set; }
+        public bool HasPassive { get; set; }
         public bool Dead { get; set; }
         public int TotalHP { get; set; }
         public int CurrentHP { get; set; }
@@ -35,6 +39,8 @@ namespace Osiris
             Owner = 0;
             Signature = Name;
             Picture = "";
+            HasUltimate = true;
+            HasPassive = true;
             Dead = false;
             TotalHP = 500;
             CurrentHP = 500;
@@ -65,6 +71,11 @@ namespace Osiris
         public string HPTextString()
         {
             return $"{CurrentHP}/{TotalHP}";
+        }
+
+        public double HPPercentage()
+        {
+            return (double)CurrentHP/(double)TotalHP;
         }
 
         public List<int> HPGradient()
@@ -122,23 +133,68 @@ namespace Osiris
                 }
                 eff.AttackTick();
             }
+
+            if(HasPassive)
+            {
+                perc = Passive.PassiveDamagePercentCalculation(perc);
+                stat = Passive.PassiveDamageStaticCalculation(stat);
+            }
+            
             EffectCleanup();
 
             return damage + (int)((double)damage*perc)+stat;
         }
 
-        public int ApplyHealingBuffs(int heal)
+        public int ApplyHealingBuffs(int heal, bool tick)
         {
             double perc = 0;
             foreach(BuffDebuff eff in Effects)
             {
                 perc += eff.HealingPercentBuff;
                 perc -= eff.HealingPercentDebuff;
-                eff.HealTick();
+                if(tick)
+                    eff.HealTick();
+            }
+                EffectCleanup();
+
+            return heal + (int)((double)heal*perc);
+        }
+
+        public int Heal(int heal, bool tick)
+        {
+            double perc = 0.0;
+            foreach(BuffDebuff eff in Effects)
+            {
+                perc += eff.IncomingHealingPercentBuff;
+                perc -= eff.IncomingHealingPercentDebuff;
+                if(tick)
+                    eff.IncomingHealTick();
             }
             EffectCleanup();
 
-            return heal + (int)((double)heal*perc);
+            heal = heal + (int)((double)heal*perc);
+
+            if(heal < 0)
+                heal = 0;
+
+            var diff = 0;
+            var tempHeal = heal;
+            foreach(BuffDebuff eff in Effects)
+            {
+                if(tempHeal > 0 && eff.TotalGrowth > 0)
+                {
+                    diff = eff.TotalGrowth - eff.Growth;
+
+                    tempHeal -= diff;
+                    eff.Growth += diff;
+                }
+            }
+
+            CurrentHP += heal;
+            if(CurrentHP > TotalHP)
+                CurrentHP = TotalHP;
+
+            return heal;
         }
 
         public async Task RoundTick()
@@ -177,7 +233,7 @@ namespace Osiris
         {
             for (int i = Effects.Count-1; i >= 0; i--)
             {
-                if (Effects[i].Attacks == 0 || Effects[i].Turns == 0 || Effects[i].Rounds == 0|| Effects[i].Strikes == 0 || Effects[i].Heals == 0 || (Effects[i].ShieldOnly && Effects[i].LightShield <= 0 && Effects[i].MediumShield <= 0 && Effects[i].HeavyShield <= 0))
+                if (Effects[i].Attacks == 0 || Effects[i].Turns == 0 || Effects[i].Rounds == 0|| Effects[i].Strikes == 0 || Effects[i].Heals == 0 || Effects[i].IncomingHeals == 0 || (Effects[i].ShieldOnly && Effects[i].LightShield <= 0 && Effects[i].MediumShield <= 0 && Effects[i].HeavyShield <= 0))
                 {
                     CurrentHP -= Effects[i].Growth;
                     TotalHP -= Effects[i].TotalGrowth;
@@ -188,7 +244,7 @@ namespace Osiris
 
         public List<int> TakeDamage(int damage)
         {
-            double perc = 0;
+            double perc = 0.0;
             int stat = 0;
             var temp = Int32.MaxValue;
             var heavyBroken = 0;
@@ -204,6 +260,12 @@ namespace Osiris
                 if(eff.DefenseSetBuff >= 0 && eff.DefenseSetBuff < temp)
                     temp = eff.DefenseSetBuff;
                 eff.StrikeTick();
+            }
+
+            if(HasPassive)
+            {
+                perc = Passive.PassiveDefensePercentCalculation(perc);
+                stat = Passive.PassiveDefenseStaticCalculation(stat);
             }
 
             //Buffs are applied
@@ -287,8 +349,10 @@ namespace Osiris
 
             CurrentHP -= healthDamage;
 
+            /*
             if(CurrentHP < 0)
                 CurrentHP = 0;
+            */
 
             EffectCleanup();
 
@@ -434,6 +498,16 @@ namespace Osiris
                 }
             }
             return hasBuff;
+        }
+
+        public void RemoveAllBuffs()
+        {
+            Effects.Clear();
+        }
+
+        public void RemoveAllMarkers()
+        {
+            Markers.Clear();
         }
 
         public bool IsUntargetable()

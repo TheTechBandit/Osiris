@@ -47,8 +47,8 @@ namespace Osiris
             {
                 card.IsTurn = false;
                 card.CooldownsReset();
-                card.Effects.Clear();
-                card.Markers.Clear();
+                card.RemoveAllBuffs();
+                card.RemoveAllMarkers();
                 
                 if(duel)
                 {

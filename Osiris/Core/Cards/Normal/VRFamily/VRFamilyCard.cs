@@ -6,7 +6,8 @@ namespace Osiris
     {
         public override string Name { get; } = "VRFamily";
         public override bool RequiresCelestial { get; } = false;
-        public override bool Hidden { get; } = false;
+        public override bool Hidden { get; } = true;
+        public override bool Disabled { get; } = false;
         public override List<BasicMove> Moves { get; } = new List<BasicMove>();
 
         public VRFamilyCard() : base()
@@ -16,6 +17,9 @@ namespace Osiris
 
         public VRFamilyCard(bool newcard) : base(newcard)
         {
+            HasUltimate = false;
+            HasPassive = false;
+            
             Moves.Add(new Crash(true));
             Moves.Add(new Jaunt(true));
             Moves.Add(new StalwartSoul(true));

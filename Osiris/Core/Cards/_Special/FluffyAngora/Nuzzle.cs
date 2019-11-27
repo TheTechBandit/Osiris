@@ -36,6 +36,7 @@ namespace Osiris
                 if(failed)
                 {
                     await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} lovingly nuzzles {card.Signature}... But they had already been nuzzled! Their affection was denied.");
+                    return;
                 }
                 else
                 {
@@ -50,11 +51,11 @@ namespace Osiris
                     });
 
                     await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} lovingly nuzzles {card.Signature}. {card.Signature} gains 2 medium shields!");   
-                    OnCooldown = true;
-                    CurrentCooldown = Cooldown;
                 }
             }
 
+            OnCooldown = true;
+            CurrentCooldown = Cooldown;
             inst.GetCardTurn().Actions--;
         }
         

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Osiris.Discord;
 
 namespace Osiris
@@ -34,6 +35,17 @@ namespace Osiris
             CombatEnded = false;
         }
 
+        public void FixTurnNumber()
+        {
+            foreach(BasicCard card in CardList)
+            {
+                if(card.IsTurn && CardList.IndexOf(card) != TurnNumber)
+                {
+                    TurnNumber = CardList.IndexOf(card);
+                }
+            }
+        }
+
         public Team CreateNewTeam()
         {
             Team newteam = new Team(true);
@@ -46,14 +58,41 @@ namespace Osiris
         public void AddPlayerToCombat(UserAccount user, Team team)
         {
             Players.Add(user);
+            PassiveUpdatePlayerJoined();
+
             foreach(BasicCard card in user.ActiveCards)
             {
                 CardList.Add(card);
+                if(card.HasPassive && card.Passive.UpdateJoinCombat)
+                    card.Passive.Update(this, card);
             }
+            
             team.Members.Add(user);
             user.CombatRequest = 0;
             user.CombatID = CombatId;
             user.TeamNum = team.TeamNum;
+        }
+
+        public void PassiveUpdatePlayerJoined()
+        {
+            foreach(BasicCard card in CardList)
+            {
+                if(card.HasPassive && card.Passive.UpdatePlayerJoin)
+                {
+                    card.Passive.Update(this, card);
+                }
+            }
+        }
+
+        public void PassiveUpdatePlayerLeft()
+        {
+            foreach(BasicCard card in CardList)
+            {
+                if(card.HasPassive && card.Passive.UpdatePlayerLeave)
+                {
+                    card.Passive.Update(this, card);
+                }
+            }
         }
 
         public Team GetTeam(UserAccount player)

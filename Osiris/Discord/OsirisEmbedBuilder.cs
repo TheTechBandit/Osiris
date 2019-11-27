@@ -26,8 +26,16 @@ namespace Osiris.Discord
                 string cooldownText = "";
                 if(move.Cooldown != 0)
                     cooldownText += $"**{move.CooldownText}**";
-                builder.AddField($"**{move.Name}**", $"{move.Description} {cooldownText}");
+
+                string ult = "";
+                if(move.IsUltimate)
+                    ult = "(Ultimate)";
+                
+                builder.AddField($"**{move.Name} {ult}**", $"{move.Description} {cooldownText}");
             }
+
+            if(card.HasPassive)
+                    builder.AddField($"**{card.Passive.Name} (Passive)**", $"{card.Passive.Description}");
 
             int r = card.HPGradient()[0];
             int g = card.HPGradient()[1];
@@ -65,6 +73,9 @@ namespace Osiris.Discord
                     
                     effects += $"\n{eff.ToString()}";
                 }
+                if(card.HasPassive)
+                    effects += $"\n{card.Passive.ToString()}";
+
                 if(light > 0)
                     shields += $"{light} light shields. ";
                 if(medium > 0)
@@ -120,6 +131,9 @@ namespace Osiris.Discord
                 
                 effects += eff.ToString() + "\n";
             }
+
+            effects += card.Passive.ToString();
+
             foreach(Marker mark in card.Markers)
             {
                 effects += mark.ToString() + "\n";
@@ -141,8 +155,16 @@ namespace Osiris.Discord
                 string cooldownText = "";
                 if(move.Cooldown != 0)
                     cooldownText += $"**{move.CooldownText}**";
-                builder.AddField($"**{move.Name}**", $"{move.Description} {cooldownText}");
+
+                string ult = "";
+                if(move.IsUltimate)
+                    ult = "(Ultimate)";
+
+                builder.AddField($"**{move.Name} {ult}**", $"{move.Description} {cooldownText}");
             }
+
+            if(card.HasPassive)
+                    builder.AddField($"**{card.Passive.Name} (Passive)**", $"{card.Passive.Description}");
 
             foreach(BasicMove move in card.Moves)
             {

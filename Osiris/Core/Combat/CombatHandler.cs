@@ -90,21 +90,23 @@ namespace Osiris
                 }
 
                 inst.CardList.Remove(card);
+
+                if(turnnum <= inst.TurnNumber)
+                    inst.TurnNumber--;
+                if(card.IsTurn)
+                    await SkipTurn(inst, card);
             }
 
             inst.GetTeam(player).Members.Remove(player);
-            player.CombatID = -1;
-            player.TeamNum = -1;
+            player.ResetCombatFields(inst.IsDuel);
+
+            inst.PassiveUpdatePlayerLeft();
 
             await MessageHandler.UserForfeitsCombat(inst.Location, player);
 
             if(inst.IsDuel)
             {
                 await CheckTeamElimination(inst, team);
-            }
-            else
-            {
-                //Raid user forfeiting stuff here
             }
 
             SaveInstances();
@@ -190,6 +192,8 @@ namespace Osiris
             {
                 await card.RoundTick();
             }
+
+            PassiveUpdateRoundStart(inst);
             
             await MessageHandler.SendEmbedMessage(inst.Location, "", OsirisEmbedBuilder.RoundStart(inst));
 
@@ -198,6 +202,17 @@ namespace Osiris
             await Task.Delay(1500);
             
             await NextTurn(inst);
+        }
+
+        public static void PassiveUpdateRoundStart(CombatInstance inst)
+        {
+            foreach(BasicCard card in inst.CardList)
+            {
+                if(card.HasPassive && card.Passive.UpdateRoundStart)
+                {
+                    card.Passive.Update(inst, card);
+                }
+            }
         }
 
         public static async Task NextTurn(CombatInstance inst)

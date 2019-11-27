@@ -138,7 +138,7 @@ namespace Osiris.Discord
                                     }
 
                                     //Check if the target is the player using the move. If so and this move cannot target self, cancel.
-                                    if(player.ActiveCards[0].IsUntargetable())
+                                    if(player.ActiveCards[0].IsUntargetable() && player.TeamNum != author.TeamNum)
                                     {
                                         await MessageHandler.SendMessage(inst.Location, $"MOVE FAILED! {player.ActiveCards[0].Signature} is untargetable.");
                                         return;
@@ -228,6 +228,7 @@ namespace Osiris.Discord
             if(UserHandler.GetUser(message.Author.Id).Blocked)
             {
                 await context.Channel.SendMessageAsync($"{context.User.Username} you have been blocked from using Osiris. Please speak to an admin if this was not supposed to happen.");
+                return;
             }
 
             // Execute the command with the command context we just
