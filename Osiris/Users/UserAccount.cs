@@ -49,6 +49,8 @@ namespace Osiris
                 card.CooldownsReset();
                 card.RemoveAllBuffs();
                 card.RemoveAllMarkers();
+                if(card.HasPassive)
+                    card.Passive.eff.WipeExtra();
                 
                 if(duel)
                 {

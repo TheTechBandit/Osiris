@@ -9,7 +9,7 @@ namespace Osiris
         public override bool Hidden { get; } = false;
         public override bool Disabled { get; } = false;
         public override List<BasicMove> Moves { get; } = new List<BasicMove>();
-        public override BasicPassive Passive { get; } = new SpareCarrot(true);
+        public override BasicPassive Passive { get; } = new SpareCarrotPassive(true);
 
         public CuteBunnyCard() : base()
         {
@@ -19,7 +19,6 @@ namespace Osiris
         public CuteBunnyCard(bool newcard) : base(newcard)
         {
             HasUltimate = false;
-            HasPassive = false;
             
             Picture = "https://cdn.discordapp.com/attachments/460357767484407809/649081931383701504/cute_bun.png";
             Moves.Add(new Pomf(true));

@@ -22,7 +22,7 @@ namespace Osiris
 
         public Kiss(bool newmove) : base(newmove)
         {
-            
+            CanTargetSelf = false;
         }
 
         public override async Task MoveEffect(CombatInstance inst, List<BasicCard> targets)

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Osiris
 {
     public class BuffDebuff
@@ -71,12 +73,27 @@ namespace Osiris
         public bool Untargetable { get; set; } = false;
         //If false, this buff cannot be stacked
         public bool Stackable { get; set; } = true;
-        //Extra fields. Used often for Passives.
-        public int Extra { get; set; } = 0;
+        //Extra fields. Used often for Passives. 10 fields by default.
+        public List<int> Extra { get; set; } = new List<int>();
 
         public BuffDebuff()
         {
+            SetupExtra();
+        }
 
+        public void SetupExtra()
+        {
+            if(Extra.Count == 0)
+            {
+                for(int i = 0; i < 10; i++)
+                Extra.Add(0);
+            }
+        }
+
+        public void WipeExtra()
+        {
+            Extra.Clear();
+            SetupExtra();
         }
 
         public int ApplyDamageBuffs(int damage)
@@ -140,6 +157,14 @@ namespace Osiris
                 extra += $" {Strikes} hit(s) remaining.";
             if(Heals > 0)
                 extra += $" {Heals} heal(s) remaining.";
+            if(IncomingHeals > 0)
+                extra += $" {IncomingHeals} incoming heal(s) remaining.";
+            if(LightShield > 0)
+                extra += $" {LightShield} light shields(s) remaining.";
+            if(MediumShield > 0)
+                extra += $" {MediumShield} medium shields(s) remaining.";
+            if(HeavyShield > 0)
+                extra += $" {HeavyShield} heavy shields(s) remaining.";
             
             return $"**{Name} {Origin}**- {Description}{extra}";
         }

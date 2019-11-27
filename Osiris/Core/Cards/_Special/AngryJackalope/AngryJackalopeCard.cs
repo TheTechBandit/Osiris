@@ -9,6 +9,7 @@ namespace Osiris
         public override bool Hidden { get; } = false;
         public override bool Disabled { get; } = false;
         public override List<BasicMove> Moves { get; } = new List<BasicMove>();
+        public override BasicPassive Passive { get; } = new HerdLeaderPassive(true);
 
         public AngryJackalopeCard() : base()
         {
@@ -18,7 +19,6 @@ namespace Osiris
         public AngryJackalopeCard(bool newcard) : base(newcard)
         {
             HasUltimate = false;
-            HasPassive = false;
             
             Picture = "https://cdn.discordapp.com/attachments/460357767484407809/647278129798184966/jackalope_by_mickehill-da3y98v.png";
             Moves.Add(new Gore(true));

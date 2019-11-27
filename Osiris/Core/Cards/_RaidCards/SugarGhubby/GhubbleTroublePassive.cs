@@ -2,23 +2,23 @@ using System.Threading.Tasks;
 
 namespace Osiris
 {
-    public class FluffArmorPassive: BasicPassive
+    public class GhubbleTroublePassive: BasicPassive
     {
         //Name of the move
-        public override string Name { get; } = "Fluff Armor";
+        public override string Name { get; } = "Ghubble Trouble";
         //Card this move belongs to
-        public override string Owner { get; } = "Fluffy Angora";
+        public override string Owner { get; } = "Sugar Ghubby";
         //Description of what this move does
-        public override string Description { get; } = "For every combatant in this fight, take 2% less damage.";
+        public override string Description { get; } = "For every enemy combatant, increase your damage by 1%";
         //Current status of the passive
         public override string Status { get; set; } = "ERROR";
 
-        public FluffArmorPassive() : base()
+        public GhubbleTroublePassive() : base()
         {
 
         }
 
-        public FluffArmorPassive(bool def) : base(def)
+        public GhubbleTroublePassive(bool def) : base(def)
         {
             SetupBuff();
 
@@ -30,9 +30,9 @@ namespace Osiris
         public override void Update(CombatInstance inst, BasicCard owner)
         {
             var playerCount = inst.CardList.Count;
-            eff.DefensePercentBuff = 0.02*(double)playerCount;
+            eff.DamagePercentBuff = 0.01*(double)playerCount;
 
-            Status = $"Currently at **{eff.DefensePercentBuff*100.0}%** less damage.";
+            Status = $"Currently at **{eff.DamagePercentBuff*100.0}%** increased damage.";
         }
     }
 }

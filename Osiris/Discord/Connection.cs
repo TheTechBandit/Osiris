@@ -63,8 +63,6 @@ namespace Osiris.Discord
 
         private async Task HandleGuildJoin(SocketGuild guild)
         {
-            await guild.DefaultChannel.SendMessageAsync("**It begins.**");
-
             //Upon joining a guild, create update every user's info and create useraccounts for them
             foreach(SocketUser user in guild.Users)
             {

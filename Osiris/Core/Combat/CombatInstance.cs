@@ -55,16 +55,19 @@ namespace Osiris
             return newteam;
         }
 
-        public void AddPlayerToCombat(UserAccount user, Team team)
+        public async Task AddPlayerToCombat(UserAccount user, Team team)
         {
             Players.Add(user);
-            PassiveUpdatePlayerJoined();
+            await PassiveUpdatePlayerJoined();
 
             foreach(BasicCard card in user.ActiveCards)
             {
                 CardList.Add(card);
                 if(card.HasPassive && card.Passive.UpdateJoinCombat)
-                    card.Passive.Update(this, card);
+                    if(!card.Passive.RequiresAsync)
+                        card.Passive.Update(this, card);
+                    else
+                        await card.Passive.UpdateAsync(this, card);
             }
             
             team.Members.Add(user);
@@ -73,24 +76,30 @@ namespace Osiris
             user.TeamNum = team.TeamNum;
         }
 
-        public void PassiveUpdatePlayerJoined()
+        public async Task PassiveUpdatePlayerJoined()
         {
             foreach(BasicCard card in CardList)
             {
                 if(card.HasPassive && card.Passive.UpdatePlayerJoin)
                 {
-                    card.Passive.Update(this, card);
+                    if(!card.Passive.RequiresAsync)
+                        card.Passive.Update(this, card);
+                    else
+                        await card.Passive.UpdateAsync(this, card);
                 }
             }
         }
 
-        public void PassiveUpdatePlayerLeft()
+        public async Task PassiveUpdatePlayerLeft()
         {
             foreach(BasicCard card in CardList)
             {
                 if(card.HasPassive && card.Passive.UpdatePlayerLeave)
                 {
-                    card.Passive.Update(this, card);
+                    if(!card.Passive.RequiresAsync)
+                        card.Passive.Update(this, card);
+                    else
+                        await card.Passive.UpdateAsync(this, card);
                 }
             }
         }

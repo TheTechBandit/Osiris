@@ -44,10 +44,6 @@ namespace Osiris.Discord
                 {
                     //Start duel
                     CombatInstance combat = new CombatInstance(idList);
-                    Team team1 = new Team(true);
-                    team1.TeamNum = 1;
-                    Team team2 = new Team(true);
-                    team2.TeamNum = 2;
 
                     combat.IsDuel = true;
                     var combatId = CombatHandler.NumberOfInstances();
@@ -55,11 +51,11 @@ namespace Osiris.Discord
 
                     fromUser.CombatRequest = 0;
                     fromUser.CombatID = combatId;
-                    combat.AddPlayerToCombat(fromUser, combat.CreateNewTeam());
+                    await combat.AddPlayerToCombat(fromUser, combat.CreateNewTeam());
 
                     toUser.CombatRequest = 0;
                     toUser.CombatID = combatId;
-                    combat.AddPlayerToCombat(toUser, combat.CreateNewTeam());
+                    await combat.AddPlayerToCombat(toUser, combat.CreateNewTeam());
 
                     CombatHandler.StoreInstance(combatId, combat);
 
@@ -76,6 +72,46 @@ namespace Osiris.Discord
                 //Tell the current user they have are a dum dum
                 await Context.Channel.SendMessageAsync($"{Context.User.Mention}, stop hitting yourself!");
             }
+        }
+
+        [Command("joincombat")]
+        public async Task JoinCombat()
+        {
+            ContextIds idList = new ContextIds(Context);
+            var user = UserHandler.GetUser(Context.User.Id);
+
+            //Tests each case to make sure all circumstances for the execution of this command are valid (character exists, in correct location)
+            try
+            {
+                await UserHandler.UserInCombat(idList);
+                await UserHandler.UserHasNoCards(idList, user);
+            }
+            catch(InvalidUserStateException)
+            {
+                return;
+            }
+            
+            var combat = CombatHandler.SearchForRaid(idList);
+
+            if(combat == null)
+            {
+                await Context.Channel.SendMessageAsync($"_There is no raid here._");
+                return;
+            }
+            else if(combat.Teams.Count == 1)
+            {
+                user.CombatRequest = 0;
+                user.CombatID = combat.CombatId;
+                await combat.AddPlayerToCombat(user, combat.CreateNewTeam());
+            }
+            else
+            {
+                user.CombatRequest = 0;
+                user.CombatID = combat.CombatId;
+                await combat.AddPlayerToCombat(user, combat.Teams[1]);
+            }
+
+            await Context.Channel.SendMessageAsync($"{user.Mention} joined combat!");
         }
 
         /*
@@ -121,7 +157,7 @@ namespace Osiris.Discord
 
             var combat = CombatHandler.GetInstance(targ.CombatID);
 
-            combat.AddPlayerToCombat(user, combat.GetTeam(targ));
+            await combat.AddPlayerToCombat(user, combat.GetTeam(targ));
             await MessageHandler.SendMessage(idList, $"{user.Mention} has joined {targ.Mention}'s team!");
         }
 
@@ -146,7 +182,7 @@ namespace Osiris.Discord
 
             var combat = CombatHandler.GetInstance(targ.CombatID);
 
-            combat.AddPlayerToCombat(user, combat.CreateNewTeam());
+            await combat.AddPlayerToCombat(user, combat.CreateNewTeam());
             await MessageHandler.SendMessage(idList, $"{user.Mention} has joined combat and created Team {user.TeamNum}!");
         }
 

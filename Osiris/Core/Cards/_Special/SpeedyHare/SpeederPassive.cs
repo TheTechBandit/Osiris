@@ -32,7 +32,7 @@ namespace Osiris
             var playerCount = inst.CardList.Count;
             eff.DamageStaticBuff = 1*playerCount;
 
-            Status = $"Currently at **{eff.DamageStaticBuff}%** bonus damage.";
+            Status = $"Currently at **{eff.DamageStaticBuff}** bonus damage.";
         }
     }
 }

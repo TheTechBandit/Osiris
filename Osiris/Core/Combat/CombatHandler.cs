@@ -56,6 +56,19 @@ namespace Osiris
             return _dic[key];
         }
 
+        public static CombatInstance SearchForRaid(ContextIds idList)
+        {
+            CombatInstance inst = null;
+
+            foreach(KeyValuePair<int, CombatInstance> entry in _dic)
+            {
+                if(!entry.Value.IsDuel && entry.Value.Location.ChannelId == idList.ChannelId)
+                    inst = entry.Value;
+            }
+
+            return inst;
+        }
+
         public static int NumberOfInstances()
         {
             return _dic.Count;
@@ -76,6 +89,8 @@ namespace Osiris
 
             inst.Players.Remove(player);
 
+            var turnskip = false;
+            BasicCard skipCard = null;
             foreach(BasicCard card in player.ActiveCards)
             {
                 //Remove any markers corresponding to the cards to be removed from combat
@@ -86,7 +101,7 @@ namespace Osiris
                     {  
                         if(card2.Markers[i].OriginTurnNum == turnnum)
                             card2.Markers.RemoveAt(i);
-                    } 
+                    }
                 }
 
                 inst.CardList.Remove(card);
@@ -94,13 +109,16 @@ namespace Osiris
                 if(turnnum <= inst.TurnNumber)
                     inst.TurnNumber--;
                 if(card.IsTurn)
-                    await SkipTurn(inst, card);
+                {
+                    turnskip = true;
+                    skipCard = card;
+                }
             }
 
             inst.GetTeam(player).Members.Remove(player);
             player.ResetCombatFields(inst.IsDuel);
 
-            inst.PassiveUpdatePlayerLeft();
+            await inst.PassiveUpdatePlayerLeft();
 
             await MessageHandler.UserForfeitsCombat(inst.Location, player);
 
@@ -108,6 +126,9 @@ namespace Osiris
             {
                 await CheckTeamElimination(inst, team);
             }
+
+            if(turnskip)
+                await SkipTurn(inst, skipCard);
 
             SaveInstances();
         }
@@ -164,7 +185,7 @@ namespace Osiris
 
             foreach(UserAccount player in inst.Players)
             {
-                player.ResetCombatFields(true);
+                player.ResetCombatFields(inst.IsDuel);
             }
 
             UserHandler.SaveUsers();
@@ -177,10 +198,19 @@ namespace Osiris
             await NextRound(inst);
         }
 
+        public static async Task InitiateRaid(CombatInstance inst)
+        {
+            await MessageHandler.SendMessage(inst.Location, $"**COMBAT START!**");
+            await NextRound(inst);
+        }
+
         public static async Task NextRound(CombatInstance inst)
         {
+            Console.WriteLine("1");
             inst.RoundNumber++;
             inst.TurnNumber = 0;
+
+            Console.WriteLine("2");
 
             if(inst.CombatEnded)
             {
@@ -188,14 +218,19 @@ namespace Osiris
                 return;
             }
 
+            Console.WriteLine("3");
+
+            await MessageHandler.SendEmbedMessage(inst.Location, "", OsirisEmbedBuilder.RoundStart(inst));
+
+            Console.WriteLine("4");
+
             foreach(BasicCard card in inst.CardList)
             {
                 await card.RoundTick();
             }
 
-            PassiveUpdateRoundStart(inst);
-            
-            await MessageHandler.SendEmbedMessage(inst.Location, "", OsirisEmbedBuilder.RoundStart(inst));
+            Console.WriteLine("5");
+            await PassiveUpdateRoundStart(inst);
 
             inst.TurnNumber = -1;
 
@@ -204,13 +239,16 @@ namespace Osiris
             await NextTurn(inst);
         }
 
-        public static void PassiveUpdateRoundStart(CombatInstance inst)
+        public static async Task PassiveUpdateRoundStart(CombatInstance inst)
         {
             foreach(BasicCard card in inst.CardList)
             {
                 if(card.HasPassive && card.Passive.UpdateRoundStart)
                 {
-                    card.Passive.Update(inst, card);
+                    if(!card.Passive.RequiresAsync)
+                        card.Passive.Update(inst, card);
+                    else
+                        await card.Passive.UpdateAsync(inst, card);
                 }
             }
         }

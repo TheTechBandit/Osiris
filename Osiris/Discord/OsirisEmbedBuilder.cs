@@ -48,8 +48,10 @@ namespace Osiris.Discord
 
         public static Embed RoundStart(CombatInstance inst)
         {
+            Console.WriteLine("a");
             var builder = new EmbedBuilder()
 	        .WithAuthor($"Round: {inst.RoundNumber}");
+            Console.WriteLine("b");
 
             var players = "";
             var effects = "";
@@ -58,7 +60,7 @@ namespace Osiris.Discord
             {
                 string shields = "";
 
-                if(card.Effects.Count > 0 || card.Markers.Count > 0)
+                if(card.Effects.Count > 0 || card.Markers.Count > 0 || card.HasPassive)
                     effects += $"({card.Signature})";
 
                 
@@ -74,7 +76,7 @@ namespace Osiris.Discord
                     effects += $"\n{eff.ToString()}";
                 }
                 if(card.HasPassive)
-                    effects += $"\n{card.Passive.ToString()}";
+                    effects += $"\n**{card.Passive.Name} ({card.Signature}'s Passive)**- {card.Passive.Description}";
 
                 if(light > 0)
                     shields += $"{light} light shields. ";
@@ -87,27 +89,33 @@ namespace Osiris.Discord
                 {
                     effects += $"\n{mark.ToString()}";
                 }
-                if(card.Effects.Count > 0 || card.Markers.Count > 0)
+                if(card.Effects.Count > 0 || card.Markers.Count > 0 || card.HasPassive)
                     effects += "\n.\n";
 
                 if(card.Name.Equals(card.Signature))
                     players += $"**[{card.Name}]:** {card.CurrentHP}/{card.TotalHP} HP {shields}\n";
                 else
                     players += $"**[{card.Name}] {card.Signature}:** {card.CurrentHP}/{card.TotalHP} HP {shields}\n";
-
             }
+            Console.WriteLine("c");
 
             if(effects.Length == 0)
             {
                 effects = "none";
             }
+            Console.WriteLine("d");
 
             builder.WithDescription(players);
+            Console.WriteLine("e");
             builder.AddField("ACTIVE EFFECTS", effects, false);
+            Console.WriteLine("f");
             builder.WithFooter($"It is {inst.Players[inst.TurnNumber].Name}'s turn.");
+            Console.WriteLine("g");
         	builder.WithColor(62, 62, 255);
+            Console.WriteLine("h");
 
             var embed = builder.Build();
+            Console.WriteLine("i");
             return embed;
         }
 

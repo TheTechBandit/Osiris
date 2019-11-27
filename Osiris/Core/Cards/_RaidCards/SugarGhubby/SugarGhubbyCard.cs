@@ -9,6 +9,7 @@ namespace Osiris
         public override bool Hidden { get; } = true;
         public override bool Disabled { get; } = false;
         public override List<BasicMove> Moves { get; } = new List<BasicMove>();
+        public override BasicPassive Passive { get; } = new GhubbleTroublePassive(true);
 
         public SugarGhubbyCard() : base()
         {
@@ -16,9 +17,7 @@ namespace Osiris
         }
 
         public SugarGhubbyCard(bool newcard) : base(newcard)
-        {
-            HasPassive = false;
-            
+        {            
             Picture = "https://cdn.discordapp.com/attachments/460357767484407809/648290945162543124/Sugar_Ghubby.jpg";
             Moves.Add(new Swipe(true));
             Moves.Add(new SyrupSlide(true));

@@ -12,6 +12,15 @@ namespace Osiris
             Gen = new Random();
         }
 
+        public static bool PercentChance(int chance)
+        {
+            int roll = Gen.Next(100);
+            if(roll < chance)
+                return true;
+            else
+                return false;
+        }
+
         public static int RandomNum(int min, int max)
         {
             return Gen.Next(min, max+1);

@@ -1,8 +1,10 @@
+using System;
 using System.Threading.Tasks;
+using Osiris.Discord;
 
 namespace Osiris
 {
-    public class SpareCarrot: BasicPassive
+    public class SpareCarrotPassive: BasicPassive
     {
         //Name of the move
         public override string Name { get; } = "Spare Carrot";
@@ -11,49 +13,56 @@ namespace Osiris
         //Description of what this move does
         public override string Description { get; } = "At the start of each round, a friendly player with the lowest HP will have 10 HP restored.";
         //Current status of the passive
-        public override string Status { get; set; } = "";
+        public override string Status { get; set; } = ".";
 
-        public SpareCarrot() : base()
+        public SpareCarrotPassive() : base()
         {
 
         }
 
-        public SpareCarrot(bool def) : base(def)
+        public SpareCarrotPassive(bool def) : base(def)
         {
             SetupBuff();
 
+            RequiresAsync = true;
             UpdateRoundStart = true;
         }
 
-        public override void Update(CombatInstance inst, BasicCard owner)
+        public override async Task UpdateAsync(CombatInstance inst, BasicCard owner)
         {
-            BasicCard lowest = null;
-            var lowestHP = 101.0;
-            foreach(UserAccount teammate in inst.GetTeam(owner).Members)
+            if(inst.RoundNumber != 1)
             {
-                foreach(BasicCard card in teammate.ActiveCards)
+                BasicCard lowest = null;
+                var lowestHP = 1.0;
+                foreach(UserAccount teammate in inst.GetTeam(owner).Members)
                 {
-                    if(card.HPPercentage() < lowestHP && !card.Dead)
+                    foreach(BasicCard card in teammate.ActiveCards)
                     {
-                        lowestHP = card.HPPercentage();
-                        lowest = card;
+                        if(card.HPPercentage() < lowestHP && !card.Dead && card.Owner != owner.Owner)
+                        {
+                            Console.WriteLine($"{card.HPPercentage()}% health detected");
+                            lowestHP = card.HPPercentage();
+                            lowest = card;
+                        }
                     }
                 }
-            }
 
-            if(lowestHP < 100.0 && lowest != null)
-            {
-                var heal = 10;
-                heal = owner.ApplyHealingBuffs(heal, false);
-                heal = lowest.Heal(heal, false);
-                eff.Extra += heal;
-            }
-            else
-            {
-                //Nobody needed healing
-            }
+                if(lowestHP < 1.0 && lowest != null)
+                {
+                    var heal = 10;
+                    heal = owner.ApplyHealingBuffs(heal, false);
+                    heal = lowest.Heal(heal, false);
+                    eff.Extra[0] += heal;
+                    Status = $"Healed a total of {eff.Extra[0]} HP.";
 
-            Status = $"Healed a total of {eff.Extra} HP.";
+                    await MessageHandler.SendMessage(inst.Location, $"{owner.Signature} gives {lowest.Signature} a spare carrot! They restore {heal} HP.");
+                }
+                else
+                {
+                    //Nobody needed healing
+                    await MessageHandler.SendMessage(inst.Location, $"{owner.Signature} has a spare carrot but nobody needed healing!");
+                }
+            }
         }
     }
 }

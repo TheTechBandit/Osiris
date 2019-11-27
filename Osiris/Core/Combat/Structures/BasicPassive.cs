@@ -15,14 +15,16 @@ namespace Osiris
         public virtual string Status { get; set; }
         //Buffs involved
         public BuffDebuff eff { get; set; }
+        //True if the passive requires Async to run
+        public bool RequiresAsync { get; set; } = false;
         //Updates on player joining combat
-        public bool UpdatePlayerJoin { get; set; }
+        public bool UpdatePlayerJoin { get; set; } = false;
         //Updates on player leaving combat
-        public bool UpdatePlayerLeave { get; set; }
+        public bool UpdatePlayerLeave { get; set; } = false;
         //Updates on each round start
-        public bool UpdateRoundStart { get; set; }
+        public bool UpdateRoundStart { get; set; } = false;
         //Updates on joining combat
-        public bool UpdateJoinCombat { get; set; }
+        public bool UpdateJoinCombat { get; set; } = false;
 
 
         public BasicPassive()
@@ -33,16 +35,16 @@ namespace Osiris
         public BasicPassive(bool def)
         {
             eff = new BuffDebuff();
-
-            UpdatePlayerJoin = false;
-            UpdatePlayerLeave = false;
-            UpdateRoundStart = false;
-            UpdateJoinCombat = false;
         }
 
         public virtual void Update(CombatInstance inst, BasicCard owner)
         {
 
+        }
+
+        public virtual async Task UpdateAsync(CombatInstance instance, BasicCard owner)
+        {
+            await Task.Run(null);
         }
 
         public void SetupBuff()

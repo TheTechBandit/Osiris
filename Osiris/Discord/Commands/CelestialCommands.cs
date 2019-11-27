@@ -28,6 +28,58 @@ namespace Osiris.Discord
             await MessageHandler.SendMessage(idList, str);
         }
 
+        //Echos your message in the specified channel
+        [RequireCelestialAttribute]
+        [Command("initiateraid")]
+        public async Task InitiateRaid(SocketGuildChannel channel)
+        {
+            ContextIds idList = new ContextIds(Context);
+            idList.ChannelId = channel.Id;
+            var user = UserHandler.GetUser(idList.UserId);
+
+            //Tests each case to make sure all circumstances for the execution of this command are valid (character exists, in correct location)
+            try
+            {
+                await UserHandler.UserInCombat(idList);
+                await UserHandler.UserHasNoCards(idList, user);
+            }
+            catch(InvalidUserStateException)
+            {
+                return;
+            }
+
+            //Start raid
+            CombatInstance combat = new CombatInstance(idList);
+
+            combat.IsDuel = false;
+            var combatId = CombatHandler.NumberOfInstances();
+            combat.CombatId = combatId;
+
+            user.CombatRequest = 0;
+            user.CombatID = combatId;
+            await combat.AddPlayerToCombat(user, combat.CreateNewTeam());
+
+            await MessageHandler.SendMessage(idList, $"{user.ActiveCards[0].Name} is attacking {channel.Name}!\n```\nUse 0.joincombat to join\n```");
+
+            CombatHandler.StoreInstance(combatId, combat);
+        }
+
+        //Echos your message in the specified channel
+        [RequireCelestialAttribute]
+        [Command("startraid")]
+        public async Task StartRaid()
+        {
+            ContextIds idList = new ContextIds(Context);
+            var user = UserHandler.GetUser(idList.UserId);
+
+            var combat = CombatHandler.GetInstance(user.CombatID);
+            
+            if(!combat.IsDuel && combat.RoundNumber == 0)
+            {
+                await CombatHandler.InitiateRaid(combat);
+            }
+        }
+
         [RequireCelestialAttribute]
         [Command("celcardlist")]
         public async Task CelestialCardList()
@@ -39,7 +91,7 @@ namespace Osiris.Discord
             str += $"{new SugarGhubbyCard().Name}\n";
             str += "```\n";
 
-            await MessageHandler.SendMessage(idList, str);  
+            await MessageHandler.SendMessage(idList, str);
         }
 
         [RequireCelestialAttribute]

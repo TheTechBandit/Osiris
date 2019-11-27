@@ -51,19 +51,22 @@ namespace Osiris
                 {
                     foreach(BasicCard teamCard in teammate.ActiveCards)
                     {
-                        var teamheal = (int)Math.Floor((double)heal/team.Count);
-                        if(rem > 0)
+                        if(!teamCard.Dead)
                         {
-                            rem--;
-                            teamheal++;
-                        }
+                            var teamheal = (int)Math.Floor((double)heal/team.Count);
+                            if(rem > 0)
+                            {
+                                rem--;
+                                teamheal++;
+                            }
 
-                        teamCard.Heal(teamheal, true);
-                        await MessageHandler.SendMessage(inst.Location, $"{teamCard.Signature} healed for {teamheal} HP.");
+                            teamCard.Heal(teamheal, true);
+                            await MessageHandler.SendMessage(inst.Location, $"{teamCard.Signature} healed for {teamheal} HP.");
+                        }
                     }
                 }
 
-                await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn()} healed the party for a total of {heal} HP!");
+                await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} healed the party for a total of {heal} HP!");
             }
             
             OnCooldown = true;
