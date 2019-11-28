@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Discord;
 
 namespace Osiris.Discord
@@ -46,24 +47,26 @@ namespace Osiris.Discord
             return embed;
         }
 
-        public static Embed RoundStart(CombatInstance inst)
+        public static List<Embed> RoundStart(CombatInstance inst)
         {
             Console.WriteLine("a");
+            List<Embed> embeds = new List<Embed>();
             var builder = new EmbedBuilder()
 	        .WithAuthor($"Round: {inst.RoundNumber}");
             Console.WriteLine("b");
 
             var players = "";
-            var effects = "";
+            List<string> effectTitles = new List<string>();
+            List<List<string>> effects = new List<List<string>>();
 
             foreach(BasicCard card in inst.CardList)
             {
+                List<string> currentPlayerEffects = new List<string>();
                 string shields = "";
 
                 if(card.Effects.Count > 0 || card.Markers.Count > 0 || card.HasPassive)
-                    effects += $"({card.Signature})";
+                    effectTitles.Add($"({card.Signature})");
 
-                
                 var light = 0;
                 var medium = 0;
                 var heavy = 0;    
@@ -73,10 +76,10 @@ namespace Osiris.Discord
                     medium += eff.MediumShield;
                     heavy += eff.HeavyShield;
                     
-                    effects += $"\n{eff.ToString()}";
+                    currentPlayerEffects.Add($"\n{eff.ToString()}");
                 }
                 if(card.HasPassive)
-                    effects += $"\n**{card.Passive.Name} ({card.Signature}'s Passive)**- {card.Passive.Description}";
+                    currentPlayerEffects.Add($"\n**{card.Passive.Name} ({card.Signature}'s Passive)**- {card.Passive.Description}");
 
                 if(light > 0)
                     shields += $"{light} light shields. ";
@@ -87,37 +90,97 @@ namespace Osiris.Discord
                     
                 foreach(Marker mark in card.Markers)
                 {
-                    effects += $"\n{mark.ToString()}";
+                    currentPlayerEffects.Add($"\n{mark.ToString()}");
                 }
-                if(card.Effects.Count > 0 || card.Markers.Count > 0 || card.HasPassive)
-                    effects += "\n.\n";
+                //if(card.Effects.Count > 0 || card.Markers.Count > 0 || card.HasPassive)
+                    //currentPlayerEffects.Add("\n.\n");
 
                 if(card.Name.Equals(card.Signature))
                     players += $"**[{card.Name}]:** {card.CurrentHP}/{card.TotalHP} HP {shields}\n";
                 else
                     players += $"**[{card.Name}] {card.Signature}:** {card.CurrentHP}/{card.TotalHP} HP {shields}\n";
+                
+                if(currentPlayerEffects.Count == 0)
+                {
+                    currentPlayerEffects.Add("none");
+                }
+
+                effects.Add(currentPlayerEffects);
             }
             Console.WriteLine("c");
 
-            if(effects.Length == 0)
-            {
-                effects = "none";
-            }
             Console.WriteLine("d");
-
             builder.WithDescription(players);
             Console.WriteLine("e");
-            builder.AddField("ACTIVE EFFECTS", effects, false);
+            //builder.AddField("ACTIVE EFFECTS", finalEffects, false);
             Console.WriteLine("f");
             builder.WithFooter($"It is {inst.Players[inst.TurnNumber].Name}'s turn.");
             Console.WriteLine("g");
         	builder.WithColor(62, 62, 255);
             Console.WriteLine("h");
-
             var embed = builder.Build();
             Console.WriteLine("i");
-            return embed;
+            embeds.Add(embed);
+            Console.WriteLine("j");
+
+            effects.Reverse();
+            effectTitles.Reverse();
+            while(effects.Count > 0)
+            {
+                Console.WriteLine("k");
+                var bail = false;
+                var effBuilder = new EmbedBuilder()
+                .WithAuthor($"**ACTIVE EFFECTS**")
+                .WithFooter($"It is {inst.Players[inst.TurnNumber].Name}'s turn.");
+                Console.WriteLine("l");
+
+                for (int i = effects.Count - 1; i >= 0; i--)
+                {
+                    Console.WriteLine("m");
+                    var playerEffects = "";
+                    int totalChars = 0;
+                    for (int j = effects[i].Count - 1; j >= 0; j--)
+                    {
+                        Console.WriteLine("n");
+                        totalChars += effects[i][j].Length;
+                        Console.WriteLine("o");
+                        if(totalChars < 1024)
+                        {
+                            Console.WriteLine("p");
+                            playerEffects += $"{effects[i][j]}\n";
+                            Console.WriteLine("q");
+                            effects[i].RemoveAt(j);
+                            Console.WriteLine("r");
+                        }
+                        else
+                        {
+                            Console.WriteLine("s");
+                            effBuilder.AddField($"{effectTitles[i]}", $"{playerEffects}", false);
+                            Console.WriteLine("t");
+                            bail = true;
+                            Console.WriteLine("u");
+                            break;
+                        }
+                    }
+                    Console.WriteLine("v");
+                    if(bail)
+                        break;
+                    Console.WriteLine("w");
+                    effBuilder.AddField($"{effectTitles[i]}", $"{playerEffects}", false);
+                    Console.WriteLine("x");
+                    effectTitles.RemoveAt(i);
+                    effects.RemoveAt(i);
+                    Console.WriteLine("y");
+                }
+                Console.WriteLine("z");
+                embeds.Add(effBuilder.Build());
+                Console.WriteLine("za");
+            }
+            Console.WriteLine("zb");
+
+            return embeds;
         }
+        
 
         public static Embed PlayerTurnStatus(BasicCard card, int round)
         {

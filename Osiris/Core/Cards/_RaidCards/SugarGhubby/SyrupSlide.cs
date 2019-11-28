@@ -62,7 +62,7 @@ namespace Osiris
                 }
             }
 
-            await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} unleashes an avalanche of syrup!{str}\n{inst.GetCardTurn().Signature} dealt a total of {totalDam}");
+            await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} unleashes an avalanche of syrup!{str}\n{inst.GetCardTurn().Signature} dealt a total of {totalDam} damage.");
 
             OnCooldown = true;
             CurrentCooldown = Cooldown;

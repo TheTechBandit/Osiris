@@ -157,8 +157,11 @@ namespace Osiris.Discord
 
             var combat = CombatHandler.GetInstance(targ.CombatID);
 
-            await combat.AddPlayerToCombat(user, combat.GetTeam(targ));
-            await MessageHandler.SendMessage(idList, $"{user.Mention} has joined {targ.Mention}'s team!");
+            if(combat.IsDuel)
+            {
+                await combat.AddPlayerToCombat(user, combat.GetTeam(targ));
+                await MessageHandler.SendMessage(idList, $"{user.Mention} has joined {targ.Mention}'s team!");
+            }
         }
 
         [Command("newteam")]
@@ -182,8 +185,11 @@ namespace Osiris.Discord
 
             var combat = CombatHandler.GetInstance(targ.CombatID);
 
-            await combat.AddPlayerToCombat(user, combat.CreateNewTeam());
-            await MessageHandler.SendMessage(idList, $"{user.Mention} has joined combat and created Team {user.TeamNum}!");
+            if(combat.IsDuel)
+            {
+                await combat.AddPlayerToCombat(user, combat.CreateNewTeam());
+                await MessageHandler.SendMessage(idList, $"{user.Mention} has joined combat and created Team {user.TeamNum}!");
+            }
         }
 
         [Command("forfeit")]
@@ -223,7 +229,10 @@ namespace Osiris.Discord
                 return;
             }
 
-            await MessageHandler.SendEmbedMessage(idList, "", OsirisEmbedBuilder.RoundStart(CombatHandler.GetInstance(user.CombatID)));
+            var inst = CombatHandler.GetInstance(user.CombatID);
+            var embeds = OsirisEmbedBuilder.RoundStart(inst);
+            for(int i = 0; i < embeds.Count; i++)
+                await MessageHandler.SendEmbedMessage(inst.Location, "", embeds[i]);
         }
 
     }

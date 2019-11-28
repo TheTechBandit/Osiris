@@ -59,6 +59,10 @@ namespace Osiris
                         moves[rand].OnCooldown = false;
                         moves[rand].CurrentCooldown = 0;
 
+                        await MessageHandler.SendMessage(inst.Location, $"{flavorText} {moves[rand].Name}'s cooldown was reduced by 2. It is now off cooldown!");
+                    }
+                    else
+                    {
                         await MessageHandler.SendMessage(inst.Location, $"{flavorText} {moves[rand].Name}'s cooldown was reduced by 2.");
                     }
                 }

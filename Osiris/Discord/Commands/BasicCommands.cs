@@ -28,6 +28,7 @@ namespace Osiris.Discord
             str += "_check {user}_: Displays the selected user's card. Alternatively, replace user with a card name and it will give you the specified card's info. If used during combat, it will display active effects and cooldowns.\n";
             str += "_info {card name}_: Displays the info for the specified card. If you misspell, it will display VRFamily by default.\n";
             str += "\n**COMBAT**\n";
+            str += "_joincombat_: Joins a raid, if there is one.\n";
             str += "_duel {user}_: Sends a duel request to the user.\n";
             str += "_jointeam {user}_: Join the specified user's team, if they are in a duel. Does not work on Raids.\n";
             str += "_newteam {user}_: Creates a new team in the specified user's duel. Does not work on Raids.\n";
@@ -106,6 +107,7 @@ namespace Osiris.Discord
             await MessageHandler.SendMessage(idList, $"Registered as {user.ActiveCards[0].Name}.");
         }
 
+        /*
         [Command("sigset")]
         public async Task SigSet()
         {
@@ -127,6 +129,7 @@ namespace Osiris.Discord
 
             user.ActiveCards[0].Signature = "";
         }
+        */
 
         [Command("removecard")]
         public async Task RemoveCard([Remainder] string str)

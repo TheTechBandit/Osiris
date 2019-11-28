@@ -181,7 +181,10 @@ namespace Osiris
             _dic.Remove(inst.Players[0].CombatID);
             inst.CombatEnded = true;
 
-            await MessageHandler.SendEmbedMessage(inst.Location, "**Combat End**", OsirisEmbedBuilder.RoundStart(inst));
+            var embeds = OsirisEmbedBuilder.RoundStart(inst);
+            await MessageHandler.SendEmbedMessage(inst.Location, "**Combat End**", embeds[0]);
+            for(int i = 1; i < embeds.Count; i++)
+                await MessageHandler.SendEmbedMessage(inst.Location, "", embeds[i]);
 
             foreach(UserAccount player in inst.Players)
             {
@@ -211,16 +214,20 @@ namespace Osiris
             inst.TurnNumber = 0;
 
             Console.WriteLine("2");
+            var embeds = OsirisEmbedBuilder.RoundStart(inst);
 
             if(inst.CombatEnded)
             {
-                await MessageHandler.SendEmbedMessage(inst.Location, "**Combat End**", OsirisEmbedBuilder.RoundStart(inst));
+                await MessageHandler.SendEmbedMessage(inst.Location, "**Combat End**", embeds[0]);
+                for(int i = 1; i < embeds.Count; i++)
+                    await MessageHandler.SendEmbedMessage(inst.Location, "", embeds[i]);
                 return;
             }
 
             Console.WriteLine("3");
 
-            await MessageHandler.SendEmbedMessage(inst.Location, "", OsirisEmbedBuilder.RoundStart(inst));
+            for(int i = 0; i < embeds.Count; i++)
+                await MessageHandler.SendEmbedMessage(inst.Location, "", embeds[i]);
 
             Console.WriteLine("4");
 

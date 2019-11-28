@@ -349,11 +349,10 @@ namespace Osiris
 
             CurrentHP -= healthDamage;
 
-            /*
+            
             if(CurrentHP < 0)
                 CurrentHP = 0;
-            */
-
+            
             EffectCleanup();
 
             List<int> output = new List<int>();
@@ -468,6 +467,9 @@ namespace Osiris
             }
 
             CurrentHP -= totalDamage;
+
+            if(CurrentHP < 0)
+                CurrentHP = 0;
         }
 
         public string GetDeathMessage()

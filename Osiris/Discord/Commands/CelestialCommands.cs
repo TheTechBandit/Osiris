@@ -19,12 +19,16 @@ namespace Osiris.Discord
             string str = "";
             str += "[] signifies an optional input, {} signifies required input";
             str += "\n**CELESTIAL:**\n";
+            str += "_initiateraid {channel}_: Starts the initial raid, allowing people to join. Combat won't be started yet.\n";
+            str += "_startraid_: If you are currently in a raid that has not started yet, it will begin.";
             str += "_celcardlist_: Lists all celestial cards.\n";
             str += "_setcard {user} {card}_: Sets the card of another user.\n";
             str += "_addcardnext {card}_: Adds the specified card to your list of cards, allowing you to have multiple cards.\n";
             str += "_sigset_ {user} [n] [signature]_: Sets your nth card's signature to the specified signature. If n is blank, it assumes your first card. If signature is blank, your signature will become blank.\n";
             str += "_echo {channel} {message}_: Osiris says the specified message in the specified channel\n";
             str += "_blind {channel}_: Spams blinding light 10 times in selected channel.\n";
+            str += "_forceskip {user}_: Force-skips mentioned user's turn.";
+            str += "_forceheal {user}_: Force-heals mentioned user.";
             await MessageHandler.SendMessage(idList, str);
         }
 
@@ -59,7 +63,7 @@ namespace Osiris.Discord
             user.CombatID = combatId;
             await combat.AddPlayerToCombat(user, combat.CreateNewTeam());
 
-            await MessageHandler.SendMessage(idList, $"{user.ActiveCards[0].Name} is attacking {channel.Name}!\n```\nUse 0.joincombat to join\n```");
+            await MessageHandler.SendMessage(idList, $"{user.ActiveCards[0].Name} is attacking #{channel.Name}!\n```\nUse 0.joincombat to join\n```");
 
             CombatHandler.StoreInstance(combatId, combat);
         }
@@ -272,6 +276,38 @@ namespace Osiris.Discord
             }
         }
 
+        //Force skip a player's turn.
+        [RequireCelestialAttribute]
+        [Command("forceskip")]
+        public async Task ForceSkip(SocketGuildUser target)
+        {
+            ContextIds idList = new ContextIds(Context);
+            var user = UserHandler.GetUser(idList.UserId);
+            var targetUser = UserHandler.GetUser(target.Id);
+
+            //Tests each case to make sure all circumstances for the execution of this command are valid (character exists, in correct location)
+            try
+            {
+                await UserHandler.OtherUserHasNoCards(idList, user, targetUser);
+                await UserHandler.OtherUserNotInCombat(idList, targetUser);
+            }
+            catch(InvalidUserStateException)
+            {
+                return;
+            }
+
+            var combat = CombatHandler.GetInstance(targetUser.CombatID);
+
+            foreach(BasicCard card in targetUser.ActiveCards)
+            {
+                if(card.IsTurn)
+                {
+                    await CombatHandler.SkipTurn(combat, card);
+                    await MessageHandler.SendMessage(combat.Location, $"{card.Signature}'s turn was force-skipped by a Celestial!");
+                }
+            }
+        }
+
         //Disable a user (permanent turnskip debuff)
         [RequireCelestialAttribute]
         [Command("forcedisable")]
@@ -281,6 +317,37 @@ namespace Osiris.Discord
             var user = UserHandler.GetUser(idList.UserId);
 
             await ReplyAsync("Shut up i havent implemented this yet");
+        }
+
+        //Disable a user (permanent turnskip debuff)
+        [RequireCelestialAttribute]
+        [Command("forceheal")]
+        public async Task ForceHeal(SocketGuildUser target)
+        {
+            ContextIds idList = new ContextIds(Context);
+            var user = UserHandler.GetUser(idList.UserId);
+            var targetUser = UserHandler.GetUser(target.Id);
+
+            //Tests each case to make sure all circumstances for the execution of this command are valid (character exists, in correct location)
+            try
+            {
+                await UserHandler.OtherUserHasNoCards(idList, user, targetUser);
+            }
+            catch(InvalidUserStateException)
+            {
+                return;
+            }
+
+            var combat = CombatHandler.GetInstance(targetUser.CombatID);
+
+            foreach(BasicCard card in targetUser.ActiveCards)
+            {
+                if(card.IsTurn)
+                {
+                    card.CurrentHP = card.TotalHP;
+                    card.Dead = false;
+                }
+            }
         }
     }
 }
