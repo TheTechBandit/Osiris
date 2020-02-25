@@ -57,6 +57,7 @@ namespace Osiris.Discord
             List<string> effectTitles = new List<string>();
             List<List<string>> effects = new List<List<string>>();
 
+            int cardCount = 1;
             foreach(BasicCard card in inst.CardList)
             {
                 List<string> currentPlayerEffects = new List<string>();
@@ -94,9 +95,9 @@ namespace Osiris.Discord
                     //currentPlayerEffects.Add("\n.\n");
 
                 if(card.Name.Equals(card.Signature))
-                    players += $"**[{card.Name}]:** {card.CurrentHP}/{card.TotalHP} HP {shields}\n";
+                    players += $"{cardCount}. **[{card.Name}]:** {card.CurrentHP}/{card.TotalHP} HP {shields}\n";
                 else
-                    players += $"**[{card.Name}] {card.Signature}:** {card.CurrentHP}/{card.TotalHP} HP {shields}\n";
+                    players += $"{cardCount}. **[{card.Name}] {card.Signature}:** {card.CurrentHP}/{card.TotalHP} HP {shields}\n";
                 
                 if(currentPlayerEffects.Count == 0)
                 {
