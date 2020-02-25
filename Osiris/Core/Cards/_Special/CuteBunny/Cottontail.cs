@@ -14,7 +14,6 @@ namespace Osiris
         public override int Targets { get; } = 1;
         public override bool IsUltimate { get; } = false;
         public override int Cooldown { get; } = 7;
-        public override string CooldownText { get; } = "COOLDOWN: 7 Turns";
 
         public Cottontail() : base()
         {

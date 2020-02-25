@@ -250,12 +250,15 @@ namespace Osiris
         {
             foreach(BasicCard card in inst.CardList)
             {
-                if(card.HasPassive && card.Passive.UpdateRoundStart)
+                if(card.HasPassive)
                 {
-                    if(!card.Passive.RequiresAsync)
-                        card.Passive.Update(inst, card);
-                    else
-                        await card.Passive.UpdateAsync(inst, card);
+                    if(card.Passive.UpdateRoundStart)
+                    {
+                        if(!card.Passive.RequiresAsync)
+                            card.Passive.Update(inst, card);
+                        else
+                            await card.Passive.UpdateAsync(inst, card);
+                    }
                 }
             }
         }

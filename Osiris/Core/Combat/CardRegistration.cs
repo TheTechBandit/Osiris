@@ -25,6 +25,9 @@ namespace Osiris
                 case "ghub":
                     card = new GhubCard(true);
                     break;
+                case "ika":
+                    card = new IkaCard(true);
+                    break;
                 case "sugar ghubby":
                     card = new SugarGhubbyCard(true);
                     break;
@@ -41,7 +44,7 @@ namespace Osiris
                     card = new CuteBunnyCard(true);
                     break;
                 default:
-                    card = new CuteBunnyCard(true);
+                    card = new VRFamilyCard(true);
                     break;
             }
 

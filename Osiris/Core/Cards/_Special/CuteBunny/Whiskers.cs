@@ -13,7 +13,6 @@ namespace Osiris
         public override int Targets { get; } = 2;
         public override bool IsUltimate { get; } = false;
         public override int Cooldown { get; } = 4;
-        public override string CooldownText { get; } = "COOLDOWN: 4 Turns";
 
         public Whiskers() : base()
         {

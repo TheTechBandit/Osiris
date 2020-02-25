@@ -13,7 +13,6 @@ namespace Osiris
         public override int Targets { get; } = 0;
         public override bool IsUltimate { get; } = false;
         public override int Cooldown { get; } = 12;
-        public override string CooldownText { get; } = "COOLDOWN: 12 Turns";
 
         public StalwartSoul() : base()
         {

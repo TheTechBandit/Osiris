@@ -13,7 +13,6 @@ namespace Osiris
         public override int Targets { get; } = 0;
         public override bool IsUltimate { get; } = false;
         public override int Cooldown { get; } = 0;
-        public override string CooldownText { get; } = "";
 
         public Swipe() : base()
         {

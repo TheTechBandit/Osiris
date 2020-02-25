@@ -33,7 +33,7 @@ namespace Osiris.Discord
             str += "_jointeam {user}_: Join the specified user's team, if they are in a duel. Does not work on Raids.\n";
             str += "_newteam {user}_: Creates a new team in the specified user's duel. Does not work on Raids.\n";
             str += "_round_: Displays the current round info.\n";
-            str += "_forfeit_: Exit combat. Counts as a loss. If used in a Raid, you are killed.";
+            str += "_forfeit_: Exit combat. Counts as a loss. If used in a Raid, you are killed.\n";
             str += "_use {move}_: This command is, ironically, unused for now.\n";
             await MessageHandler.SendMessage(idList, str);   
         }
@@ -195,6 +195,28 @@ namespace Osiris.Discord
             else
             {
                 foreach(BasicCard card in other.ActiveCards)
+                {
+                    await MessageHandler.SendEmbedMessage(idList, "", OsirisEmbedBuilder.PlayerTurnStatus(card, CombatHandler.GetInstance(user.CombatID).RoundNumber));
+                }
+            }
+        }
+
+        [Command("check")]
+        public async Task CheckCard()
+        {
+            ContextIds idList = new ContextIds(Context);
+            var user = UserHandler.GetUser(idList.UserId);
+
+            if(user.CombatID == -1)
+            {
+                foreach(BasicCard card in user.ActiveCards)
+                {
+                    await MessageHandler.SendEmbedMessage(idList, "", OsirisEmbedBuilder.CardList(card));
+                }
+            }
+            else
+            {
+                foreach(BasicCard card in user.ActiveCards)
                 {
                     await MessageHandler.SendEmbedMessage(idList, "", OsirisEmbedBuilder.PlayerTurnStatus(card, CombatHandler.GetInstance(user.CombatID).RoundNumber));
                 }

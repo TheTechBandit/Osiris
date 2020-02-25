@@ -18,7 +18,7 @@ namespace Osiris.Discord
             if(card.Name.Equals(card.Signature))
                 builder.WithAuthor($"{card.Name}");
             else
-	            builder.WithAuthor($"{card.Name} {card.Signature}");
+	            builder.WithAuthor($"{card.Name} ({card.Signature})");
 
             builder.WithImageUrl(card.Picture);
 
@@ -26,7 +26,7 @@ namespace Osiris.Discord
             {
                 string cooldownText = "";
                 if(move.Cooldown != 0)
-                    cooldownText += $"**{move.CooldownText}**";
+                    cooldownText += $"**{move.CooldownText()}**";
 
                 string ult = "";
                 if(move.IsUltimate)
@@ -49,11 +49,9 @@ namespace Osiris.Discord
 
         public static List<Embed> RoundStart(CombatInstance inst)
         {
-            Console.WriteLine("a");
             List<Embed> embeds = new List<Embed>();
             var builder = new EmbedBuilder()
 	        .WithAuthor($"Round: {inst.RoundNumber}");
-            Console.WriteLine("b");
 
             var players = "";
             List<string> effectTitles = new List<string>();
@@ -107,22 +105,15 @@ namespace Osiris.Discord
 
                 effects.Add(currentPlayerEffects);
             }
-            Console.WriteLine("c");
 
-            Console.WriteLine("d");
             builder.WithDescription(players);
-            Console.WriteLine("e");
             //builder.AddField("ACTIVE EFFECTS", finalEffects, false);
-            Console.WriteLine("f");
-            builder.WithFooter($"It is {inst.Players[inst.TurnNumber].Name}'s turn.");
-            Console.WriteLine("g");
+            builder.WithFooter($"It is {inst.CardList[inst.TurnNumber].Signature}'s turn.");
         	builder.WithColor(62, 62, 255);
-            Console.WriteLine("h");
             var embed = builder.Build();
-            Console.WriteLine("i");
             embeds.Add(embed);
-            Console.WriteLine("j");
-
+            
+            /*REDACTED ACTIVE EFFECTS SECTION
             effects.Reverse();
             effectTitles.Reverse();
             while(effects.Count > 0)
@@ -131,7 +122,7 @@ namespace Osiris.Discord
                 var bail = false;
                 var effBuilder = new EmbedBuilder()
                 .WithAuthor($"**ACTIVE EFFECTS**")
-                .WithFooter($"It is {inst.Players[inst.TurnNumber].Name}'s turn.");
+                .WithFooter($"It is {inst.CardList[inst.TurnNumber].Signature}'s turn.");
                 Console.WriteLine("l");
 
                 for (int i = effects.Count - 1; i >= 0; i--)
@@ -166,9 +157,9 @@ namespace Osiris.Discord
                     if(bail)
                         break;
                     Console.WriteLine("w");
-                    effBuilder.AddField($"{effectTitles[i]}", $"{playerEffects}", false);
+                    effBuilder.AddField($"{effectTitles[i]}", $"{playerEffects}", false); //This line is stupid and why we archived this
                     Console.WriteLine("x");
-                    effectTitles.RemoveAt(i);
+                    //effectTitles.RemoveAt(i);
                     effects.RemoveAt(i);
                     Console.WriteLine("y");
                 }
@@ -176,7 +167,7 @@ namespace Osiris.Discord
                 embeds.Add(effBuilder.Build());
                 Console.WriteLine("za");
             }
-            Console.WriteLine("zb");
+            Console.WriteLine("zb");*/
 
             return embeds;
         }
@@ -203,19 +194,20 @@ namespace Osiris.Discord
                 effects += eff.ToString() + "\n";
             }
 
-            effects += card.Passive.ToString();
-
             foreach(Marker mark in card.Markers)
             {
                 effects += mark.ToString() + "\n";
             }
+
+            effects += card.Passive.ToString();
+
             if(effects.Length == 0)
                 effects += "none";
 
 	        if(card.Name.Equals(card.Signature))
                 builder.WithAuthor($"{card.Name}");
             else
-	            builder.WithAuthor($"{card.Name} {card.Signature}");
+	            builder.WithAuthor($"{card.Name} ({card.Signature})");
 
             builder.WithImageUrl(card.Picture);
             
@@ -225,7 +217,7 @@ namespace Osiris.Discord
             {
                 string cooldownText = "";
                 if(move.Cooldown != 0)
-                    cooldownText += $"**{move.CooldownText}**";
+                    cooldownText += $"**{move.CooldownText()}**";
 
                 string ult = "";
                 if(move.IsUltimate)

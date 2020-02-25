@@ -63,7 +63,7 @@ namespace Osiris.Discord
             user.CombatID = combatId;
             await combat.AddPlayerToCombat(user, combat.CreateNewTeam());
 
-            await MessageHandler.SendMessage(idList, $"{user.ActiveCards[0].Name} is attacking #{channel.Name}!\n```\nUse 0.joincombat to join\n```");
+            await MessageHandler.SendMessage(idList, $"{user.ActiveCards[0].Name} is attacking #{channel.Name}! Combat will begin in 10 minutes.\n```\nUse 0.joincombat to join\n```");
 
             CombatHandler.StoreInstance(combatId, combat);
         }
@@ -250,7 +250,7 @@ namespace Osiris.Discord
         }
 
         //Echos your message in the specified channel
-        [RequireCelestialAttribute]
+        [RequireUserPermission(GuildPermission.Administrator)]
         [Command("echo")]
         public async Task Echo(SocketGuildChannel channel, [Remainder] string str)
         {
@@ -262,7 +262,7 @@ namespace Osiris.Discord
         }
 
         //Send lots of blinding messages
-        [RequireCelestialAttribute]
+        [RequireUserPermission(GuildPermission.Administrator)]
         [Command("blind")]
         public async Task Blind(SocketGuildChannel channel)
         {

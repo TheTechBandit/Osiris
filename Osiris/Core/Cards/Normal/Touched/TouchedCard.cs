@@ -6,9 +6,10 @@ namespace Osiris
     {
         public override string Name { get; } = "Touched";
         public override bool RequiresCelestial { get; } = false;
-        public override bool Hidden { get; } = true;
+        public override bool Hidden { get; } = false;
         public override bool Disabled { get; } = false;
         public override List<BasicMove> Moves { get; } = new List<BasicMove>();
+        public override BasicPassive Passive { get; } = new NonePassive(true);
 
         public TouchedCard() : base()
         {

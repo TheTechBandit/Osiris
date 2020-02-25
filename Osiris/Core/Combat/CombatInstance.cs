@@ -80,12 +80,15 @@ namespace Osiris
         {
             foreach(BasicCard card in CardList)
             {
-                if(card.HasPassive && card.Passive.UpdatePlayerJoin)
+                if(card.HasPassive)
                 {
-                    if(!card.Passive.RequiresAsync)
-                        card.Passive.Update(this, card);
-                    else
-                        await card.Passive.UpdateAsync(this, card);
+                    if(card.Passive.UpdatePlayerJoin)
+                    {
+                        if(!card.Passive.RequiresAsync)
+                            card.Passive.Update(this, card);
+                        else
+                            await card.Passive.UpdateAsync(this, card);
+                    }
                 }
             }
         }
@@ -94,12 +97,15 @@ namespace Osiris
         {
             foreach(BasicCard card in CardList)
             {
-                if(card.HasPassive && card.Passive.UpdatePlayerLeave)
+                if(card.HasPassive)
                 {
-                    if(!card.Passive.RequiresAsync)
-                        card.Passive.Update(this, card);
-                    else
-                        await card.Passive.UpdateAsync(this, card);
+                    if(card.Passive.UpdatePlayerLeave)
+                    {
+                        if(!card.Passive.RequiresAsync)
+                            card.Passive.Update(this, card);
+                        else
+                            await card.Passive.UpdateAsync(this, card);
+                    }
                 }
             }
         }

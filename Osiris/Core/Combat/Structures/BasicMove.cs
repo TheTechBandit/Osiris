@@ -19,8 +19,6 @@ namespace Osiris
         public virtual bool IsUltimate { get; }
         //Number of turns this move takes to cool down
         public virtual int Cooldown { get; }
-        //Text representing the cooldown
-        public virtual string CooldownText { get; }
         //Tells whether or not this move can target dead people
         public bool CanTargetDead { get; set; }
         //Tells whether or not this move can target its owner
@@ -68,6 +66,18 @@ namespace Osiris
         public void CooldownReset()
         {
             CurrentCooldown = 0;
+        }
+
+        public string CooldownText()
+        {
+            if(Cooldown == 0)
+            {
+                return "";
+            }
+            else
+            {
+                return $"COOLDOWN: {Cooldown} Turns";
+            }
         }
     }
 }

@@ -34,13 +34,8 @@ namespace Osiris
             {
                 return true;
             }
-            else if(flip == 2)
-            {
-                return false;
-            }
             else
             {
-                Console.WriteLine($"Something has gone very wrong. Check RandomGen CoinFlip() Flip was: {flip}");
                 return false;
             }
         }
