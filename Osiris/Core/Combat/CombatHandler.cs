@@ -149,12 +149,13 @@ namespace Osiris
 
         public static async Task CheckTeamElimination(CombatInstance inst, Team team)
         {
-            var teamCount = team.Members.Count;
+            var teamCount = 0;
             var teamDead = 0;
             foreach(UserAccount player in team.Members)
             {
                 foreach(BasicCard card in player.ActiveCards)
                 {
+                    teamCount++;
                     if(card.Dead)
                         teamDead++;
                 }

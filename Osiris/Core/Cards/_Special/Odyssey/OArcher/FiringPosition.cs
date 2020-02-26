@@ -23,10 +23,9 @@ namespace Osiris
         {
 
         }
-
+        
         public override async Task MoveEffect(CombatInstance inst)
         {
-
             inst.GetCardTurn().AddBuff(new BuffDebuff()
             {
                 Name = "Firing Position",

@@ -49,6 +49,15 @@ namespace Osiris
                 case "warrior":
                     card = new OWarriorCard(true);
                     break;
+                case "kegmaster":
+                    card = new OKegmasterCard(true);
+                    break;
+                case "trojan soldier":
+                    card = new OTrojanSoldierCard(true);
+                    break;
+                case "hector":
+                    card = new OHectorCard(true);
+                    break;
                 default:
                     card = new VRFamilyCard(true);
                     break;
