@@ -39,6 +39,8 @@ namespace Osiris
         public int DamagePerRound { get; set; } = 0;
         //Damage taken per turn
         public int DamagePerTurn { get; set; } = 0;
+        //Alternate bleed text
+        public string DPRAlternateText { get; set; } = "debuff damage.";
         //Bleed damage taken upon using an attack
         public int BleedAttackDamage { get; set; } = 0;
         //healing increased by x%
@@ -71,6 +73,8 @@ namespace Osiris
         public bool TurnSkip { get; set; } = false;
         //If true, the player will be untargetable (AOE will still hit)
         public bool Untargetable { get; set; } = false;
+        //If true, the player is the only valid target (AOE)
+        public bool SoleTarget { get; set; } = false;
         //If false, this buff cannot be stacked
         public bool Stackable { get; set; } = true;
         //Extra fields. Used often for Passives. 10 fields by default.

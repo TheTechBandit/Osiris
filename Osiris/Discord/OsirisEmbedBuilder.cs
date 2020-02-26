@@ -105,6 +105,7 @@ namespace Osiris.Discord
                 }
 
                 effects.Add(currentPlayerEffects);
+                cardCount++;
             }
 
             builder.WithDescription(players);

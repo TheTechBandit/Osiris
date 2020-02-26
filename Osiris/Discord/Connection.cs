@@ -186,6 +186,43 @@ namespace Osiris.Discord
                                     }
                                 }
 
+                                //Determine if a sole target exists on the enemy team
+                                bool soleTargetExists = false;
+                                BasicCard soleTarg = new BasicCard(true);
+                                foreach(Team team in inst.Teams)
+                                {
+                                    if(team.TeamNum != author.TeamNum)
+                                    {
+                                        foreach(UserAccount acc in team.Members)
+                                        {
+                                            foreach(BasicCard c in acc.ActiveCards)
+                                            {
+                                                if(c.IsSoleTarget())
+                                                {
+                                                    soleTargetExists = true;
+                                                    soleTarg = c;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                //If a sole target exists on the enemy team and any target is not a teammate, and that target does not have the "Sole Target" buff, the move fails.
+                                if(soleTargetExists)
+                                {
+                                    foreach(BasicCard target in targets)
+                                    {
+                                        if(UserHandler.GetUser(target.Owner).TeamNum != author.TeamNum)
+                                        {
+                                            if(!target.IsSoleTarget())
+                                            {
+                                                await MessageHandler.SendMessage(inst.Location, $"MOVE FAILED! {soleTarg.Signature} is the sole target of all attacks.");
+                                                return;
+                                            }
+                                        }
+                                    }
+                                }
+
                                 if(targets.Count <= move.Targets && targets.Count > 0)
                                 {
                                     if(!move.OnCooldown)

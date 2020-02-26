@@ -140,6 +140,7 @@ namespace Osiris
                 if(!card.Dead && card.CurrentHP <= 0)
                 {
                     card.Dead = true;
+                    card.RemoveAllBuffs();
                     await MessageHandler.SendMessage(inst.Location, card.GetDeathMessage());
                     await CheckTeamElimination(inst, inst.GetTeam(card));
                 }
@@ -171,7 +172,12 @@ namespace Osiris
         {
             if(inst.Teams.Count <= 1)
             {
-                await MessageHandler.TeamVictory(inst.Location, inst.Teams[0].ToString(), inst.Teams[0].TeamNum);
+                string mentions = "";
+                foreach(UserAccount player in inst.Teams[0].Members)
+                {
+                    mentions += $"{player.Mention} ";
+                }
+                await MessageHandler.TeamVictory(inst.Location, mentions, inst.Teams[0].TeamNum);
                 await CombatHandler.EndCombat(inst);
             }
         }
@@ -183,8 +189,8 @@ namespace Osiris
 
             var embeds = OsirisEmbedBuilder.RoundStart(inst);
             await MessageHandler.SendEmbedMessage(inst.Location, "**Combat End**", embeds[0]);
-            for(int i = 1; i < embeds.Count; i++)
-                await MessageHandler.SendEmbedMessage(inst.Location, "", embeds[i]);
+            //for(int i = 1; i < embeds.Count; i++)
+                //await MessageHandler.SendEmbedMessage(inst.Location, "", embeds[i]);
 
             foreach(UserAccount player in inst.Players)
             {

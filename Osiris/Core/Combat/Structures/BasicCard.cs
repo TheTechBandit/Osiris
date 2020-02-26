@@ -205,7 +205,7 @@ namespace Osiris
                 if(eff.DamagePerRound > 0)
                 {
                     TakeDebuffDamage(eff.DamagePerRound);
-                    await MessageHandler.SendMessage(CombatHandler.GetInstance(UserHandler.GetUser(Owner).CombatID).Location, $"{Signature} takes {eff.DamagePerRound} damage from a debuff.");
+                    await MessageHandler.SendMessage(CombatHandler.GetInstance(UserHandler.GetUser(Owner).CombatID).Location, $"{Signature} takes {eff.DamagePerRound} {eff.DPRAlternateText}");
                 }
             }
             EffectCleanup();
@@ -219,7 +219,7 @@ namespace Osiris
                 if(eff.DamagePerTurn > 0)
                 {
                     TakeDebuffDamage(eff.DamagePerTurn);
-                    await MessageHandler.SendMessage(CombatHandler.GetInstance(UserHandler.GetUser(Owner).CombatID).Location, $"{Signature} takes {eff.DamagePerTurn} damage from a debuff.");
+                    await MessageHandler.SendMessage(CombatHandler.GetInstance(UserHandler.GetUser(Owner).CombatID).Location, $"{Signature} takes {eff.DamagePerTurn} {eff.DPRAlternateText}");
                 }
             }
             foreach(BasicMove move in Moves)
@@ -494,7 +494,7 @@ namespace Osiris
             var hasBuff = false;
             foreach(BuffDebuff eff in Effects)
             {
-                if(eff.Name.Contains(buffName))
+                if(eff.Name == buffName)
                 {
                     hasBuff = true;
                 }
@@ -523,6 +523,19 @@ namespace Osiris
                 }
             }
             return isUnTarget;
+        }
+
+        public bool IsSoleTarget()
+        {
+            var isSoleTarget = false;
+            foreach(BuffDebuff eff in Effects)
+            {
+                if(eff.SoleTarget)
+                {
+                    isSoleTarget = true;
+                }
+            }
+            return isSoleTarget;
         }
 
         public void ApplyBonusActions()

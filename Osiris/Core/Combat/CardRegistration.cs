@@ -43,6 +43,12 @@ namespace Osiris
                 case "cute bunny":
                     card = new CuteBunnyCard(true);
                     break;
+                case "archer":
+                    card = new OArcherCard(true);
+                    break;
+                case "warrior":
+                    card = new OWarriorCard(true);
+                    break;
                 default:
                     card = new VRFamilyCard(true);
                     break;
