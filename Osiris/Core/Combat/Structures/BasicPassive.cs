@@ -81,6 +81,13 @@ namespace Osiris
             return buff;
         }
 
+        public int PassiveDefenseSetBuffCalculation(int temp)
+        {
+            if(eff.DefenseSetBuff >= 0 && eff.DefenseSetBuff < temp)
+                    temp = eff.DefenseSetBuff;
+            return temp;
+        }
+
         public new string ToString()
         {
             return $"**{Name} (Passive)**- {Description}\n{Status}";

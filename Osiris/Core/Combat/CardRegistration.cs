@@ -58,6 +58,18 @@ namespace Osiris
                 case "hector":
                     card = new OHectorCard(true);
                     break;
+                case "odysseus, king of ithaca":
+                    card = new OdysseusKingCard(true);
+                    break;
+                case "odysseus, exiled":
+                    card = new OdysseusExileCard(true);
+                    break;
+                case "odysseus, old":
+                    card = new OdysseusOldCard(true);
+                    break;
+                case "achilles":
+                    card = new AchillesCard(true);
+                    break;
                 default:
                     card = new VRFamilyCard(true);
                     break;

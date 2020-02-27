@@ -126,7 +126,7 @@ namespace Osiris.Discord
                                     }
 
                                     //Check if the target is the player using the move. If so and this move cannot target self, cancel.
-                                    if(player.ActiveCards[0].Owner == card.Owner)
+                                    if(player.ActiveCards[0].Equals(card))
                                     {
                                         if(!move.CanTargetSelf)
                                         {
@@ -166,7 +166,7 @@ namespace Osiris.Discord
                                         }
 
                                             //Check if the target is the player using the move. If so and this move cannot target self, cancel.
-                                        if(target.Owner == card.Owner)
+                                        if(target.Equals(card))
                                         {
                                             if(!move.CanTargetSelf)
                                             {

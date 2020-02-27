@@ -8,7 +8,7 @@ namespace Osiris
     {
         public override string Name { get; } = "Ares' Fury";
         public override string Owner { get; } = "Warrior";
-        public override string Description { get; } = "Praise be the god of war! You next two attacks are boosted by 30%.";
+        public override string Description { get; } = "Praise be the god of war! Your next two attacks are boosted by 30%.";
         public override string TargetType { get; } = "Self";
         public override int Targets { get; } = 0;
         public override bool IsUltimate { get; } = false;

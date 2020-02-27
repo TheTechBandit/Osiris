@@ -266,6 +266,7 @@ namespace Osiris
             {
                 perc = Passive.PassiveDefensePercentCalculation(perc);
                 stat = Passive.PassiveDefenseStaticCalculation(stat);
+                temp = Passive.PassiveDefenseSetBuffCalculation(temp);
             }
 
             //Buffs are applied
