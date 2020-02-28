@@ -70,6 +70,15 @@ namespace Osiris
                 case "achilles":
                     card = new AchillesCard(true);
                     break;
+                case "priam":
+                    card = new PriamCard(true);
+                    break;
+                case "polyphemus, son of poseidon":
+                    card = new PolyphemusCard(true);
+                    break;
+                case "polyphemus, blinded":
+                    card = new PolyphemusBlindCard(true);
+                    break;
                 default:
                     card = new VRFamilyCard(true);
                     break;

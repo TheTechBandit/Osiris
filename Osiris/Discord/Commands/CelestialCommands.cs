@@ -93,6 +93,15 @@ namespace Osiris.Discord
             string str = "";
             str += "```\n";
             str += $"{new SugarGhubbyCard().Name}\n";
+            str += $"{new OdysseusKingCard().Name}\n";
+            str += $"{new OdysseusExileCard().Name}\n";
+            str += $"{new OdysseusOldCard().Name}\n";
+            str += $"{new AchillesCard().Name}\n";
+            str += $"{new OTrojanSoldierCard().Name}\n";
+            str += $"{new OHectorCard().Name}\n";
+            str += $"{new PriamCard().Name}\n";
+            str += $"{new PolyphemusCard().Name}\n";
+            str += $"{new PolyphemusBlindCard().Name}\n";
             str += "```\n";
 
             await MessageHandler.SendMessage(idList, str);

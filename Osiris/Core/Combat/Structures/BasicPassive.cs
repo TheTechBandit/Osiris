@@ -23,6 +23,8 @@ namespace Osiris
         public bool UpdatePlayerLeave { get; set; } = false;
         //Updates on each round start
         public bool UpdateRoundStart { get; set; } = false;
+        //Updates on each turn start
+        public bool UpdateTurnStart { get; set; } = false;
         //Updates on joining combat
         public bool UpdateJoinCombat { get; set; } = false;
 

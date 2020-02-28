@@ -9,11 +9,14 @@ namespace Osiris
     public class BasicCard
     {
         public virtual string Name { get; }
+        public string CachedName { get; set; }
         public virtual bool RequiresCelestial { get; }
         public virtual bool Hidden { get; }
         public virtual bool Disabled { get; }
         public virtual List<BasicMove> Moves { get; }
+        public List<BasicMove> CachedMoves { get; set; }
         public virtual BasicPassive Passive { get; }
+        public virtual BasicPassive CachedPassive { get; set; }
         public ulong Owner { get; set; }
         public string Signature { get; set; }
         public string Picture { get; set; }
@@ -162,39 +165,46 @@ namespace Osiris
 
         public int Heal(int heal, bool tick)
         {
-            double perc = 0.0;
-            foreach(BuffDebuff eff in Effects)
+            if(!Dead)
             {
-                perc += eff.IncomingHealingPercentBuff;
-                perc -= eff.IncomingHealingPercentDebuff;
-                if(tick)
-                    eff.IncomingHealTick();
-            }
-            EffectCleanup();
-
-            heal = heal + (int)((double)heal*perc);
-
-            if(heal < 0)
-                heal = 0;
-
-            var diff = 0;
-            var tempHeal = heal;
-            foreach(BuffDebuff eff in Effects)
-            {
-                if(tempHeal > 0 && eff.TotalGrowth > 0)
+                double perc = 0.0;
+                foreach(BuffDebuff eff in Effects)
                 {
-                    diff = eff.TotalGrowth - eff.Growth;
-
-                    tempHeal -= diff;
-                    eff.Growth += diff;
+                    perc += eff.IncomingHealingPercentBuff;
+                    perc -= eff.IncomingHealingPercentDebuff;
+                    if(tick)
+                        eff.IncomingHealTick();
                 }
+                EffectCleanup();
+
+                heal = heal + (int)((double)heal*perc);
+
+                if(heal < 0)
+                    heal = 0;
+
+                var diff = 0;
+                var tempHeal = heal;
+                foreach(BuffDebuff eff in Effects)
+                {
+                    if(tempHeal > 0 && eff.TotalGrowth > 0)
+                    {
+                        diff = eff.TotalGrowth - eff.Growth;
+
+                        tempHeal -= diff;
+                        eff.Growth += diff;
+                    }
+                }
+
+                CurrentHP += heal;
+                if(CurrentHP > TotalHP)
+                    CurrentHP = TotalHP;
+
+                return heal;
             }
-
-            CurrentHP += heal;
-            if(CurrentHP > TotalHP)
-                CurrentHP = TotalHP;
-
-            return heal;
+            else
+            {
+                return 0;
+            }
         }
 
         public async Task RoundTick()

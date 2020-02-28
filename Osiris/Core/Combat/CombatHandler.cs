@@ -278,6 +278,20 @@ namespace Osiris
             {
                 return;
             }
+
+            foreach(BasicCard player in inst.CardList)
+            {
+                if(player.HasPassive)
+                {
+                    if(player.Passive.UpdateTurnStart)
+                    {
+                        if(!player.Passive.RequiresAsync)
+                            player.Passive.Update(inst, player);
+                        else
+                            await player.Passive.UpdateAsync(inst, player);
+                    }
+                }
+            }
             
             inst.TurnNumber++;
             if(inst.TurnNumber >= inst.CardList.Count)
@@ -351,6 +365,7 @@ namespace Osiris
         public static async Task SkipTurn(CombatInstance inst, BasicCard player)
         {
             player.IsTurn = false;
+            await player.TurnTick();
             await NextTurn(inst);
         }
 
