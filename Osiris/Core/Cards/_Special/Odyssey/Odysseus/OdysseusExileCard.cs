@@ -4,12 +4,12 @@ namespace Osiris
 {
     public class OdysseusExileCard : BasicCard
     {
-        public override string Name { get; } = "Odysseus, Exiled";
+        public override string Name { get; set; } = "Odysseus, Exiled";
         public override bool RequiresCelestial { get; } = true;
         public override bool Hidden { get; } = true;
         public override bool Disabled { get; } = false;
-        public override List<BasicMove> Moves { get; } = new List<BasicMove>();
-        public override BasicPassive Passive { get; } = new OutcastOfTheGodsPassive(true);
+        public override List<BasicMove> Moves { get; set; } = new List<BasicMove>();
+        public override BasicPassive Passive { get; set; } = new OutcastOfTheGodsPassive(true);
 
         public OdysseusExileCard() : base()
         {

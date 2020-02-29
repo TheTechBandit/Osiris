@@ -26,25 +26,18 @@ namespace Osiris
 
         public override async Task MoveEffect(CombatInstance inst)
         {
-            foreach(Team team in inst.Teams)
+            List<BasicCard> targets = inst.GetAOEAllyTargets();
+
+            foreach(BasicCard card in targets)
             {
-                if(team.TeamNum == inst.GetTeam(inst.GetCardTurn()).TeamNum)
+                card.AddBuff(new BuffDebuff()
                 {
-                    foreach(UserAccount user in team.Members)
-                    {
-                        foreach(BasicCard card in user.ActiveCards)
-                        {
-                            card.AddBuff(new BuffDebuff()
-                            {
-                                Name = "Inspired",
-                                Origin = $"({inst.GetCardTurn().Signature})",
-                                Description = "10 more damage.",
-                                DamageStaticBuff = 10,
-                                Attacks = 1
-                            });
-                        }
-                    }
-                }
+                    Name = "Inspired",
+                    Origin = $"({inst.GetCardTurn().Signature})",
+                    Description = "10 more damage.",
+                    DamageStaticBuff = 10,
+                    Attacks = 1
+                });
             }
 
             await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} lets out a mighty roar, inspiring their team! All allied players deal 10 extra damage on their next attack.");

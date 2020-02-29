@@ -142,6 +142,7 @@ namespace Osiris
                     card.Dead = true;
                     card.RemoveAllBuffs();
                     await MessageHandler.SendMessage(inst.Location, card.GetDeathMessage());
+                    card.Death();
                     await CheckTeamElimination(inst, inst.GetTeam(card));
                 }
             }

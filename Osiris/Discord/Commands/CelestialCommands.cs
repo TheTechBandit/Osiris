@@ -102,6 +102,8 @@ namespace Osiris.Discord
             str += $"{new PriamCard().Name}\n";
             str += $"{new PolyphemusCard().Name}\n";
             str += $"{new PolyphemusBlindCard().Name}\n";
+            str += $"{new CirceCard().Name}\n";
+            str += $"{new OPigCard().Name}\n";
             str += "```\n";
 
             await MessageHandler.SendMessage(idList, str);
@@ -149,6 +151,39 @@ namespace Osiris.Discord
         {
             ContextIds idList = new ContextIds(Context);
             var user = UserHandler.GetUser(idList.UserId);
+
+            //Tests each case to make sure all circumstances for the execution of this command are valid (character exists, in correct location)
+            try
+            {
+                await UserHandler.UserInCombat(idList);
+            }
+            catch(InvalidUserStateException)
+            {
+                return;
+            }
+
+            var card = CardRegistration.RegisterCard(str);
+            
+            var nick = Context.Guild.GetUser(Context.User.Id).Nickname;
+
+            if(nick == null)
+                card.Signature = Context.User.Username;
+            else
+                card.Signature = nick;
+
+            card.Owner = user.UserId;
+            user.ActiveCards.Add(card);
+
+            await MessageHandler.SendMessage(idList, $"Added card {user.ActiveCards[user.ActiveCards.Count-1].Name} to registration.");
+        }
+
+        [RequireCelestialAttribute]
+        [Command("addcardnext")]
+        public async Task AddCardNext(SocketGuildUser target, [Remainder] string str)
+        {
+            ContextIds idList = new ContextIds(Context);
+            var user = UserHandler.GetUser(target.Id);
+            idList.UserId = user.UserId;
 
             //Tests each case to make sure all circumstances for the execution of this command are valid (character exists, in correct location)
             try

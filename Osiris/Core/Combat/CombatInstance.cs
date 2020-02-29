@@ -140,5 +140,95 @@ namespace Osiris
             return marked;
         }
 
+        //Returns a list of valid targets for a standard AOE move that hits the enemy team
+        public List<BasicCard> GetAOEEnemyTargets() 
+        {
+            List<BasicCard> targets = new List<BasicCard>();
+
+            foreach(BasicCard card in CardList)
+            {
+                if(!card.Dead && (GetTeam(card).TeamNum != GetTeam(GetCardTurn()).TeamNum || (card.IsPuppet && GetTeam(card).TeamNum == GetTeam(GetCardTurn()).TeamNum)))
+                {
+                    targets.Add(card);
+                }
+            }
+            return targets;
+        }
+
+        //Same as GetAOEEnemyTargets, but includes dead players.
+        public List<BasicCard> GetAOEEnemyTargetsID()
+        {
+            List<BasicCard> targets = new List<BasicCard>();
+
+            foreach(BasicCard card in CardList)
+            {
+                if(GetTeam(card).TeamNum != GetTeam(GetCardTurn()).TeamNum || (card.IsPuppet && GetTeam(card).TeamNum == GetTeam(GetCardTurn()).TeamNum))
+                {
+                    targets.Add(card);
+                }
+            }
+            return targets;
+        }
+
+        //Returns a list of dead enemies
+        public List<BasicCard> GetAOEDeadEnemyTargets() 
+        {
+            List<BasicCard> targets = new List<BasicCard>();
+
+            foreach(BasicCard card in CardList)
+            {
+                if(card.Dead && (GetTeam(card).TeamNum != GetTeam(GetCardTurn()).TeamNum || (card.IsPuppet && GetTeam(card).TeamNum == GetTeam(GetCardTurn()).TeamNum)))
+                {
+                    targets.Add(card);
+                }
+            }
+            return targets;
+        }
+
+        //Returns a list of valid targets for a standard AOE move that hits only the ally team
+        public List<BasicCard> GetAOEAllyTargets() 
+        {
+            List<BasicCard> targets = new List<BasicCard>();
+
+            foreach(BasicCard card in CardList)
+            {
+                if(!card.Dead && GetTeam(card).TeamNum == GetTeam(GetCardTurn()).TeamNum && !card.IsPuppet)
+                {
+                    targets.Add(card);
+                }
+            }
+            return targets;
+        }
+
+        //Same as GetAOEAllyTargets but, includes dead players.
+        public List<BasicCard> GetAOEAllyTargetsID() 
+        {
+            List<BasicCard> targets = new List<BasicCard>();
+
+            foreach(BasicCard card in CardList)
+            {
+                if(GetTeam(card).TeamNum == GetTeam(GetCardTurn()).TeamNum && !card.IsPuppet)
+                {
+                    targets.Add(card);
+                }
+            }
+            return targets;
+        }
+
+        //Returns a list of dead allies
+        public List<BasicCard> GetAOEDeadAllyTargets() 
+        {
+            List<BasicCard> targets = new List<BasicCard>();
+
+            foreach(BasicCard card in CardList)
+            {
+                if(card.Dead && GetTeam(card).TeamNum == GetTeam(GetCardTurn()).TeamNum && !card.IsPuppet)
+                {
+                    targets.Add(card);
+                }
+            }
+            return targets;
+        }
+
     }
 }

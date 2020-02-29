@@ -79,11 +79,18 @@ namespace Osiris
                 case "polyphemus, blinded":
                     card = new PolyphemusBlindCard(true);
                     break;
+                case "circe, temptress of the mountain":
+                    card = new CirceCard(true);
+                    break;
+                case "pig":
+                    card = new OPigCard(true);
+                    break;
                 default:
                     card = new VRFamilyCard(true);
                     break;
             }
 
+            
             return card;
         }
     }

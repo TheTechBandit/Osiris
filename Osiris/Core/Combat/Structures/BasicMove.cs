@@ -23,6 +23,10 @@ namespace Osiris
         public bool CanTargetDead { get; set; }
         //Tells whether or not this move can target its owner
         public bool CanTargetSelf { get; set; }
+        //Tells whether or not this move can target enemies
+        public bool CanTargetEnemies {get; set; }
+        //Tells whether or not this move can target teammates
+        public bool CanTargetAllies { get; set; }
         //Current cooldown timer
         public int CurrentCooldown { get; set; }
         //True if on cooldown, false otherwise
@@ -37,6 +41,8 @@ namespace Osiris
         {
             CanTargetDead = false;
             CanTargetSelf = true;
+            CanTargetEnemies = true;
+            CanTargetAllies = true;
             CurrentCooldown = 0;
             OnCooldown = false;
         }
@@ -76,7 +82,7 @@ namespace Osiris
             }
             else
             {
-                return $"COOLDOWN: {Cooldown} Turns";
+                return $"COOLDOWN: {Cooldown-1} Turns";
             }
         }
     }

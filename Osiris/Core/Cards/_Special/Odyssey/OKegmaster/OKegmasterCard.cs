@@ -4,12 +4,12 @@ namespace Osiris
 {
     public class OKegmasterCard : BasicCard
     {
-        public override string Name { get; } = "Kegmaster";
+        public override string Name { get; set; } = "Kegmaster";
         public override bool RequiresCelestial { get; } = false;
         public override bool Hidden { get; } = false;
         public override bool Disabled { get; } = false;
-        public override List<BasicMove> Moves { get; } = new List<BasicMove>();
-        public override BasicPassive Passive { get; } = new NonePassive(true);
+        public override List<BasicMove> Moves { get; set; } = new List<BasicMove>();
+        public override BasicPassive Passive { get; set; } = new NonePassive(true);
 
         public OKegmasterCard() : base()
         {

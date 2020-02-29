@@ -32,31 +32,24 @@ namespace Osiris
             string str = "";
             var totalHeal = 0;
 
-            foreach(Team team in inst.Teams)
-            {
-                if(team.TeamNum == inst.GetTeam(inst.GetCardTurn()).TeamNum)
-                {
-                    foreach(UserAccount user in team.Members)
-                    {
-                        foreach(BasicCard card in user.ActiveCards)
-                        {
-                            if(!card.Name.Contains("Priam"))
-                            {
-                                var tempHeal = card.Heal(healing, true);
-                                totalHeal += tempHeal;
-                                str += $"\n{card.Signature} heals {tempHeal} HP!";
+            List<BasicCard> targets = inst.GetAOEAllyTargets();
 
-                                card.AddBuff(new BuffDebuff()
-                                {
-                                    Name = "Inspired",
-                                    Origin = $"({inst.GetCardTurn().Signature})",
-                                    Description = "10% bonus damage",
-                                    DamagePercentBuff = 0.10,
-                                    Attacks = 1
-                                });
-                            }
-                        }
-                    }
+            foreach(BasicCard card in targets)
+            {
+                if(!card.Name.Contains("Priam"))
+                {
+                    var tempHeal = card.Heal(healing, true);
+                    totalHeal += tempHeal;
+                    str += $"\n{card.Signature} heals {tempHeal} HP!";
+
+                    card.AddBuff(new BuffDebuff()
+                    {
+                        Name = "Inspired",
+                        Origin = $"({inst.GetCardTurn().Signature})",
+                        Description = "10% bonus damage",
+                        DamagePercentBuff = 0.10,
+                        Attacks = 1
+                    });
                 }
             }
 

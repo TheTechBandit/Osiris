@@ -4,12 +4,12 @@ namespace Osiris
 {
     public class SugarGhubbyCard : BasicCard
     {
-        public override string Name { get; } = "Sugar Ghubby";
+        public override string Name { get; set; } = "Sugar Ghubby";
         public override bool RequiresCelestial { get; } = true;
         public override bool Hidden { get; } = true;
         public override bool Disabled { get; } = false;
-        public override List<BasicMove> Moves { get; } = new List<BasicMove>();
-        public override BasicPassive Passive { get; } = new GhubbleTroublePassive(true);
+        public override List<BasicMove> Moves { get; set; } = new List<BasicMove>();
+        public override BasicPassive Passive { get; set; } = new GhubbleTroublePassive(true);
 
         public SugarGhubbyCard() : base()
         {

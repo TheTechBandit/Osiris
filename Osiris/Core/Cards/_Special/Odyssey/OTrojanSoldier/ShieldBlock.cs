@@ -26,25 +26,18 @@ namespace Osiris
 
         public override async Task MoveEffect(CombatInstance inst)
         {
-            foreach(Team team in inst.Teams)
+            List<BasicCard> targets = inst.GetAOEAllyTargets();
+
+            foreach(BasicCard card in targets)
             {
-                if(team.TeamNum == inst.GetTeam(inst.GetCardTurn()).TeamNum)
+                card.AddBuff(new BuffDebuff()
                 {
-                    foreach(UserAccount user in team.Members)
-                    {
-                        foreach(BasicCard card in user.ActiveCards)
-                        {
-                            card.AddBuff(new BuffDebuff()
-                            {
-                                Name = "Shield Block",
-                                Origin = $"({inst.GetCardTurn().Signature})",
-                                Description = "10% less damage.",
-                                DefensePercentBuff = 0.10,
-                                Strikes = 1
-                            });
-                        }
-                    }
-                }
+                    Name = "Shield Block",
+                    Origin = $"({inst.GetCardTurn().Signature})",
+                    Description = "10% less damage.",
+                    DefensePercentBuff = 0.10,
+                    Strikes = 1
+                });
             }
 
             await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} raises their shield!");

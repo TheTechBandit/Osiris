@@ -8,29 +8,45 @@ namespace Osiris
 {
     public class BasicCard
     {
-        public virtual string Name { get; }
+        public virtual string Name { get; set; }
         public string CachedName { get; set; }
         public virtual bool RequiresCelestial { get; }
         public virtual bool Hidden { get; }
         public virtual bool Disabled { get; }
-        public virtual List<BasicMove> Moves { get; }
+        public virtual List<BasicMove> Moves { get; set; }
         public List<BasicMove> CachedMoves { get; set; }
-        public virtual BasicPassive Passive { get; }
-        public virtual BasicPassive CachedPassive { get; set; }
+        public virtual BasicPassive Passive { get; set; }
+        public BasicPassive CachedPassive { get; set; }
         public ulong Owner { get; set; }
         public string Signature { get; set; }
         public string Picture { get; set; }
+        public string CachedPicture { get; set; }
         public bool HasUltimate { get; set; }
+        public bool CachedHasUltimate { get; set; }
         public bool HasPassive { get; set; }
+        public bool CachedHasPassive { get; set; }
         public bool Dead { get; set; }
+        public bool CachedDead { get; set; }
         public int TotalHP { get; set; }
+        public int CachedTotalHP { get; set; }
         public int CurrentHP { get; set; }
+        public int CachedCurrentHP { get; set; }
         public int TotalActions { get; set; }
+        public int CachedTotalActions { get; set; }
         public int Actions { get; set; }
+        public int CachedActions { get; set; }
         public bool IsTurn { get; set; }
+        //Puppets are teammates that have been converted into an enemy. AOE will hit them.
+        public bool IsPuppet { get; set; }
+        public bool CachedIsPuppet { get; set; }
+        public bool CanPassTurn { get; set; }
+        public bool CachedCanPassTurn { get; set; }
         public string DeathMessage { get; set; }
+        public string CachedDeathMessage { get; set; }
         public List<BuffDebuff> Effects { get; set; }
+        public List<BuffDebuff> CachedEffects { get; set; }
         public List<Marker> Markers { get; set; }
+        public List<Marker> CachedMarkers { get; set; }
 
         public BasicCard()
         {
@@ -50,9 +66,15 @@ namespace Osiris
             TotalActions = 1;
             Actions = TotalActions;
             IsTurn = false;
+            IsPuppet = false;
+            CanPassTurn = true;
             DeathMessage = " has been slain!";
             Effects = new List<BuffDebuff>();
             Markers = new List<Marker>();
+
+            CachedMoves = new List<BasicMove>();
+            CachedEffects = new List<BuffDebuff>();
+            CachedMarkers = new List<Marker>();
         }
 
         public void CooldownTickdown()
@@ -482,6 +504,20 @@ namespace Osiris
             if(CurrentHP < 0)
                 CurrentHP = 0;
         }
+        
+        public virtual void Death()
+        {
+            if(IsPuppet && (Name == "Pig" || Name == "Snake" || Name == "Lion"))
+            {
+                Console.WriteLine("Animal Death");
+                SwapCache();
+                ClearCache();
+            }
+            else
+            {
+                Console.WriteLine("Player Death");
+            }
+        }
 
         public string GetDeathMessage()
         {
@@ -559,6 +595,164 @@ namespace Osiris
             }
 
             Actions += bonus;
+        }
+
+        //Copies all essential elements from one card to this one
+        public void CopyCard(BasicCard card)
+        {
+            Name = card.Name;
+            Moves.Clear();
+            Moves.AddRange(card.Moves);
+            Passive = card.Passive;
+            Picture = card.Picture;
+            HasUltimate = card.HasUltimate;
+            HasPassive = card.HasPassive;
+            Dead = card.Dead;
+            TotalHP = card.TotalHP;
+            CurrentHP = card.CurrentHP;
+            TotalActions = card.TotalActions;
+            Actions = card.Actions;
+            IsPuppet = card.IsPuppet;
+            CanPassTurn = card.CanPassTurn;
+            DeathMessage = card.DeathMessage;
+            Effects.Clear();
+            Effects.AddRange(card.Effects);
+            Markers.Clear();
+            Markers.AddRange(card.Markers);
+        }
+
+        //Caches all relevant data
+        public void CacheAll()
+        {
+            CachedName = Name;
+            CachedMoves.AddRange(Moves);
+            CachedPassive = Passive;
+            CachedPicture = Picture;
+            CachedHasUltimate = HasUltimate;
+            CachedHasPassive = HasPassive;
+            CachedDead = Dead;
+            CachedTotalHP = TotalHP;
+            CachedCurrentHP = CurrentHP;
+            CachedTotalActions = TotalActions;
+            CachedActions = Actions;
+            CachedIsPuppet = IsPuppet;
+            CachedCanPassTurn = CanPassTurn;
+            CachedDeathMessage = DeathMessage;
+            CachedEffects.AddRange(Effects);
+            CachedMarkers.AddRange(Markers);
+        }
+
+        //Swaps current data with the cache
+        public void SwapCache()
+        {
+            var tempName = Name;
+            Name = CachedName;
+            CachedName = tempName;
+
+            List<BasicMove> tempMoves = new List<BasicMove>();
+            tempMoves.AddRange(Moves);
+            Moves.Clear();
+            Moves.AddRange(CachedMoves);
+            CachedMoves.Clear();
+            CachedMoves.AddRange(tempMoves);
+
+            var tempPassive = Passive;
+            Passive = CachedPassive;
+            CachedPassive = tempPassive;
+
+            var tempPicture = Picture;
+            Picture = CachedPicture;
+            CachedPicture = tempPicture;
+
+            var tempDead = Dead;
+            Dead = CachedDead;
+            CachedDead = tempDead;
+
+            var tempTotalHP = TotalHP;
+            TotalHP = CachedTotalHP;
+            CachedTotalHP = tempTotalHP;
+
+            
+            var tempCurrentHP = CurrentHP;
+            CurrentHP = CachedCurrentHP;
+            CachedCurrentHP = tempCurrentHP;
+
+            var tempTotalActions = TotalActions;
+            TotalActions = CachedTotalActions;
+            CachedTotalActions = tempTotalActions;
+
+            var tempActions = Actions;
+            Actions = CachedActions;
+            CachedActions = tempActions;
+
+            var tempIsPuppet = IsPuppet;
+            IsPuppet = CachedIsPuppet;
+            CachedIsPuppet = tempIsPuppet;
+
+            var tempCanPassTurn = CanPassTurn;
+            CanPassTurn = CachedCanPassTurn;
+            CachedCanPassTurn = tempCanPassTurn;
+
+            var tempDeathMessage = DeathMessage;
+            DeathMessage = CachedDeathMessage;
+            CachedDeathMessage = tempDeathMessage;
+
+            List<BuffDebuff> tempEffects = new List<BuffDebuff>();
+            tempEffects.AddRange(Effects);
+            Effects.Clear();
+            Effects.AddRange(CachedEffects);
+            CachedEffects.Clear();
+            CachedEffects.AddRange(tempEffects);
+
+            List<Marker> tempMarkers = new List<Marker>();
+            tempMarkers.AddRange(Markers);
+            Markers.Clear();
+            Markers.AddRange(CachedMarkers);
+            CachedMarkers.Clear();
+            CachedMarkers.AddRange(tempMarkers);
+        }
+
+        //Loads the cache into the current data, without deleting the cache
+        public void RestoreCache()
+        {
+            Name = CachedName;
+            Moves.Clear();
+            Moves.AddRange(CachedMoves);
+            Passive = CachedPassive;
+            Picture = CachedPicture;
+            Dead = CachedDead;
+            TotalHP = CachedTotalHP;
+            CurrentHP = CachedCurrentHP;
+            TotalActions = CachedTotalActions;
+            Actions = CachedActions;
+            IsPuppet = CachedIsPuppet;
+            CanPassTurn = CachedCanPassTurn;
+            DeathMessage = CachedDeathMessage;
+            Effects.Clear();
+            Effects.AddRange(Effects);
+            Markers.Clear();
+            Markers.AddRange(CachedMarkers);
+        }
+
+        //Clears the cache to default values
+        public void ClearCache()
+        {
+            CachedName = null;
+            CachedMoves.Clear();
+            CachedPassive = null;
+            CachedPicture = null;
+            CachedHasUltimate = true;
+            CachedHasPassive = true;
+            CachedDead = false;
+            CachedTotalHP = 500;
+            CachedCurrentHP = 500;
+            CachedTotalActions = 1;
+            CachedActions = 1;
+            IsPuppet = false;
+            CanPassTurn = true;
+            CachedDeathMessage = null;
+            CachedEffects.Clear();
+            CachedMarkers.Clear();
         }
 
     }

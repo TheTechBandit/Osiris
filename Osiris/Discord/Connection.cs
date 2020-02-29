@@ -125,6 +125,33 @@ namespace Osiris.Discord
                                         }
                                     }
 
+                                    //Check if the target is an enemy (or a teammate that has ALSO been puppeted) and if this move cannot target enemies. If so, cancel
+                                    if(player.TeamNum != inst.GetTeam(card).TeamNum || (player.TeamNum == inst.GetTeam(card).TeamNum && player.ActiveCards[0].IsPuppet && card.IsPuppet))
+                                    {
+                                        if(!move.CanTargetEnemies)
+                                        {
+                                            await MessageHandler.SendMessage(inst.Location, $"MOVE FAILED! {move.Name} cannot target enemies!");
+                                            return;
+                                        }
+                                    }
+
+                                    //Check if the target is an enemy and if this move cannot target enemies. If so, cancel
+                                    if(player.TeamNum == inst.GetTeam(card).TeamNum && !(player.ActiveCards[0].IsPuppet && card.IsPuppet))
+                                    {
+                                        if(!move.CanTargetAllies)
+                                        {
+                                            await MessageHandler.SendMessage(inst.Location, $"MOVE FAILED! {move.Name} cannot target allies!");
+                                            return;
+                                        }
+                                    }
+
+                                    //Check if the target is untargetable and is not on the same team as the caster. If so, cancel.
+                                    if(player.ActiveCards[0].IsUntargetable() && player.TeamNum != author.TeamNum)
+                                    {
+                                        await MessageHandler.SendMessage(inst.Location, $"MOVE FAILED! {player.ActiveCards[0].Signature} is untargetable.");
+                                        return;
+                                    }
+
                                     //Check if the target is the player using the move. If so and this move cannot target self, cancel.
                                     if(player.ActiveCards[0].Equals(card))
                                     {
@@ -133,13 +160,6 @@ namespace Osiris.Discord
                                             await MessageHandler.SendMessage(inst.Location, $"MOVE FAILED! {move.Name} cannot target yourself!");
                                             return;
                                         }
-                                    }
-
-                                    //Check if the target is the player using the move. If so and this move cannot target self, cancel.
-                                    if(player.ActiveCards[0].IsUntargetable() && player.TeamNum != author.TeamNum)
-                                    {
-                                        await MessageHandler.SendMessage(inst.Location, $"MOVE FAILED! {player.ActiveCards[0].Signature} is untargetable.");
-                                        return;
                                     }
 
                                     if(player.CombatID == author.CombatID)
@@ -165,12 +185,32 @@ namespace Osiris.Discord
                                             }
                                         }
 
-                                            //Check if the target is the player using the move. If so and this move cannot target self, cancel.
+                                        //Check if the target is the player using the move. If so and this move cannot target self, cancel.
                                         if(target.Equals(card))
                                         {
                                             if(!move.CanTargetSelf)
                                             {
                                                 await MessageHandler.SendMessage(inst.Location, $"MOVE FAILED! {move.Name} cannot target yourself!");
+                                                return;
+                                            }
+                                        }
+
+                                        //Check if the target is an enemy and if this move cannot target enemies. If so, cancel
+                                        if(inst.GetTeam(target).TeamNum != inst.GetTeam(card).TeamNum || (inst.GetTeam(target).TeamNum == inst.GetTeam(card).TeamNum && target.IsPuppet && card.IsPuppet))
+                                        {
+                                            if(!move.CanTargetEnemies)
+                                            {
+                                                await MessageHandler.SendMessage(inst.Location, $"MOVE FAILED! {move.Name} cannot target enemies!");
+                                                return;
+                                            }
+                                        }
+
+                                        //Check if the target is an enemy and if this move cannot target enemies. If so, cancel
+                                        if(inst.GetTeam(target).TeamNum == inst.GetTeam(card).TeamNum && !(target.IsPuppet && card.IsPuppet))
+                                        {
+                                            if(!move.CanTargetAllies)
+                                            {
+                                                await MessageHandler.SendMessage(inst.Location, $"MOVE FAILED! {move.Name} cannot target allies!");
                                                 return;
                                             }
                                         }
@@ -243,9 +283,13 @@ namespace Osiris.Discord
                         }
                     }
 
-                    if(message.Content.Contains("Skip") || message.Content.Contains("Pass"))
+                    if((message.Content.Contains("Skip") || message.Content.Contains("Pass")) && card.CanPassTurn)
                     {
                         await CombatHandler.SkipTurn(inst, card);
+                    }
+                    else if((message.Content.Contains("Skip") || message.Content.Contains("Pass")) && !card.CanPassTurn)
+                    {
+                        await MessageHandler.SendMessage(inst.Location, "Your currently equipped card cannot skip it's turn.");
                     }
                 }
             }

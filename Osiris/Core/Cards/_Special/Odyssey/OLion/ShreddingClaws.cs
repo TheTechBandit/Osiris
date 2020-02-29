@@ -4,22 +4,22 @@ using Osiris.Discord;
 
 namespace Osiris
 {
-    public class GunpowderKeg : BasicMove
+    public class ShreddingClaws : BasicMove
     {
-        public override string Name { get; } = "Gunpowder Keg";
-        public override string Owner { get; } = "Kegmaster";
-        public override string Description { get; } = "Hurl an explosive barrel at the enemy team. Deal 4d10 damage to all enemies.";
+        public override string Name { get; } = "Shredding Claws";
+        public override string Owner { get; } = "Lion";
+        public override string Description { get; } = "Lacerate your friends with ferocious claws. Deal 3d10 to all allies (excluding other animals).";
         public override string TargetType { get; } = "AllEnemy";
         public override int Targets { get; } = 0;
         public override bool IsUltimate { get; } = false;
-        public override int Cooldown { get; } = 5;
+        public override int Cooldown { get; } = 2;
 
-        public GunpowderKeg() : base()
+        public ShreddingClaws() : base()
         {
             
         }
 
-        public GunpowderKeg(bool newmove) : base(newmove)
+        public ShreddingClaws(bool newmove) : base(newmove)
         {
             
         }
@@ -38,17 +38,17 @@ namespace Osiris
             string str = "";
             var totalDam = 0;
 
-            List<BasicCard> targets = inst.GetAOEEnemyTargets();
+            List<BasicCard> targets = inst.GetAOEAllyTargets();
 
             foreach(BasicCard card in targets)
             {
                 var tempDam = card.TakeDamage(damage);
                 totalDam += tempDam[0];
-                str += $"\n{card.DamageTakenString(tempDam)}";
+                str += $"\n{card.Signature} heals {tempDam} HP!";
             }
 
             await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} tosses an explosive barrel!{str}\n{inst.GetCardTurn().Signature} dealt a total of {totalDam} damage.");
-            
+
             OnCooldown = true;
             CurrentCooldown = Cooldown;
             inst.GetCardTurn().Actions--;

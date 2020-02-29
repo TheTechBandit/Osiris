@@ -38,37 +38,25 @@ namespace Osiris
             string str = "";
             var totalHeal = 0;
 
-            foreach(Team team in inst.Teams)
+            List<BasicCard> allyTargets = inst.GetAOEAllyTargets();
+            foreach(BasicCard card in allyTargets)
             {
-                if(team.TeamNum == inst.GetTeam(inst.GetCardTurn()).TeamNum)
+                var tempHeal = card.Heal(healing, true);
+                totalHeal += tempHeal;
+                str += $"\n{card.Signature} heals {tempHeal} HP!";
+            }
+
+            List<BasicCard> targets = inst.GetAOEEnemyTargets();
+            foreach(BasicCard card in targets)
+            {
+                card.AddBuff(new BuffDebuff()
                 {
-                    foreach(UserAccount user in team.Members)
-                    {
-                        foreach(BasicCard card in user.ActiveCards)
-                        {
-                            var tempHeal = card.Heal(healing, true);
-                            totalHeal += tempHeal;
-                            str += $"\n{card.Signature} heals {tempHeal} HP!";
-                        }
-                    }
-                }
-                else
-                {
-                    foreach(UserAccount user in team.Members)
-                    {
-                        foreach(BasicCard card in user.ActiveCards)
-                        {
-                            card.AddBuff(new BuffDebuff()
-                            {
-                                Name = "Drunkard",
-                                Origin = $"({inst.GetCardTurn().Signature})",
-                                Description = "Drunk! Deal 10% less damage on your next attack.",
-                                DamagePercentDebuff = 0.10,
-                                Attacks = 1
-                            });
-                        }
-                    }
-                }
+                    Name = "Drunkard",
+                    Origin = $"({inst.GetCardTurn().Signature})",
+                    Description = "Drunk! Deal 10% less damage on your next attack.",
+                    DamagePercentDebuff = 0.10,
+                    Attacks = 1
+                });
             }
 
             await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} douses the battlefield in wine!{str}\n{inst.GetCardTurn().Signature} healed a total of {totalHeal} health. All enemies have their next attack reduced by 10%.");

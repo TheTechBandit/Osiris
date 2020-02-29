@@ -26,26 +26,19 @@ namespace Osiris
 
         public override async Task MoveEffect(CombatInstance inst)
         {
-            foreach(Team team in inst.Teams)
+            List<BasicCard> targets = inst.GetAOEEnemyTargets();
+
+            foreach(BasicCard card in targets)
             {
-                if(team.TeamNum != inst.GetTeam(inst.GetCardTurn()).TeamNum)
+                card.AddBuff(new BuffDebuff()
                 {
-                    foreach(UserAccount user in team.Members)
-                    {
-                        foreach(BasicCard card in user.ActiveCards)
-                        {
-                            card.AddBuff(new BuffDebuff()
-                            {
-                                Name = "Burning",
-                                Origin = $"({inst.GetCardTurn().Signature})",
-                                Description = "8 damage each round.",
-                                DamagePerRound = 8,
-                                DPRAlternateText = "burning damage.",
-                                Rounds = 3
-                            });
-                        }
-                    }
-                }
+                    Name = "Burning",
+                    Origin = $"({inst.GetCardTurn().Signature})",
+                    Description = "8 damage each round.",
+                    DamagePerRound = 8,
+                    DPRAlternateText = "burning damage.",
+                    Rounds = 3
+                });
             }
 
             await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} sets the enemy team aflame!");

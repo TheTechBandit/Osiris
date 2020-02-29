@@ -4,12 +4,12 @@ namespace Osiris
 {
     public class SpeedyHareCard : BasicCard
     {
-        public override string Name { get; } = "Speedy Hare";
+        public override string Name { get; set; } = "Speedy Hare";
         public override bool RequiresCelestial { get; } = false;
         public override bool Hidden { get; } = false;
         public override bool Disabled { get; } = false;
-        public override List<BasicMove> Moves { get; } = new List<BasicMove>();
-        public override BasicPassive Passive { get; } = new SpeederPassive(true);
+        public override List<BasicMove> Moves { get; set; } = new List<BasicMove>();
+        public override BasicPassive Passive { get; set; } = new SpeederPassive(true);
 
         public SpeedyHareCard() : base()
         {

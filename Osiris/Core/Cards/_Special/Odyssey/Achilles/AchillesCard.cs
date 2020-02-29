@@ -4,12 +4,12 @@ namespace Osiris
 {
     public class AchillesCard : BasicCard
     {
-        public override string Name { get; } = "Achilles";
+        public override string Name { get; set; } = "Achilles";
         public override bool RequiresCelestial { get; } = true;
         public override bool Hidden { get; } = true;
         public override bool Disabled { get; } = false;
-        public override List<BasicMove> Moves { get; } = new List<BasicMove>();
-        public override BasicPassive Passive { get; } = new BlessingOfStyxPassive(true);
+        public override List<BasicMove> Moves { get; set; } = new List<BasicMove>();
+        public override BasicPassive Passive { get;set;  } = new BlessingOfStyxPassive(true);
 
         public AchillesCard() : base()
         {

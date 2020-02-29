@@ -38,20 +38,13 @@ namespace Osiris
             string str = "";
             var totalDam = 0;
 
-            foreach(Team team in inst.Teams)
+            List<BasicCard> targets = inst.GetAOEEnemyTargets();
+
+            foreach(BasicCard card in targets)
             {
-                if(team.TeamNum != inst.GetTeam(inst.GetCardTurn()).TeamNum)
-                {
-                    foreach(UserAccount user in team.Members)
-                    {
-                        foreach(BasicCard card in user.ActiveCards)
-                        {
-                            var tempDam = card.TakeDamage(damage);
-                            totalDam += tempDam[0];
-                            str += $"\n{card.DamageTakenString(tempDam)}";
-                        }
-                    }
-                }
+                var tempDam = card.TakeDamage(damage);
+                totalDam += tempDam[0];
+                str += $"\n{card.DamageTakenString(tempDam)}";
             }
 
             await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} fires a magical arrow!{str}\n{inst.GetCardTurn().Signature} dealt a total of {totalDam} damage.");

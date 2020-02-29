@@ -4,12 +4,12 @@ namespace Osiris
 {
     public class TouchedCard : BasicCard
     {
-        public override string Name { get; } = "Touched";
+        public override string Name { get; set; } = "Touched";
         public override bool RequiresCelestial { get; } = false;
         public override bool Hidden { get; } = false;
         public override bool Disabled { get; } = false;
-        public override List<BasicMove> Moves { get; } = new List<BasicMove>();
-        public override BasicPassive Passive { get; } = new NonePassive(true);
+        public override List<BasicMove> Moves { get; set; } = new List<BasicMove>();
+        public override BasicPassive Passive { get; set; } = new NonePassive(true);
 
         public TouchedCard() : base()
         {

@@ -49,10 +49,9 @@ namespace Osiris.Discord
             //str += $"{new GhubCard().Name}\n";
             str += "Use the 0.info {card} command to learn more about each card.\n";
             str += "```\n";
-            str += $"{new CuteBunnyCard().Name}\n";
-            str += $"{new SpeedyHareCard().Name}\n";
-            str += $"{new FluffyAngoraCard().Name}\n";
-            str += $"{new AngryJackalopeCard().Name}\n";
+            str += $"{new OWarriorCard().Name}\n";
+            str += $"{new OArcherCard().Name}\n";
+            str += $"{new OKegmasterCard().Name}\n";
             str += "```\n";
 
             await MessageHandler.SendMessage(idList, str);  
