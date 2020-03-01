@@ -42,6 +42,7 @@ namespace Osiris
                 card.AddBuff(new BuffDebuff()
                 {
                     Name = "Bleeding",
+                    Buff = false,
                     Origin = $"({inst.GetCardTurn().Signature})",
                     Description = "5 damage every turn.",
                     DamagePerTurn = 5,

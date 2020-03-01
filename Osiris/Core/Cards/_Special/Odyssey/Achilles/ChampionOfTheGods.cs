@@ -41,6 +41,7 @@ namespace Osiris
                     card.AddBuff(new BuffDebuff()
                     {
                         Name = "Champion's Favor",
+                        Buff = true,
                         Origin = $"({inst.GetCardTurn().Signature})",
                         Description = "invulnerable",
                         DefenseSetBuff = 5,

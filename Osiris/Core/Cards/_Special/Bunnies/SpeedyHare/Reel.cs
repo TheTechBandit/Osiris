@@ -34,6 +34,7 @@ namespace Osiris
             inst.GetCardTurn().AddBuff(new BuffDebuff()
             {
                 Name = "Reel",
+                Buff = true,
                 Origin = $"({inst.GetCardTurn().Signature})",
                 Description = $"Gain {rolls[0]}% extra damage on your next attack.",
                 DamagePercentBuff = perc,

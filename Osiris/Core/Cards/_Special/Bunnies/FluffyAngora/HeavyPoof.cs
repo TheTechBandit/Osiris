@@ -41,12 +41,13 @@ namespace Osiris
                 var damages = card.TakeDamage(damage);
 
                 inst.GetCardTurn().AddBuff(new BuffDebuff()
-                    {
-                        Name = $"Poof ({inst.GetCardTurn().Signature})",
-                        Description = $"{shield[0]} heavy shielding.",
-                        ShieldOnly = true,
-                        HeavyShield = shield[0]
-                    });
+                {
+                    Name = $"Poof ({inst.GetCardTurn().Signature})",
+                    Buff = true,
+                    Description = $"{shield[0]} heavy shielding.",
+                    ShieldOnly = true,
+                    HeavyShield = shield[0]
+                });
 
                 await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} poofs out! They gain {shield[0]} shield and {card.DamageTakenString(damages)}");
             }

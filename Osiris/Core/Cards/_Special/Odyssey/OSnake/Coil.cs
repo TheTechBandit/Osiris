@@ -32,6 +32,7 @@ namespace Osiris
                 card.AddBuff(new BuffDebuff()
                 {
                     Name = "Coiled Friend",
+                    Buff = true,
                     Origin = $"({inst.GetCardTurn().Signature})",
                     Description = "30% reduced damage.",
                     DefensePercentBuff = 0.30,

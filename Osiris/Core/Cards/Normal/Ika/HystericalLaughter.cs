@@ -43,6 +43,7 @@ namespace Osiris
                 inst.GetCardTurn().AddBuff(new BuffDebuff()
                 {
                     Name = "Hysterical",
+                    Buff = true,
                     Origin = $"({inst.GetCardTurn().Signature})",
                     Description = "20% increased damage on next attack.",
                     DamagePercentBuff = 0.2,

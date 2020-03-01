@@ -32,6 +32,7 @@ namespace Osiris
                 card.AddBuff(new BuffDebuff()
                 {
                     Name = "Ringing Ears",
+                    Buff = false,
                     Origin = $"({inst.GetCardTurn().Signature})",
                     Description = "Silenced.",
                     Silenced = true,

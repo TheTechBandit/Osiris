@@ -37,6 +37,7 @@ namespace Osiris
                 card.AddBuff(new BuffDebuff()
                 {
                     Name = "Impaled",
+                    Buff = false,
                     Origin = $"({inst.GetCardTurn().Signature})",
                     Description = "20% reduced defense on the next 2 hits taken.",
                     DefensePercentDebuff = 0.2,

@@ -43,6 +43,7 @@ namespace Osiris
                 inst.GetCardTurn().AddBuff(new BuffDebuff()
                 {
                     Name = "Poof",
+                    Buff = true,
                     Origin = $"({inst.GetCardTurn().Signature})",
                     Description = $"{shield[0]} light shielding.",
                     ShieldOnly = true,

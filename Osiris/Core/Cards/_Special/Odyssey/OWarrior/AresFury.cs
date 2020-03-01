@@ -29,6 +29,7 @@ namespace Osiris
             inst.GetCardTurn().AddBuff(new BuffDebuff()
             {
                 Name = "Ares' Fury",
+                Buff = true,
                 Origin = $"({inst.GetCardTurn().Signature})",
                 Description = $"Gain 30% extra damage on your next two attacks.",
                 DamagePercentBuff = 0.30,

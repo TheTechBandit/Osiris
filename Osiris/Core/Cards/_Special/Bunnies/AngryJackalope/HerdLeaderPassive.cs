@@ -72,6 +72,7 @@ namespace Osiris
                         owner.AddBuff(new BuffDebuff()
                         {
                             Name = "Herd Shielding",
+                            Buff = true,
                             Origin = $"(Passive)",
                             Description = $"The herd shields you! You gain 1 light shield.",
                             ShieldOnly = true,

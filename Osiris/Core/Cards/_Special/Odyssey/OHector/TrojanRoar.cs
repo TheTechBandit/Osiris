@@ -33,6 +33,7 @@ namespace Osiris
                 card.AddBuff(new BuffDebuff()
                 {
                     Name = "Inspired",
+                    Buff = true,
                     Origin = $"({inst.GetCardTurn().Signature})",
                     Description = "10 more damage.",
                     DamageStaticBuff = 10,

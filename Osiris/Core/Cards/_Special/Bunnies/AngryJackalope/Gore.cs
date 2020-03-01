@@ -48,6 +48,7 @@ namespace Osiris
                     card.AddBuff(new BuffDebuff()
                     {
                         Name = "Gored",
+                        Buff = false,
                         Origin = $"({inst.GetCardTurn().Signature})",
                         Description = "5 bleeding every time an attack is made for 2 turns.",
                         BleedAttackDamage = 5,

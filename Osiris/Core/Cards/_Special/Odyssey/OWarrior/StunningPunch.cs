@@ -43,6 +43,7 @@ namespace Osiris
                 card.AddBuff(new BuffDebuff()
                 {
                     Name = "Stunned",
+                    Buff = false,
                     Origin = $"({inst.GetCardTurn().Signature})",
                     Description = "15% less damage on next attack.",
                     DamagePercentDebuff = 0.15,

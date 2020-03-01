@@ -43,6 +43,7 @@ namespace Osiris
                 card.AddBuff(new BuffDebuff()
                 {
                     Name = "Crushed",
+                    Buff = false,
                     Origin = $"({inst.GetCardTurn().Signature})",
                     Description = "Disabled and bleeding 10 HP.",
                     TurnSkip = true,

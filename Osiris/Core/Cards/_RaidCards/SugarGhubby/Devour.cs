@@ -31,6 +31,7 @@ namespace Osiris
                 card.AddBuff(new BuffDebuff()
                 {
                     Name = "Devoured",
+                    Buff = false,
                     Origin = $"({inst.GetCardTurn().Signature})",
                     Description = "You have been swallowed! Take 20 damage at the start of every round. You are disabled for this period.",
                     Rounds = 3,

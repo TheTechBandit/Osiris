@@ -33,6 +33,7 @@ namespace Osiris
                 card.AddBuff(new BuffDebuff()
                 {
                     Name = "Knocked Down",
+                    Buff = false,
                     Origin = $"({inst.GetCardTurn().Signature})",
                     Description = "You are knocked down! You are disabled on your next turn.",
                     TurnSkip = true,
@@ -62,6 +63,7 @@ namespace Osiris
                     card.AddBuff(new BuffDebuff()
                     {
                         Name = "Vulnerable",
+                        Buff = false,
                         Origin = $"({inst.GetCardTurn().Signature})",
                         Description = "You have been knocked down and are vulnerable! You take 200% more damage on the next hit to you.",
                         DefensePercentDebuff = 2.0,

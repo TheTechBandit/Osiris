@@ -29,6 +29,7 @@ namespace Osiris
             inst.GetCardTurn().AddBuff(new BuffDebuff()
             {
                 Name = "XLR8",
+                Buff = true,
                 Origin = $"({inst.GetCardTurn().Signature})",
                 Description = $"Take 2 actions per turn for your next 2 turns.",
                 BonusActions = 1,

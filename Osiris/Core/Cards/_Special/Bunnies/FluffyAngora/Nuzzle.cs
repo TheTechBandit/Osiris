@@ -42,6 +42,7 @@ namespace Osiris
                     card.AddBuff(new BuffDebuff()
                     {
                         Name = "Nuzzled",
+                        Buff = true,
                         Origin = $"({inst.GetCardTurn().Signature})",
                         Description = $"{inst.GetCardTurn().Signature}'s nuzzles encourage you! 2 medium shielding. Not stackable.",
                         ShieldOnly = true,

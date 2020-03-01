@@ -31,6 +31,7 @@ namespace Osiris
             inst.GetCardTurn().AddBuff(new BuffDebuff()
             {
                 Name = $"Demigod Of Earth ({inst.GetCardTurn().Signature})",
+                Buff = true,
                 Description = "Immune to damage for 2 turns.",
                 DefenseSetBuff = 0,
                 Turns = 2
@@ -45,6 +46,7 @@ namespace Osiris
                     card.AddBuff(new BuffDebuff()
                     {
                         Name = "Demigod Of Earth",
+                        Buff = true,
                         Origin = $"({inst.GetCardTurn().Signature})",
                         Description = "Pinned for 2 turns.",
                         TurnSkip = true,

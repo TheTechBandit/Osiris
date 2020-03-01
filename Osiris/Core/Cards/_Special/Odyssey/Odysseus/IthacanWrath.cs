@@ -42,6 +42,7 @@ namespace Osiris
                 card.AddBuff(new BuffDebuff()
                 {
                     Name = "Ithacan Wrath",
+                    Buff = true,
                     Origin = $"({inst.GetCardTurn().Signature})",
                     Description = "50% increased damage on next attack.",
                     DamagePercentBuff = 0.50,

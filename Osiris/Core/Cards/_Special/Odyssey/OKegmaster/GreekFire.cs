@@ -33,6 +33,7 @@ namespace Osiris
                 card.AddBuff(new BuffDebuff()
                 {
                     Name = "Burning",
+                    Buff = false,
                     Origin = $"({inst.GetCardTurn().Signature})",
                     Description = "8 damage each round.",
                     DamagePerRound = 8,

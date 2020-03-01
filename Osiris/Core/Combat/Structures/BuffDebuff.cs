@@ -4,11 +4,14 @@ namespace Osiris
 {
     public class BuffDebuff
     {
+        //A Name for the Buff/Debuff
         public string Name { get; set; } = "Buff";
-        public string Origin { get; set; } = "(you should never see this text. if you do, something went wrong and Ghub is an idiot.)";
-        public string Description { get; set; } = "A Buff";
         //true if this is a buff, false if it is a debuff.
         public bool Buff { get; set; } = true;
+        //Where this buff/debuff originates from
+        public string Origin { get; set; } = "(you should never see this text. if you do, something went wrong and Ghub is an idiot.)";
+        //A short description of what the buff/debuff does
+        public string Description { get; set; } = "A Buff";
         //Rounds this effects last for. -1 for infinite
         public int Rounds { get; set; } = -1;
         //Turns this effect lasts for. -1 for infinite

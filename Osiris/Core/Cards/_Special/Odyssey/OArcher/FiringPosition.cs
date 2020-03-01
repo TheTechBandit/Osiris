@@ -29,6 +29,7 @@ namespace Osiris
             inst.GetCardTurn().AddBuff(new BuffDebuff()
             {
                 Name = "Firing Position",
+                Buff = true,
                 Origin = $"({inst.GetCardTurn().Signature})",
                 Description = "Untargetable",
                 Untargetable = true,

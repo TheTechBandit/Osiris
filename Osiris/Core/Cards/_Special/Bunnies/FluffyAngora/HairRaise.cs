@@ -35,6 +35,7 @@ namespace Osiris
                         BuffDebuff buff = new BuffDebuff()
                         {
                             Name = "Hair Raise",
+                            Buff = true,
                             Origin = $"({inst.GetCardTurn().Signature})",
                             Description = "Untargetable and take 25% less damage.",
                             DefensePercentBuff = 0.25,

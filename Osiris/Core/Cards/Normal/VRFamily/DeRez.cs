@@ -31,6 +31,7 @@ namespace Osiris
                 card.AddBuff(new BuffDebuff()
                 {
                     Name = "De-Rez",
+                    Buff = false,
                     Origin = $"({inst.GetCardTurn().Signature})",
                     Description = "Attack decreased by 20%.",
                     Attacks = 2,

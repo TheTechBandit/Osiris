@@ -33,6 +33,7 @@ namespace Osiris
                 card.AddBuff(new BuffDebuff()
                 {
                     Name = "Regent",
+                    Buff = true,
                     Origin = $"({inst.GetCardTurn().Signature})",
                     Description = "untargetable.",
                     Untargetable = true,
@@ -42,6 +43,7 @@ namespace Osiris
                 card.AddBuff(new BuffDebuff()
                 {
                     Name = "Regent",
+                    Buff = true,
                     Origin = $"({inst.GetCardTurn().Signature})",
                     Description = "50% damage boost",
                     DamagePercentBuff = 0.50,

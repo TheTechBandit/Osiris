@@ -45,6 +45,7 @@ namespace Osiris
                     card.AddBuff(new BuffDebuff()
                     {
                         Name = "Inspired",
+                        Buff = true,
                         Origin = $"({inst.GetCardTurn().Signature})",
                         Description = "10% bonus damage",
                         DamagePercentBuff = 0.10,

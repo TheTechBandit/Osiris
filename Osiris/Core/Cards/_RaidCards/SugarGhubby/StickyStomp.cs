@@ -65,6 +65,7 @@ namespace Osiris
                         card.AddBuff(new BuffDebuff()
                         {
                             Name = "Sticky",
+                            Buff = false,
                             Origin = $"({inst.GetCardTurn().Signature})",
                             Description = "Sticky syrup got on you! Your next attack is reduced by 50%",
                             DamagePercentDebuff = 0.5,

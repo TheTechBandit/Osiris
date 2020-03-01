@@ -29,6 +29,7 @@ namespace Osiris
             inst.GetCardTurn().AddBuff(new BuffDebuff()
             {
                 Name = "Blockade",
+                Buff = true,
                 Origin = $"({inst.GetCardTurn().Signature})",
                 Description = $"Sole Target and damage reduced by 75%",
                 DefensePercentBuff = 0.75,

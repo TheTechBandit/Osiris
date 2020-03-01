@@ -44,6 +44,7 @@ namespace Osiris
                     inst.GetCardTurn().AddBuff(new BuffDebuff()
                     {
                         Name = "Crashed",
+                        Buff = true,
                         Origin = $"({inst.GetCardTurn().Signature})",
                         Description = "15% increased damage on next attack.",
                         DamagePercentBuff = 0.15,

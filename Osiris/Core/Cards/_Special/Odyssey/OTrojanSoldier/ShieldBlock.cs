@@ -33,6 +33,7 @@ namespace Osiris
                 card.AddBuff(new BuffDebuff()
                 {
                     Name = "Shield Block",
+                    Buff = true,
                     Origin = $"({inst.GetCardTurn().Signature})",
                     Description = "15% less damage.",
                     DefensePercentBuff = 0.15,

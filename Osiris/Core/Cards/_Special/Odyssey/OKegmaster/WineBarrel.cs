@@ -52,6 +52,7 @@ namespace Osiris
                 card.AddBuff(new BuffDebuff()
                 {
                     Name = "Drunkard",
+                    Buff = false,
                     Origin = $"({inst.GetCardTurn().Signature})",
                     Description = "Drunk! Deal 30% less damage on your next attack.",
                     DamagePercentDebuff = 0.30,

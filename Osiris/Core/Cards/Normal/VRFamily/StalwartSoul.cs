@@ -33,6 +33,7 @@ namespace Osiris
                     BuffDebuff buff = new BuffDebuff()
                     {
                         Name = $"Stalwart Soul",
+                        Buff = true,
                         Origin = $"({inst.GetCardTurn().Signature})",
                         Description = "All damage nullified.",
                         DefenseSetBuff = 0,

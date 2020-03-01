@@ -53,6 +53,7 @@ namespace Osiris
                     card.AddBuff(new BuffDebuff()
                     {
                         Name = "Prone",
+                        Buff = false,
                         Origin = $"({inst.GetCardTurn().Signature})",
                         Description = "disabled.",
                         TurnSkip = true,

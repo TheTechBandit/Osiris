@@ -35,6 +35,7 @@ namespace Osiris
                 card.AddBuff(new BuffDebuff()
                 {
                     Name = "Mended",
+                    Buff = true,
                     Origin = $"({inst.GetCardTurn().Signature})",
                     Description = "100% increased damage.",
                     DamagePercentBuff = 1.00,

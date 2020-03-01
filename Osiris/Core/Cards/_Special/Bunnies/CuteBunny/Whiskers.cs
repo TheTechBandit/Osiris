@@ -32,6 +32,7 @@ namespace Osiris
                 card.AddBuff(new BuffDebuff()
                 {
                     Name = "Whiskers",
+                    Buff = true,
                     Origin = $"({inst.GetCardTurn().Signature})",
                     Description = "Next attack's damage increased by 75%",
                     Attacks = 1,

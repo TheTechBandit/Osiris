@@ -29,6 +29,7 @@ namespace Osiris
             inst.GetCardTurn().AddBuff(new BuffDebuff()
             {
                 Name = "Might Of The Gods",
+                Buff = true,
                 Origin = $"({inst.GetCardTurn().Signature})",
                 Description = $"5X damage on next attack.",
                 DamagePercentBuff = 5.00,
