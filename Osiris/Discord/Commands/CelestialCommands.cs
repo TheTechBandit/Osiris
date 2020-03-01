@@ -63,7 +63,8 @@ namespace Osiris.Discord
             user.CombatID = combatId;
             await combat.AddPlayerToCombat(user, combat.CreateNewTeam());
 
-            await MessageHandler.SendMessage(idList, $"{user.ActiveCards[0].Name} is attacking #{channel.Name}! Combat will begin in 10 minutes.\n```\nUse 0.joincombat to join\n```");
+            //await MessageHandler.SendMessage(idList, $"{user.ActiveCards[0].Name} is attacking #{channel.Name}! Combat will begin in 10 minutes.\n```\nUse 0.joincombat to join\n```");
+            await MessageHandler.SendMessage(idList, $"{user.ActiveCards[0].Name} challenges the party! Combat will begin in 3 minutes.\n```\nUse 0.joincombat to join\n```");
 
             CombatHandler.StoreInstance(combatId, combat);
         }
@@ -197,10 +198,10 @@ namespace Osiris.Discord
 
             var card = CardRegistration.RegisterCard(str);
             
-            var nick = Context.Guild.GetUser(Context.User.Id).Nickname;
+            var nick = Context.Guild.GetUser(user.UserId).Nickname;
 
             if(nick == null)
-                card.Signature = Context.User.Username;
+                card.Signature = Context.Guild.GetUser(user.UserId).Username;
             else
                 card.Signature = nick;
 

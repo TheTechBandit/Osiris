@@ -87,12 +87,24 @@ namespace Osiris.Discord
                     var author = UserHandler.GetUser(message.Author.Id);
                     var inst = CombatHandler.GetInstance(author.CombatID);
 
+                    var moveNum = -1;
                     //Loop through the card's moves
                     foreach(BasicMove move in card.Moves)
                     {
+                        moveNum++;
+
                         //If the message contains any of the moves' names
                         if(message.Content.Contains($"{move.Name}"))
                         {
+                            //Fail if the user is silenced and they did not use their Basic
+                            Console.WriteLine($"a- {moveNum}");
+                            if(moveNum != 0 && card.IsSilenced())
+                            {
+                                await MessageHandler.SendMessage(inst.Location, $"MOVE FAILED! You are silenced. You may only use your Basic (first move listed on your card).");
+                                return;
+                            }
+                            Console.WriteLine("b");
+
                             //Count the inputs, if necessary
                             if(move.Targets >= 1)
                             {
@@ -289,7 +301,7 @@ namespace Osiris.Discord
                     }
                     else if((message.Content.Contains("Skip") || message.Content.Contains("Pass")) && !card.CanPassTurn)
                     {
-                        await MessageHandler.SendMessage(inst.Location, "Your currently equipped card cannot skip it's turn.");
+                        await MessageHandler.SendMessage(inst.Location, "You are cursed! You cannot Pass your turn.");
                     }
                 }
             }

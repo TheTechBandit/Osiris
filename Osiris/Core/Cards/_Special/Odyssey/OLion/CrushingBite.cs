@@ -8,7 +8,7 @@ namespace Osiris
     {
         public override string Name { get; } = "Crushing Bite";
         public override string Owner { get; } = "Lion";
-        public override string Description { get; } = "Gorge your teeth into the greeks! Deal 6d10 damage to a target ally.";
+        public override string Description { get; } = "Gorge your teeth into the greeks! Deal 6d10 damage to a target greek.";
         public override string TargetType { get; } = "SingleEnemy";
         public override int Targets { get; } = 1;
         public override bool IsUltimate { get; } = false;

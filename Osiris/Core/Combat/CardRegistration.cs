@@ -85,6 +85,15 @@ namespace Osiris
                 case "pig":
                     card = new OPigCard(true);
                     break;
+                case "snake":
+                    card = new OSnakeCard(true);
+                    break;
+                case "lion":
+                    card = new OLionCard(true);
+                    break;
+                case "scylla head, terror of the cave":
+                    card = new ScyllaCard(true);
+                    break;
                 default:
                     card = new VRFamilyCard(true);
                     break;

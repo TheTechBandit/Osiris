@@ -8,7 +8,7 @@ namespace Osiris
     {
         public override string Name { get; } = "Shredding Claws";
         public override string Owner { get; } = "Lion";
-        public override string Description { get; } = "Lacerate your friends with ferocious claws. Deal 3d10 to all allies (excluding other animals).";
+        public override string Description { get; } = "Lacerate your friends with ferocious claws. Deal 3d10 to all greeks.";
         public override string TargetType { get; } = "AllEnemy";
         public override int Targets { get; } = 0;
         public override bool IsUltimate { get; } = false;
@@ -44,10 +44,10 @@ namespace Osiris
             {
                 var tempDam = card.TakeDamage(damage);
                 totalDam += tempDam[0];
-                str += $"\n{card.Signature} heals {tempDam} HP!";
+                str += $"\n{card.DamageTakenString(tempDam)}";
             }
 
-            await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} tosses an explosive barrel!{str}\n{inst.GetCardTurn().Signature} dealt a total of {totalDam} damage.");
+            await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} shreds the enemy with their claws!{str}\n{inst.GetCardTurn().Signature} dealt a total of {totalDam} damage.");
 
             OnCooldown = true;
             CurrentCooldown = Cooldown;

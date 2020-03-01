@@ -12,7 +12,7 @@ namespace Osiris
         public override string TargetType { get; } = "SingleFriendly";
         public override int Targets { get; } = 2;
         public override bool IsUltimate { get; } = false;
-        public override int Cooldown { get; } = 2;
+        public override int Cooldown { get; } = 4;
 
         public HoneyedWine() : base()
         {
@@ -28,11 +28,30 @@ namespace Osiris
         {
             foreach(BasicCard card in targets)
             {
-                BasicCard pig = new OPigCard(true);
-                card.CacheAll();
-                card.CopyCard(pig);
+                string str = "";
+                if(card.Name == "Archer")
+                {
+                    BasicCard snake = new OSnakeCard(true);
+                    str += "snake";
+                    card.CacheAll();
+                    card.CopyCard(snake);
+                }
+                else if(card.Name == "Warrior")
+                {
+                    str += "lion";
+                    BasicCard lion = new OLionCard(true);
+                    card.CacheAll();
+                    card.CopyCard(lion);
+                }
+                else
+                {
+                    BasicCard pig = new OPigCard(true);
+                    str += "pig";
+                    card.CacheAll();
+                    card.CopyCard(pig);
+                }
 
-                await MessageHandler.SendMessage(inst.Location, $"{card.Signature} is transformed by {inst.GetCardTurn().Signature}.");
+                await MessageHandler.SendMessage(inst.Location, $"{card.Signature} was transformed into a {str} by {inst.GetCardTurn().Signature}.");
             }
 
             OnCooldown = true;

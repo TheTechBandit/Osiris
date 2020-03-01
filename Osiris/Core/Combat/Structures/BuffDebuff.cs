@@ -71,6 +71,8 @@ namespace Osiris
         public int BonusActions = 0;
         //If true user's turn will be skipped
         public bool TurnSkip { get; set; } = false;
+        //If true the user can only use Basic abilities (their first move)
+        public bool Silenced { get; set; } = false;
         //If true, the player will be untargetable (AOE will still hit)
         public bool Untargetable { get; set; } = false;
         //If true, the player is the only valid target (AOE)

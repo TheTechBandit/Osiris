@@ -8,7 +8,7 @@ namespace Osiris
     {
         public override string Name { get; } = "Wine Barrel";
         public override string Owner { get; } = "Kegmaster";
-        public override string Description { get; } = "Douse the battlefield in wine! Heal the ally party for 5d10. All enemy players deal 10% less damage on their next attack.";
+        public override string Description { get; } = "Douse the battlefield in wine! Heal the ally party for 3d10. All enemy players deal 30% less damage on their next attack.";
         public override string TargetType { get; } = "AllEnemy";
         public override int Targets { get; } = 0;
         public override bool IsUltimate { get; } = false;
@@ -26,8 +26,8 @@ namespace Osiris
 
         public override async Task MoveEffect(CombatInstance inst)
         {
-            List<int> rolls = RandomGen.RollDice(5, 10);
-            await MessageHandler.DiceThrow(inst.Location, "5d10", rolls);
+            List<int> rolls = RandomGen.RollDice(3, 10);
+            await MessageHandler.DiceThrow(inst.Location, "3d10", rolls);
             
             int healing = 0;
 
@@ -53,8 +53,8 @@ namespace Osiris
                 {
                     Name = "Drunkard",
                     Origin = $"({inst.GetCardTurn().Signature})",
-                    Description = "Drunk! Deal 10% less damage on your next attack.",
-                    DamagePercentDebuff = 0.10,
+                    Description = "Drunk! Deal 30% less damage on your next attack.",
+                    DamagePercentDebuff = 0.30,
                     Attacks = 1
                 });
             }

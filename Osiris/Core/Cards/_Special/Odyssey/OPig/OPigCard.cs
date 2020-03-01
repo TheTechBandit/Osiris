@@ -29,7 +29,7 @@ namespace Osiris
 
             DeathMessage = "'s transformation was reverted!";
             TotalHP = 120;
-            CurrentHP = 10;
+            CurrentHP = 120;
         }
 
     }

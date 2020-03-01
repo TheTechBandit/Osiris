@@ -8,7 +8,7 @@ namespace Osiris
     {
         public override string Name { get; } = "Stab";
         public override string Owner { get; } = "Trojan Soldier";
-        public override string Description { get; } = "Stab the greek invaders! deal 2d5 damage to a target enemy.";
+        public override string Description { get; } = "Stab the greek invaders! deal 5d5 damage to a target enemy.";
         public override string TargetType { get; } = "SingleEnemy";
         public override int Targets { get; } = 1;
         public override bool IsUltimate { get; } = false;
@@ -28,8 +28,8 @@ namespace Osiris
         {
             foreach(BasicCard card in targets)
             {
-                List<int> rolls = RandomGen.RollDice(2, 5);
-                await MessageHandler.DiceThrow(inst.Location, "2d5", rolls);
+                List<int> rolls = RandomGen.RollDice(5, 5);
+                await MessageHandler.DiceThrow(inst.Location, "5d5", rolls);
 
                 var damage = 0;
                 foreach(int roll in rolls)

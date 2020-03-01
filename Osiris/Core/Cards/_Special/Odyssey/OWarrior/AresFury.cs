@@ -6,7 +6,7 @@ namespace Osiris
 {
     public class AresFury : BasicMove
     {
-        public override string Name { get; } = "Ares' Fury";
+        public override string Name { get; } = "Ares Fury";
         public override string Owner { get; } = "Warrior";
         public override string Description { get; } = "Praise be the god of war! Your next two attacks are boosted by 30%.";
         public override string TargetType { get; } = "Self";

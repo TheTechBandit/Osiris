@@ -585,6 +585,20 @@ namespace Osiris
             return isSoleTarget;
         }
 
+        public bool IsSilenced()
+        {
+            var isSilenced = false;
+            foreach(BuffDebuff eff in Effects)
+            {
+                if(eff.Silenced)
+                {
+                    isSilenced = true;
+                }
+            }
+            Console.WriteLine($"Silenced is {isSilenced}");
+            return isSilenced;
+        }
+
         public void ApplyBonusActions()
         {
             var bonus = 0;

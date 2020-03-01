@@ -6,7 +6,7 @@ namespace Osiris
 {
     public class QuickShot : BasicMove
     {
-        public override string Name { get; } = "Quick Shot";
+        public override string Name { get; } = "Quickshot";
         public override string Owner { get; } = "Archer";
         public override string Description { get; } = "Fire an arrow at a target enemy for 3d10 damage.";
         public override string TargetType { get; } = "SingleEnemy";

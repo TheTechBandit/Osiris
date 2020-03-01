@@ -8,7 +8,7 @@ namespace Osiris
     {
         public override string Name { get; } = "Shield Block";
         public override string Owner { get; } = "Trojan Soldier";
-        public override string Description { get; } = "Increase all allied players' defense by 10% on the next hit they recieve.";
+        public override string Description { get; } = "Increase all allied players' defense by 15% on the next hit they recieve.";
         public override string TargetType { get; } = "AllEnemy";
         public override int Targets { get; } = 0;
         public override bool IsUltimate { get; } = false;
@@ -34,8 +34,8 @@ namespace Osiris
                 {
                     Name = "Shield Block",
                     Origin = $"({inst.GetCardTurn().Signature})",
-                    Description = "10% less damage.",
-                    DefensePercentBuff = 0.10,
+                    Description = "15% less damage.",
+                    DefensePercentBuff = 0.15,
                     Strikes = 1
                 });
             }

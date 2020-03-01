@@ -8,7 +8,7 @@ namespace Osiris
     {
         public override string Name { get; } = "Venom Snap";
         public override string Owner { get; } = "Snake";
-        public override string Description { get; } = "Ssssssssss~ Deal 3d10 damage to an ally (excluding animals).";
+        public override string Description { get; } = "Ssssssssss~ Deal 3d10 damage to a greek.";
         public override string TargetType { get; } = "SingleEnemy";
         public override int Targets { get; } = 1;
         public override bool IsUltimate { get; } = false;

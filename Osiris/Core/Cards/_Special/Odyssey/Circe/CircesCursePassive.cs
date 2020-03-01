@@ -9,7 +9,7 @@ namespace Osiris
         //Card this move belongs to
         public override string Owner { get; } = "Lion/Snake/Pig";
         //Description of what this move does
-        public override string Description { get; } = "You have been cursed by Circe! You have become a ferocious animal and are now under her command. You cannot pass your turn and you have no choice but to attack your allies and help the enemy. When this form's HP reaches 0, you will return to normal.";
+        public override string Description { get; } = "You have become a ferocious animal and are now under Circe's command. You cannot pass your turn and you have no choice but to attack your allies and help the enemy. When this form's HP reaches 0, you will return to normal.";
         //Current status of the passive
         public override string Status { get; set; } = ".";
 

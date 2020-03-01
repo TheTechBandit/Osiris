@@ -30,5 +30,12 @@ namespace Osiris
 
             DeathMessage =  " has been Blinded by the party!";
         }
+
+        public override void Death()
+        {
+            BasicCard blind = new PolyphemusBlindCard(true);
+            CacheAll();
+            CopyCard(blind);
+        }
     }
 }
