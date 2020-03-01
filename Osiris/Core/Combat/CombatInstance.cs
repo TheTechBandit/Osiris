@@ -230,5 +230,29 @@ namespace Osiris
             return targets;
         }
 
+        //Returns a list of randomly chosen enemies of a certain amount
+        public List<BasicCard> GetAOERandomRangeEnemyTargets(int num)
+        {
+            List<BasicCard> targets = GetAOEEnemyTargets();
+            while(targets.Count > num)
+            {
+                targets.RemoveAt(RandomGen.RandomNum(0, targets.Count-1));
+            }
+
+            return targets;
+        }
+
+        //Returns a list of randomly chosen allies of a certain amount
+        public List<BasicCard> GetAOERandomRangeAllyTargets(int num)
+        {
+            List<BasicCard> targets = GetAOEAllyTargets();
+            while(targets.Count > num)
+            {
+                targets.RemoveAt(RandomGen.RandomNum(0, targets.Count-1));
+            }
+
+            return targets;
+        }
+
     }
 }

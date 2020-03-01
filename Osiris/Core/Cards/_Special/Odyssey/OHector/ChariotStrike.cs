@@ -8,7 +8,7 @@ namespace Osiris
     {
         public override string Name { get; } = "Chariot Strike";
         public override string Owner { get; } = "Hector";
-        public override string Description { get; } = "Ride past the enemy and stab them for 2d10 damage.";
+        public override string Description { get; } = "Ride past the enemy and stab them for 8d10 damage.";
         public override string TargetType { get; } = "SingleEnemy";
         public override int Targets { get; } = 1;
         public override bool IsUltimate { get; } = false;
@@ -28,8 +28,8 @@ namespace Osiris
         {
             foreach(BasicCard card in targets)
             {
-                List<int> rolls = RandomGen.RollDice(2, 10);
-                await MessageHandler.DiceThrow(inst.Location, "2d10", rolls);
+                List<int> rolls = RandomGen.RollDice(8, 10);
+                await MessageHandler.DiceThrow(inst.Location, "8d10", rolls);
 
                 var damage = 0;
                 foreach(int roll in rolls)

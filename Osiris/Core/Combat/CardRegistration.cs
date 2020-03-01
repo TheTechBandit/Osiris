@@ -94,6 +94,9 @@ namespace Osiris
                 case "scylla head, terror of the cave":
                     card = new ScyllaCard(true);
                     break;
+                case "charybdis, maw of the deep" :
+                    card = new CharybdisCard(true);
+                    break;
                 default:
                     card = new VRFamilyCard(true);
                     break;

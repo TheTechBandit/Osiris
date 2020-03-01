@@ -4,34 +4,34 @@ using Osiris.Discord;
 
 namespace Osiris
 {
-    public class LanceRush : BasicMove
+    public class TorrentFury : BasicMove
     {
-        public override string Name { get; } = "Lance Rush";
-        public override string Owner { get; } = "Hector";
-        public override string Description { get; } = "Plow through the enemy lines with your lance, dealing 30 damage to all enemies.";
+        public override string Name { get; } = "Torrent Fury";
+        public override string Owner { get; } = "Charybdis";
+        public override string Description { get; } = "For every enemy in the fight, deal 5 damage to every enemy.";
         public override string TargetType { get; } = "AllEnemy";
         public override int Targets { get; } = 0;
         public override bool IsUltimate { get; } = false;
-        public override int Cooldown { get; } = 2;
+        public override int Cooldown { get; } = 5;
 
-        public LanceRush() : base()
+        public TorrentFury() : base()
         {
             
         }
 
-        public LanceRush(bool newmove) : base(newmove)
+        public TorrentFury(bool newmove) : base(newmove)
         {
             
         }
 
         public override async Task MoveEffect(CombatInstance inst)
         {
-            int damage = 30;
+            List<BasicCard> targets = inst.GetAOEEnemyTargets();
+            int damage = targets.Count*5;
+
             damage = inst.GetCardTurn().ApplyDamageBuffs(damage);
             string str = "";
             var totalDam = 0;
-
-            List<BasicCard> targets = inst.GetAOEEnemyTargets();
 
             foreach(BasicCard card in targets)
             {
@@ -40,7 +40,7 @@ namespace Osiris
                 str += $"\n{card.DamageTakenString(tempDam)}";
             }
 
-            await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} rushes the enemy team!{str}\n{inst.GetCardTurn().Signature} dealt a total of {totalDam}");
+            await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} starts a torrent.{str}\n{inst.GetCardTurn().Signature} dealt a total of {totalDam} damage.");
             
             OnCooldown = true;
             CurrentCooldown = Cooldown;
