@@ -254,10 +254,7 @@ namespace Osiris
                     await MessageHandler.SendMessage(CombatHandler.GetInstance(UserHandler.GetUser(Owner).CombatID).Location, $"{Signature} takes {eff.DamagePerTurn} {eff.DPRAlternateText}");
                 }
             }
-            foreach(BasicMove move in Moves)
-            {
-                move.CooldownTick();
-            }
+            CooldownTickdown();
             EffectCleanup();
         }
 
@@ -274,7 +271,7 @@ namespace Osiris
             }
         }
 
-        public List<int> TakeDamage(int damage)
+        public virtual List<int> TakeDamage(int damage)
         {
             double perc = 0.0;
             int stat = 0;
@@ -507,7 +504,7 @@ namespace Osiris
         
         public virtual void Death()
         {
-            if(IsPuppet && (Name == "Pig" || Name == "Snake" || Name == "Lion"))
+            if(IsPuppet && (Name == "Pig" || Name == "Snake" || Name == "Lion" || Name == "Kingfisher"))
             {
                 Console.WriteLine("Animal Death");
                 SwapCache();

@@ -4,22 +4,22 @@ using Osiris.Discord;
 
 namespace Osiris
 {
-    public class TuskRush : BasicMove
+    public class EggDrop : BasicMove
     {
-        public override string Name { get; } = "Tusk Rush";
-        public override string Owner { get; } = "Pig";
-        public override string Description { get; } = "Charge into a greek with tusks ahead. Deal 4d10 damage. That target bleeds 5 damage on their next turn.";
+        public override string Name { get; } = "Egg Drop";
+        public override string Owner { get; } = "Kingfisher";
+        public override string Description { get; } = "Incoming! Drop an egg on a target greek. Deal 3d5 damage and decrease their next attack's damage by 15%";
         public override string TargetType { get; } = "SingleEnemy";
         public override int Targets { get; } = 1;
         public override bool IsUltimate { get; } = false;
         public override int Cooldown { get; } = 0;
 
-        public TuskRush() : base()
+        public EggDrop() : base()
         {
             
         }
 
-        public TuskRush(bool newmove) : base(newmove)
+        public EggDrop(bool newmove) : base(newmove)
         {
             CanTargetSelf = false;
             CanTargetEnemies = false;
@@ -29,8 +29,8 @@ namespace Osiris
         {
             foreach(BasicCard card in targets)
             {
-                List<int> rolls = RandomGen.RollDice(4, 10);
-                await MessageHandler.DiceThrow(inst.Location, "4d10", rolls);
+                List<int> rolls = RandomGen.RollDice(5, 5);
+                await MessageHandler.DiceThrow(inst.Location, "5d5", rolls);
 
                 var damage = 0;
                 foreach(int roll in rolls)
@@ -41,16 +41,15 @@ namespace Osiris
 
                 card.AddBuff(new BuffDebuff()
                 {
-                    Name = "Bleeding",
+                    Name = "Egged",
                     Buff = false,
                     Origin = $"({inst.GetCardTurn().Signature})",
-                    Description = "5 damage every turn.",
-                    DamagePerTurn = 5,
-                    DPRAlternateText = " bleeding damage.",
-                    Turns = 1
+                    Description = "15% decreased damage.",
+                    DamagePercentDebuff = 0.15,
+                    Attacks = 1
                 });
 
-                await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} tusk rushes {card.Signature}! {card.DamageTakenString(damages)}");
+                await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} drops an egg on {card.Signature}'s head! {card.DamageTakenString(damages)} Their next attack is reduced by 15%.");
             }
 
             inst.GetCardTurn().Actions--;

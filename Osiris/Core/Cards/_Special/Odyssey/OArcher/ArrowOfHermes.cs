@@ -8,7 +8,7 @@ namespace Osiris
     {
         public override string Name { get; } = "Arrow Of Hermes";
         public override string Owner { get; } = "Archer";
-        public override string Description { get; } = "Fire an arrow that collateral's into every enemy. Roll 3d15! for damage.";
+        public override string Description { get; } = "Fire an arrow that collateral's into every enemy. Roll 4d15! for damage.";
         public override string TargetType { get; } = "AllEnemy";
         public override int Targets { get; } = 0;
         public override bool IsUltimate { get; } = false;
@@ -26,8 +26,8 @@ namespace Osiris
 
         public override async Task MoveEffect(CombatInstance inst)
         {
-            List<int> rolls = RandomGen.RollDice(3, 15, true);
-            await MessageHandler.DiceThrow(inst.Location, "3d15!", rolls);
+            List<int> rolls = RandomGen.RollDice(4, 15, true);
+            await MessageHandler.DiceThrow(inst.Location, "4d15!", rolls);
             
             int damage = 0;
 

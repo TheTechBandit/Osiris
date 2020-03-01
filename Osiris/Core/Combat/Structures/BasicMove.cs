@@ -65,7 +65,7 @@ namespace Osiris
         {
             if(CurrentCooldown > 0)
                 CurrentCooldown -= 1;
-            if(CurrentCooldown == 0)
+            if(CurrentCooldown <= 0)
                 OnCooldown = false;
         }
 

@@ -217,11 +217,9 @@ namespace Osiris
 
         public static async Task NextRound(CombatInstance inst)
         {
-            Console.WriteLine("1");
             inst.RoundNumber++;
             inst.TurnNumber = 0;
 
-            Console.WriteLine("2");
             var embeds = OsirisEmbedBuilder.RoundStart(inst);
 
             if(inst.CombatEnded)
@@ -232,19 +230,15 @@ namespace Osiris
                 return;
             }
 
-            Console.WriteLine("3");
-
             for(int i = 0; i < embeds.Count; i++)
                 await MessageHandler.SendEmbedMessage(inst.Location, "", embeds[i]);
 
-            Console.WriteLine("4");
 
             foreach(BasicCard card in inst.CardList)
             {
                 await card.RoundTick();
             }
 
-            Console.WriteLine("5");
             await PassiveUpdateRoundStart(inst);
 
             inst.TurnNumber = -1;
@@ -323,6 +317,8 @@ namespace Osiris
             }
             else
             {
+                if(skip)
+                    await MessageHandler.SendMessage(inst.Location, $"{user.Mention}'s Turn was skipped!");
                 await card.TurnTick();
                 card.IsTurn = false;
                 await NextTurn(inst);

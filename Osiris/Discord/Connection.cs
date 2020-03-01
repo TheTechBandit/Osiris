@@ -97,13 +97,11 @@ namespace Osiris.Discord
                         if(message.Content.Contains($"{move.Name}"))
                         {
                             //Fail if the user is silenced and they did not use their Basic
-                            Console.WriteLine($"a- {moveNum}");
                             if(moveNum != 0 && card.IsSilenced())
                             {
                                 await MessageHandler.SendMessage(inst.Location, $"MOVE FAILED! You are silenced. You may only use your Basic (first move listed on your card).");
                                 return;
                             }
-                            Console.WriteLine("b");
 
                             //Count the inputs, if necessary
                             if(move.Targets >= 1)

@@ -8,9 +8,9 @@ namespace Osiris
     {
         public override string Name { get; } = "Swallow";
         public override string Owner { get; } = "Charybdis";
-        public override string Description { get; } = "Swallow an enemy player whole. That player is instantly killed.";
+        public override string Description { get; } = "Swallow a random enemy player whole. That player is instantly killed.";
         public override string TargetType { get; } = "SingleFriendly";
-        public override int Targets { get; } = 1;
+        public override int Targets { get; } = 0;
         public override bool IsUltimate { get; } = false;
         public override int Cooldown { get; } = 8;
 
@@ -24,8 +24,9 @@ namespace Osiris
 
         }
 
-        public override async Task MoveEffect(CombatInstance inst, List<BasicCard> targets)
+        public override async Task MoveEffect(CombatInstance inst)
         {
+            List<BasicCard> targets = inst.GetAOERandomRangeEnemyTargets(1);
             foreach(BasicCard card in targets)
             {
                 card.CurrentHP = 0;

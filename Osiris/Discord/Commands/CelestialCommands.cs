@@ -105,6 +105,13 @@ namespace Osiris.Discord
             str += $"{new PolyphemusBlindCard().Name}\n";
             str += $"{new CirceCard().Name}\n";
             str += $"{new OPigCard().Name}\n";
+            str += $"{new OSnakeCard().Name}\n";
+            str += $"{new OLionCard().Name}\n";
+            str += $"{new OKingfisherCard().Name}\n";
+            str += $"{new ScyllaCard().Name}\n";
+            str += $"{new CharybdisCard().Name}\n";
+            str += $"{new TwelveAxesCard().Name}\n";
+            str += $"{new SuitorCard().Name}\n";
             str += "```\n";
 
             await MessageHandler.SendMessage(idList, str);

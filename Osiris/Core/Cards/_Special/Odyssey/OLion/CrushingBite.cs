@@ -12,7 +12,7 @@ namespace Osiris
         public override string TargetType { get; } = "SingleEnemy";
         public override int Targets { get; } = 1;
         public override bool IsUltimate { get; } = false;
-        public override int Cooldown { get; } = 2;
+        public override int Cooldown { get; } = 0;
 
         public CrushingBite() : base()
         {
@@ -42,8 +42,6 @@ namespace Osiris
                 await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} bites down hard on {card.Signature}! {card.DamageTakenString(damages)}");
             }
 
-            OnCooldown = true;
-            CurrentCooldown = Cooldown;
             inst.GetCardTurn().Actions--;
         }
         

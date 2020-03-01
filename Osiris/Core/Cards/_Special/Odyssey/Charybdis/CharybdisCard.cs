@@ -26,8 +26,8 @@ namespace Osiris
             Moves.Add(new CrushingTeeth(true));
             Moves.Add(new TorrentFury(true));
             Moves.Add(new Swallow(true));
-            TotalHP = 2000;
-            CurrentHP = 2000;
+            TotalHP = 1800;
+            CurrentHP = 1800;
 
             DeathMessage = " retreats into the deep...";
         }

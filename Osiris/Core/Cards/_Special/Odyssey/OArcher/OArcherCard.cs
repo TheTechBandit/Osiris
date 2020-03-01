@@ -26,8 +26,8 @@ namespace Osiris
             Moves.Add(new ArrowOfHermes(true));
             Moves.Add(new HealingFlask(true));
             Moves.Add(new FiringPosition(true));
-            TotalHP = 250;
-            CurrentHP = 250;
+            TotalHP = 200;
+            CurrentHP = 200;
         }
     }
 }

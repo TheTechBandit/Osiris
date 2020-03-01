@@ -30,7 +30,6 @@ namespace Osiris
             {
                 var damage = 12;
                 
-                damage = inst.GetCardTurn().ApplyDamageBuffs(damage);
                 var damages = card.TakeDamage(damage);
 
                 await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature}' aim holds true.");

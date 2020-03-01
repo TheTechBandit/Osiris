@@ -45,10 +45,21 @@ namespace Osiris
                     Name = "Crushed",
                     Buff = false,
                     Origin = $"({inst.GetCardTurn().Signature})",
-                    Description = "Disabled and bleeding 10 HP.",
+                    Description = "Disabled.",
                     TurnSkip = true,
                     BleedAttackDamage = 10,
                     Turns = 1
+                });
+
+                card.AddBuff(new BuffDebuff()
+                {
+                    Name = "Crushed",
+                    Buff = false,
+                    Origin = $"({inst.GetCardTurn().Signature})",
+                    Description = "Bleeding for 10 damage.",
+                    TurnSkip = true,
+                    BleedAttackDamage = 10,
+                    Attacks = 1
                 });
             }
 

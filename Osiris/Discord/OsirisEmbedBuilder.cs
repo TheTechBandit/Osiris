@@ -201,7 +201,8 @@ namespace Osiris.Discord
                 effects += mark.ToString() + "\n";
             }
 
-            effects += card.Passive.ToString();
+            if(card.HasPassive)
+                effects += card.Passive.ToString();
 
             if(effects.Length == 0)
                 effects += "none";

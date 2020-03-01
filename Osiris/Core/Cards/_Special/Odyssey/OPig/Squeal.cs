@@ -12,7 +12,7 @@ namespace Osiris
         public override string TargetType { get; } = "AllEnemy";
         public override int Targets { get; } = 0;
         public override bool IsUltimate { get; } = false;
-        public override int Cooldown { get; } = 2;
+        public override int Cooldown { get; } = 0;
 
         public Squeal() : base()
         {
@@ -42,9 +42,7 @@ namespace Osiris
             }
 
             await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} lets out a cute little squeal!{str}\n{inst.GetCardTurn().Signature} healed a total of {totalHeal} health.");
-
-            OnCooldown = true;
-            CurrentCooldown = Cooldown;
+            
             inst.GetCardTurn().Actions--;
         }
         

@@ -4,25 +4,24 @@ using Osiris.Discord;
 
 namespace Osiris
 {
-    public class VenomSnap : BasicMove
+    public class Punch : BasicMove
     {
-        public override string Name { get; } = "Venom Snap";
-        public override string Owner { get; } = "Snake";
-        public override string Description { get; } = "Ssssssssss~ Deal 3d10 damage to a greek.";
+        public override string Name { get; } = "Punch";
+        public override string Owner { get; } = "Suitor";
+        public override string Description { get; } = "Punch one of the returned for 3d10 damage.";
         public override string TargetType { get; } = "SingleEnemy";
         public override int Targets { get; } = 1;
         public override bool IsUltimate { get; } = false;
-        public override int Cooldown { get; } = 0;
+        public override int Cooldown { get; } = 3;
 
-        public VenomSnap() : base()
+        public Punch() : base()
         {
             
         }
 
-        public VenomSnap(bool newmove) : base(newmove)
+        public Punch(bool newmove) : base(newmove)
         {
-            CanTargetSelf = false;
-            CanTargetEnemies = false;
+            
         }
 
         public override async Task MoveEffect(CombatInstance inst, List<BasicCard> targets)
@@ -31,17 +30,19 @@ namespace Osiris
             {
                 List<int> rolls = RandomGen.RollDice(3, 10);
                 await MessageHandler.DiceThrow(inst.Location, "3d10", rolls);
+                int damage = 0;
 
-                var damage = 0;
                 foreach(int roll in rolls)
                     damage += roll;
                 
                 damage = inst.GetCardTurn().ApplyDamageBuffs(damage);
                 var damages = card.TakeDamage(damage);
 
-                await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} venom snaps at {card.Signature}! {card.DamageTakenString(damages)}");
+                await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} punches {card.Signature}! {card.DamageTakenString(damages)}");
             }
 
+            OnCooldown = true;
+            CurrentCooldown = Cooldown;
             inst.GetCardTurn().Actions--;
         }
         

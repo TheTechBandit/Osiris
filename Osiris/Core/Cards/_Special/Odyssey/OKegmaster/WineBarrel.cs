@@ -60,7 +60,7 @@ namespace Osiris
                 });
             }
 
-            await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} douses the battlefield in wine!{str}\n{inst.GetCardTurn().Signature} healed a total of {totalHeal} health. All enemies have their next attack reduced by 10%.");
+            await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} douses the battlefield in wine!{str}\n{inst.GetCardTurn().Signature} healed a total of {totalHeal} health. All enemies have their next attack reduced by 30%.");
             
             OnCooldown = true;
             CurrentCooldown = Cooldown;

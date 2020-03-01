@@ -52,6 +52,7 @@ namespace Osiris.Discord
             str += $"{new OWarriorCard().Name}\n";
             str += $"{new OArcherCard().Name}\n";
             str += $"{new OKegmasterCard().Name}\n";
+            str += $"{new OBattleBardCard().Name}";
             str += "```\n";
 
             await MessageHandler.SendMessage(idList, str);  

@@ -12,7 +12,7 @@ namespace Osiris
         public override string TargetType { get; } = "SingleEnemy";
         public override int Targets { get; } = 1;
         public override bool IsUltimate { get; } = false;
-        public override int Cooldown { get; } = 2;
+        public override int Cooldown { get; } = 0;
 
         public Coil() : base()
         {
@@ -41,9 +41,7 @@ namespace Osiris
 
                 await MessageHandler.SendMessage(inst.Location, $"{inst.GetCardTurn().Signature} coils around {card.Signature}, reducing the next hit they take by 30%.");
             }
-
-            OnCooldown = true;
-            CurrentCooldown = Cooldown;
+            
             inst.GetCardTurn().Actions--;
         }
         

@@ -52,10 +52,13 @@ namespace Osiris
                 case "kegmaster":
                     card = new OKegmasterCard(true);
                     break;
+                case "battle bard":
+                    card = new OBattleBardCard(true);
+                    break;
                 case "trojan soldier":
                     card = new OTrojanSoldierCard(true);
                     break;
-                case "hector":
+                case "hector, champion of troy":
                     card = new OHectorCard(true);
                     break;
                 case "odysseus, king of ithaca":
@@ -91,17 +94,25 @@ namespace Osiris
                 case "lion":
                     card = new OLionCard(true);
                     break;
+                case "kingfisher":
+                    card = new OKingfisherCard(true);
+                    break;
                 case "scylla head, terror of the cave":
                     card = new ScyllaCard(true);
                     break;
                 case "charybdis, maw of the deep" :
                     card = new CharybdisCard(true);
                     break;
+                case "twelve axe heads":
+                    card = new TwelveAxesCard(true);
+                    break;
+                case "suitor":
+                    card = new SuitorCard(true);
+                    break;
                 default:
                     card = new VRFamilyCard(true);
                     break;
             }
-
             
             return card;
         }

@@ -8,7 +8,7 @@ namespace Osiris
     {
         public override string Name { get; } = "Quickshot";
         public override string Owner { get; } = "Archer";
-        public override string Description { get; } = "Fire an arrow at a target enemy for 3d10 damage.";
+        public override string Description { get; } = "Fire an arrow at a target enemy for 4d10 damage.";
         public override string TargetType { get; } = "SingleEnemy";
         public override int Targets { get; } = 1;
         public override bool IsUltimate { get; } = false;
@@ -28,7 +28,7 @@ namespace Osiris
         {
             foreach(BasicCard card in targets)
             {
-                int dice = 3;
+                int dice = 4;
                 if(inst.GetCardTurn().HasBuff("Firing Position"))
                 {
                     dice++;

@@ -32,23 +32,30 @@ namespace Osiris
                 if(card.Name == "Archer")
                 {
                     BasicCard snake = new OSnakeCard(true);
-                    str += "snake";
+                    str += "Snake";
                     card.CacheAll();
                     card.CopyCard(snake);
                 }
                 else if(card.Name == "Warrior")
                 {
-                    str += "lion";
+                    str += "Lion";
                     BasicCard lion = new OLionCard(true);
                     card.CacheAll();
                     card.CopyCard(lion);
                 }
-                else
+                else if(card.Name == "Kegmaster")
                 {
                     BasicCard pig = new OPigCard(true);
-                    str += "pig";
+                    str += "Pig";
                     card.CacheAll();
                     card.CopyCard(pig);
+                }
+                else
+                {
+                    BasicCard kingfisher = new OKingfisherCard(true);
+                    str += "Kingfisher";
+                    card.CacheAll();
+                    card.CopyCard(kingfisher);
                 }
 
                 await MessageHandler.SendMessage(inst.Location, $"{card.Signature} was transformed into a {str} by {inst.GetCardTurn().Signature}.");

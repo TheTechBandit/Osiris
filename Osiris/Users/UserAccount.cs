@@ -52,11 +52,11 @@ namespace Osiris
                 if(card.HasPassive)
                     card.Passive.eff.WipeExtra();
                 
-                if(duel)
-                {
+                //if(duel)
+                //{
                     card.CurrentHP = card.TotalHP;
                     card.Dead = false;
-                }
+                //}
             }
         }
 
